@@ -295,7 +295,11 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
       <div class="game-question" id="boardTitle">Chess</div>
       <div class="board-status" id="boardStatus">Your turn (White) — tap a piece to move</div>
       <div id="boardWrap" style="display:flex;justify-content:center;margin:20px 0"></div>
-      <button class="btn-primary" onclick="restartBoardGame()" style="margin-top:10px">🔄 New Game</button>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px">
+        <button class="btn-primary" onclick="restartBoardGame()">🔄 New Game</button>
+        <button class="btn-secondary" id="musicBtn" onclick="toggleMusic(this)">🎵 Music: Off</button>
+        <button class="btn-secondary" id="teachBtn" onclick="toggleTeach(this)">🗣️ Teaching: On</button>
+      </div>
     </div>
   </div>
 </div>
@@ -495,6 +499,10 @@ function switchPage(page) {
   document.getElementById(page).classList.add('active');
   currentPage = page;
 
+  if (page !== 'boardPlayer' && musicOn) {
+    stopMusic();
+    const mb = document.getElementById('musicBtn'); if(mb) mb.textContent = '🎵 Music: Off';
+  }
   if (page === 'dashboard') {
     updateDashboard();
   }
@@ -766,6 +774,18 @@ function readPage(){ speechSynthesis.cancel(); speak(document.getElementById('bo
 let chessBoard = [], chessSel = null, chessLegal = [], chessTurn = 'w', chessOver = false;
 // Use the SOLID glyph for BOTH colors so gradients fill the whole shape (ivory vs onyx)
 const GLYPH = { K:'♚', Q:'♛', R:'♜', B:'♝', N:'♞', P:'♟' };
+const PIECE_NAMES = { K:'King', Q:'Queen', R:'Rook', B:'Bishop', N:'Knight', P:'Pawn' };
+const PIECE_INFO = {
+  P: 'Pawn. It walks one step forward, and captures sideways like this.',
+  N: 'Knight! It jumps in an L-shape and can hop over other pieces.',
+  B: 'Bishop. It slides diagonally, as far as you like.',
+  R: 'Rook. It slides straight — up, down, or sideways.',
+  Q: 'Queen, the most powerful piece! She moves any direction.',
+  K: 'King. He moves one square in any direction. Keep him safe!'
+};
+let teachOn = true;
+function toggleTeach(btn){ teachOn = !teachOn; btn.textContent = teachOn ? '🗣️ Teaching: On' : '🗣️ Teaching: Off'; if(!teachOn) speechSynthesis.cancel(); }
+function narrate(text){ if(!teachOn) return; speechSynthesis.cancel(); speak(text); }
 
 function startChess() {
   currentGameType = 'chess';
@@ -782,9 +802,10 @@ function startChess() {
   ];
   document.getElementById('boardEmoji').textContent = '♟️';
   document.getElementById('boardTitle').textContent = 'Chess vs Computer';
-  document.getElementById('boardStatus').textContent = 'Your turn (White) — tap a piece';
+  document.getElementById('boardStatus').textContent = 'Your turn — tap a piece to learn how it moves!';
   renderChess();
   switchPage('boardPlayer');
+  narrate("Let's play chess! Tap any of your pieces and I will tell you how it moves.");
 }
 
 function renderChess() {
@@ -820,6 +841,8 @@ function chessClick(r, c) {
   if (p && p[0] === 'w') {
     chessSel = [r, c];
     chessLegal = legalMoves(r, c);
+    document.getElementById('boardStatus').textContent = '👆 ' + PIECE_INFO[p[1]];
+    narrate(PIECE_INFO[p[1]]);
   } else { chessSel = null; chessLegal = []; }
   renderChess();
 }
@@ -830,11 +853,24 @@ function doChessMove(fr, fc, tr, tc) {
   chessBoard[tr][tc] = piece;
   chessBoard[fr][fc] = '';
   // pawn promotion
-  if (piece === 'wP' && tr === 0) chessBoard[tr][tc] = 'wQ';
-  if (piece === 'bP' && tr === 7) chessBoard[tr][tc] = 'bQ';
+  let promoted = false;
+  if (piece === 'wP' && tr === 0) { chessBoard[tr][tc] = 'wQ'; promoted = true; }
+  if (piece === 'bP' && tr === 7) { chessBoard[tr][tc] = 'bQ'; promoted = true; }
+
+  // teach: announce who moved what, and any capture
+  moveSound(!!captured);
+  const who = (piece[0] === 'w') ? 'You' : 'Computer';
+  const name = PIECE_NAMES[piece[1]];
+  let msg = captured ? `${who} moved the ${name} and captured the ${PIECE_NAMES[captured[1]]}!`
+                     : `${who} moved the ${name}.`;
+  if (promoted) msg += ' The Pawn became a Queen!';
+  narrate(msg);
+
   if (captured && captured[1] === 'K') {
     chessOver = true;
-    document.getElementById('boardStatus').textContent = (piece[0] === 'w') ? '🎉 You win! Checkmate!' : '💻 Computer wins! Try again.';
+    const win = (piece[0] === 'w') ? '🎉 You win! Checkmate!' : '💻 Computer wins! Try again.';
+    document.getElementById('boardStatus').textContent = win;
+    narrate((piece[0] === 'w') ? 'Hooray! You win the game!' : 'The computer wins. Try again, you can do it!');
   }
   chessTurn = (chessTurn === 'w') ? 'b' : 'w';
 }
@@ -972,6 +1008,37 @@ function tttComputerMove() {
 function restartBoardGame() {
   if (currentGameType === 'chess') startChess();
   else startTicTacToe();
+}
+
+/* ===================== MUSIC & SOUND ===================== */
+let audioCtx = null, musicOn = false, musicTimer = null;
+function initAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if(audioCtx.state === 'suspended') audioCtx.resume(); }
+function tone(freq, start, dur, vol, type){
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = type || 'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, start);
+  g.gain.linearRampToValueAtTime(vol, start + 0.04);
+  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(start); o.stop(start + dur + 0.02);
+}
+// soft, cheerful pentatonic loop (always sounds pleasant)
+const MELODY = [523,659,784,659, 587,784,880,784, 523,659,784,1047, 880,784,659,587];
+function scheduleLoop(){
+  if(!musicOn) return;
+  const step = 0.42, t0 = audioCtx.currentTime + 0.06;
+  MELODY.forEach((f,i)=> tone(f, t0 + i*step, step*0.9, 0.10, 'triangle'));
+  [0,4,8,12].forEach(i=> tone(MELODY[i]/2, t0 + i*step, step*3.6, 0.06, 'sine')); // gentle bass
+  musicTimer = setTimeout(scheduleLoop, MELODY.length * step * 1000);
+}
+function startMusic(){ initAudio(); musicOn = true; scheduleLoop(); }
+function stopMusic(){ musicOn = false; if(musicTimer) clearTimeout(musicTimer); }
+function toggleMusic(btn){ if(musicOn){ stopMusic(); btn.textContent = '🎵 Music: Off'; } else { startMusic(); btn.textContent = '🎵 Music: On'; } }
+function moveSound(capture){
+  initAudio();
+  const t = audioCtx.currentTime;
+  if(capture){ tone(660, t, 0.12, 0.25, 'square'); tone(990, t+0.07, 0.14, 0.20, 'triangle'); }
+  else { tone(440, t, 0.09, 0.18, 'sine'); }
 }
 
 function speak(text) {
