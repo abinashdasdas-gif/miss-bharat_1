@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { STORIES } from '../data.js';
+import StoryReader from '../components/StoryReader.jsx';
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.07 } } };
 const item = {
@@ -8,6 +10,16 @@ const item = {
 };
 
 export default function Stories() {
+  const [open, setOpen] = useState(null);
+
+  if (open !== null) {
+    return (
+      <div className="container">
+        <StoryReader story={STORIES[open]} onBack={() => setOpen(null)} />
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <h1 className="page-title">📖 Story Time</h1>
@@ -17,10 +29,11 @@ export default function Stories() {
         {STORIES.map((s, i) => (
           <motion.div key={i} className="story-card" variants={item}
             whileHover={{ y: -8, scale: 1.03 }} whileTap={{ scale: 0.99 }}
-            onClick={() => alert(`"${s.title}"\n(Narrated reader ports next.)`)}>
+            onClick={() => setOpen(i)}>
             <div style={{ fontSize: 54 }}>{s.emoji}</div>
             <h3>{s.title}</h3>
             <p>{s.blurb}</p>
+            <div style={{ marginTop: 10, fontSize: '.8rem', color: '#818CF8', fontWeight: 600 }}>📄 {s.pages.length} pages · 🔊 Narrated</div>
           </motion.div>
         ))}
       </motion.div>
