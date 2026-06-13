@@ -28,7 +28,11 @@ build/
 !README.md
 !server.js
 !package.json
+!index.html
+!miss-bharat-godlevel.html
 !miss-bharat-world_8.html
+!miss-bharat-adventures.html
+!miss-bharat-premium.html
 !voice-assistant.html
 !vercel.json
 !start.sh

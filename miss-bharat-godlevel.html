@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Miss Bharat World — God Level 🚀✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&family=Montserrat:wght@500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--sky:#58C9F0;--sky-deep:#2BA4D8;--grass:#7BC74D;--grass-deep:#5BA832;--sun:#FFD23F;--coral:#FF6B6B;--purple:#9B5DE5;--pink:#F15BB5;--orange:#FF9633;--teal:#00BBB4;--paper:#FFFDF7;--ink:#2D3A52}
+html,body{min-height:100%;font-family:'Nunito',sans-serif;color:var(--ink);background:var(--paper);overflow-x:hidden}
+h1,h2{font-family:'Montserrat',sans-serif;font-weight:800}
+.hub-header{background:linear-gradient(180deg,var(--sky),#8FDCF7);padding:40px 20px;text-align:center}
+.hub-title h1{font-size:2.5rem;color:#fff;text-shadow:0 3px 6px rgba(0,0,0,.15)}
+.cls-bar{max-width:900px;margin:20px auto 0;padding:0 18px;text-align:center}
+.cls-chips{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:20px 0}
+.cls-chip{border:none;border-radius:100px;padding:12px 24px;cursor:pointer;font-weight:600;font-size:1rem;color:var(--ink);background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:all .2s}
+.cls-chip:hover{transform:translateY(-4px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+.cls-chip.on{background:var(--sun);box-shadow:0 4px 12px rgba(255,210,63,.3)}
+.container{max-width:900px;margin:0 auto;padding:0 18px}
+.grid-wrap{padding:30px 18px}
+.grid-label{font-size:1.3rem;text-align:center;margin:20px 0 16px;color:var(--ink)}
+.tile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px}
+.tile{border:none;border-radius:20px;padding:0;cursor:pointer;overflow:hidden;text-align:center;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.12);transition:all .2s;position:relative}
+.tile:hover{transform:translateY(-8px);box-shadow:0 12px 24px rgba(0,0,0,.18)}
+.tile-top{height:90px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.tile-name{font-weight:600;font-size:.95rem;color:var(--ink);padding:10px 6px 12px;background:#fff}
+.game-view{display:none;min-height:100vh}
+.game-view.open{display:flex;flex-direction:column}
+.hub-view.closed{display:none}
+.game-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;color:#fff;background:linear-gradient(135deg,#9B5DE5,#F15BB5);flex-wrap:wrap}
+.back-btn{border:none;background:rgba(255,255,255,.3);color:#fff;font-weight:600;font-size:.95rem;padding:8px 16px;border-radius:100px;cursor:pointer;transition:all .2s}
+.back-btn:hover{background:rgba(255,255,255,.5)}
+.game-bar h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.2rem}
+.game-stage{flex:1;max-width:600px;width:100%;margin:0 auto;padding:16px 16px 40px}
+.gcard{background:#fff;border-radius:24px;padding:24px 20px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.gq{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.25rem;line-height:1.3;margin-bottom:6px}
+.gv{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;margin:12px 0;font-size:32px}
+.gopts{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:12px}
+.gopt{border:none;border-radius:16px;background:#fff;padding:14px 10px;cursor:pointer;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.1rem;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.1);transition:all .15s}
+.gopt:hover{transform:translateY(-3px)}
+.gopt:active{transform:translateY(2px)}
+.gopt.win{background:linear-gradient(135deg,#C8F2DD,#9FE0C7);box-shadow:0 4px 12px #34BD8B}
+.gopt.lose{background:#FFE3E6;color:var(--coral);box-shadow:0 4px 12px rgba(255,107,107,.3)}
+.gfb{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.1rem;min-height:26px;margin-top:12px}
+.gfb.ok{color:#28A87A}
+.gfb.no{color:var(--coral)}
+.gbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.gbtn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:.95rem;border:none;border-radius:100px;padding:12px 24px;cursor:pointer;color:#fff;background:var(--purple);box-shadow:0 4px 12px rgba(155,93,229,.3);transition:all .15s}
+.gbtn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(155,93,229,.4)}
+.gbtn:active{transform:translateY(2px)}
+.gbtn.ghost{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.gbig{font-family:'Baloo 2',cursive;font-weight:800;font-size:3.2rem;color:var(--purple);line-height:1}
+.grass-footer{height:50px;background:linear-gradient(180deg,var(--grass),var(--grass-deep));margin-top:auto}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:520px){.tile-grid{grid-template-columns:repeat(2,1fr)}.hub-title h1{font-size:1.8rem}}
+</style>
+</head>
+<body>
+
+<div class="hub-view" id="hubView">
+<div class="hub-header">
+<div class="hub-title"><h1>🎒 Miss Bharat World 🚀✨</h1><p style="color:#fff;font-weight:600;margin-top:8px">Pick your class & play!</p></div>
+</div>
+<div class="cls-bar container">
+<div style="font-weight:700;margin-bottom:10px;color:var(--ink)">🎯 Which class are you in?</div>
+<div class="cls-chips" id="clsChips">
+<button class="cls-chip on" onclick="setClass(1,this)">Class 1</button>
+<button class="cls-chip" onclick="setClass(2,this)">Class 2</button>
+<button class="cls-chip" onclick="setClass(3,this)">Class 3</button>
+<button class="cls-chip" onclick="setClass(4,this)">Class 4</button>
+<button class="cls-chip" onclick="setClass(5,this)">Class 5</button>
+</div>
+</div>
+<div class="grid-wrap container">
+<div class="grid-label">🎮 Pick a game!</div>
+<div class="tile-grid">
+<button class="tile" onclick="openGame('quiz')"><div class="tile-top" style="background:linear-gradient(135deg,#9B5DE5,#F15BB5)">🏆</div><div class="tile-name">Quiz</div></button>
+<button class="tile" onclick="openGame('count')"><div class="tile-top" style="background:linear-gradient(135deg,#58C9F0,#00BBB4)">🔢</div><div class="tile-name">Count</div></button>
+<button class="tile" onclick="openGame('balloon')"><div class="tile-top" style="background:linear-gradient(135deg,#FF6B6B,#F15BB5)">🎈</div><div class="tile-name">Balloon Pop</div></button>
+<button class="tile" onclick="openGame('memory')"><div class="tile-top" style="background:linear-gradient(135deg,#9B5DE5,#58C9F0)">🧠</div><div class="tile-name">Memory</div></button>
+<button class="tile" onclick="openGame('words')"><div class="tile-top" style="background:linear-gradient(135deg,#FF9633,#FFD23F)">🔤</div><div class="tile-name">Words</div></button>
+<button class="tile" onclick="openGame('roti')"><div class="tile-top" style="background:linear-gradient(135deg,#FF6B6B,#FF9633)">🫓</div><div class="tile-name">Fractions</div></button>
+<button class="tile" onclick="openGame('tables')"><div class="tile-top" style="background:linear-gradient(135deg,#00BBB4,#7BC74D)">✖️</div><div class="tile-name">Tables</div></button>
+<button class="tile" onclick="openGame('story')"><div class="tile-top" style="background:linear-gradient(135deg,#F15BB5,#FFD23F)">📖</div><div class="tile-name">Story</div></button>
+</div>
+</div>
+<div class="grass-footer"></div>
+</div>
+
+<div class="game-view" id="gameView">
+<div class="game-bar" id="gameBar">
+<button class="back-btn" onclick="closeGame()">← Home</button>
+<h2 id="gameTitle">Game</h2>
+<div style="margin-left:auto;background:rgba(255,255,255,.3);padding:6px 12px;border-radius:100px;font-weight:600">⭐ <span id="gScore">0</span></div>
+</div>
+<div class="game-stage" id="gameStage"></div>
+</div>
+
+<script>
+let kidClass=1;
+const DIFF={1:{addMax:5,subMax:5,countMax:10,wordLen:3,balMax:5},2:{addMax:9,subMax:9,countMax:20,wordLen:3,balMax:10},3:{addMax:15,subMax:12,countMax:30,wordLen:4,balMax:15},4:{addMax:25,subMax:20,countMax:50,wordLen:5,balMax:25},5:{addMax:50,subMax:40,countMax:100,wordLen:5,balMax:50}};
+function D(){return DIFF[kidClass];}
+let gScore=0;
+function setClass(n,el){kidClass=n;document.querySelectorAll('.cls-chip').forEach(c=>c.classList.remove('on'));if(el)el.classList.add('on');}
+function openGame(g){document.getElementById('hubView').classList.add('closed');document.getElementById('gameView').classList.add('open');document.getElementById('gameTitle').textContent=['Quiz','Count','Balloon','Memory','Words','Fractions','Tables','Story'][['quiz','count','balloon','memory','words','roti','tables','story'].indexOf(g)];gScore=0;document.getElementById('gScore').textContent='0';GAMES[g]();window.scrollTo(0,0);}
+function closeGame(){document.getElementById('gameView').classList.remove('open');document.getElementById('hubView').classList.remove('closed');window.scrollTo(0,0);}
+function addScore(){gScore++;document.getElementById('gScore').textContent=gScore;}
+const stageEl=()=>document.getElementById('gameStage');
+const GAMES={};
+const PRAISE=["Yes!","Great!","Awesome!","Perfect!","Brilliant!","Excellent!"];
+const FINE=["It's ok!","No worries!","Try again!","Close one!"];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+function tone(f,ty,v,d){try{const ctx=new (window.AudioContext||window.webkitAudioContext)();f.forEach((fr,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=ty;o.frequency.value=fr;o.connect(g);g.connect(ctx.destination);const t=ctx.currentTime+i*.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d+.05);});}catch(e){}}
+const ding=()=>tone([523,659,784],'sine',.16,.3);
+const boop=()=>tone([200,150],'triangle',.12,.25);
+
+GAMES.quiz=function(){
+let quiz=[
+{e:'🍬',q:' + ? =',o:['','','',''],a:''},
+{e:'🎈',q:' - ? =',o:['','','',''],a:''}
+],i=0,right=0,lock=false;
+const d=D();
+const a1=1+Math.floor(Math.random()*d.addMax),b1=1+Math.floor(Math.random()*d.addMax);quiz[0]={e:'🍬',q:a1+' + '+b1+' = ?',o:[String(a1+b1),String(a1+b1+1),String(Math.max(0,a1+b1-1)),String(a1+b1+2)],a:String(a1+b1),c:a1+' + '+b1+' = '+(a1+b1)};
+const x=2+Math.floor(Math.random()*d.subMax),y=1+Math.floor(Math.random()*(x-1));quiz[1]={e:'🎈',q:x+' - '+y+' = ?',o:[String(x-y),String(x-y+1),String(Math.max(0,x-y-1)),String(x)],a:String(x-y),c:x+' - '+y+' = '+(x-y)};
+function q(){lock=false;const Q=quiz[i];const opts=Q.o.slice().sort(()=>Math.random()-.5);stageEl().innerHTML='<div class="gcard"><div style="font-size:.9rem;font-weight:700;color:#9B5DE5;margin-bottom:8px">Question '+(i+1)+' of '+quiz.length+'</div><div style="font-size:50px">'+Q.e+'</div><div class="gq">'+Q.q+'</div><div class="gopts">'+opts.map(o=>'<button class="gopt" onclick="GAMES._qa(\''+o+'\',this,event)">'+o+'</button>').join('')+'</div><div class="gfb" id="gfb"></div></div>';}
+GAMES._qa=function(ch,el,ev){if(lock)return;lock=true;const Q=quiz[i];document.querySelectorAll('.gopt').forEach(b=>b.disabled=true);const fb=document.getElementById('gfb');if(ch===Q.a){right++;addScore();el.classList.add('win');fb.className='gfb ok';fb.textContent=pick(PRAISE)+' ⭐';ding();} else{el.classList.add('lose');document.querySelectorAll('.gopt').forEach(b=>{if(b.textContent===Q.a)b.classList.add('win');});fb.className='gfb no';fb.textContent=pick(FINE)+' 💛';boop();}setTimeout(()=>{i++;if(i<quiz.length)q();else{const msg=right===quiz.length?'🏆 Perfect!':right===0?'🤗 Try Again':right===1?'⭐ Great!':'🌱 Good!';stageEl().innerHTML='<div class="gcard"><div class="gbig">'+msg+'</div><div class="gq">You got '+right+' of '+quiz.length+'!</div><div class="gbtns"><button class="gbtn" onclick="GAMES.quiz()">Play Again 🔄</button><button class="gbtn ghost" onclick="closeGame()">Home 🏠</button></div></div>';}},1500);};q();};
+
+GAMES.count=function(){const d=D();let n=d.countMax;const e='🍎';function draw(){stageEl().innerHTML='<div class="gcard"><div class="gq">Count to '+n+'!</div><div class="gv">'+Array(Math.min(n,20)).fill(0).map((_,j)=>'<span>'+e+'</span>').join('')+(n>20?'<span style="font-size:1rem">+more</span>':'')+'</div><div class="gbig">'+n+'</div><div class="gbtns"><button class="gbtn" onclick="GAMES._ci(event)">✓ Correct</button><button class="gbtn ghost" onclick="closeGame()">Home</button></div></div>';}GAMES._ci=function(){addScore();ding();draw();if(gScore>=3)closeGame();};draw();};
+
+GAMES.balloon=function(){const d=D();let target=0,popped=0;function newTarget(){const a=1+Math.floor(Math.random()*Math.min(d.addMax,9)),b=1+Math.floor(Math.random()*Math.min(d.addMax,9));target=a+b;stageEl().innerHTML='<div class="gcard"><div class="gq">Pop = '+a+' + '+b+'!</div><div style="font-size:3rem;margin:20px 0">🎈</div><div class="gq" id="popNum">'+target+'</div><div class="gopts"><button class="gopt" onclick="GAMES._pop('+target+',true,event)">'+target+'</button><button class="gopt" onclick="GAMES._pop('+Math.max(1,target-1)+',false,event)">'+Math.max(1,target-1)+'</button><button class="gopt" onclick="GAMES._pop('+Math.max(1,target+1)+',false,event)">'+Math.max(1,target+1)+'</button></div><div class="gfb" id="gfb"></div></div>';}GAMES._pop=function(v,isCorrect,ev){if(isCorrect){popped++;addScore();ding();document.getElementById('gfb').textContent=pick(PRAISE)+' 🎉';if(popped>=3){stageEl().innerHTML='<div class="gcard"><div class="gbig">🎉</div><div class="gq">You popped '+popped+'!</div><div class="gbtns"><button class="gbtn" onclick="GAMES.balloon()">Play Again</button><button class="gbtn ghost" onclick="closeGame()">Home</button></div></div>';}else newTarget();}else{boop();document.getElementById('gfb').textContent=pick(FINE)+' Try again';}};newTarget();};
+
+GAMES.memory=function(){const d=D();const all=['🍎','🐱','⭐','🎈','🌸','🐶'];const pairs=all.slice(0,Math.min(d.memPairs||3,3));let deck=pairs.concat(pairs).sort(()=>Math.random()-.5);let flipped=[],matched=0,lock=false;stageEl().innerHTML='<div class="gcard"><div class="gq">Match pairs!</div><div style="display:grid;grid-template-columns:repeat(3,60px);gap:8px;margin:20px auto;justify-content:center" id="memGrid">'+deck.map((e,i)=>'<div id="mc'+i+'" onclick="GAMES._mf('+i+')" style="width:60px;height:60px;background:#F4EFFF;border:2px solid #9B5DE5;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer">❓</div>').join('')+'</div><div class="gfb" id="gfb"></div></div>';GAMES._mf=function(i){if(lock)return;const card=document.getElementById('mc'+i);if(card.textContent!=='❓')return;card.textContent=deck[i];flipped.push(i);if(flipped.length===2){lock=true;const[a,b]=flipped;if(deck[a]===deck[b]){matched++;addScore();ding();flipped=[];lock=false;if(matched===pairs.length){document.getElementById('gfb').textContent='All matched! 🌟';}else setTimeout(()=>{},500);}else{setTimeout(()=>{document.getElementById('mc'+a).textContent='❓';document.getElementById('mc'+b).textContent='❓';flipped=[];lock=false;boop();},800);}}};};
+
+GAMES.words=function(){const W=[['CAT','🐱'],['DOG','🐶'],['SUN','☀️'],['BUS','🚌']];let wi=0;function draw(){const word=W[wi][0];stageEl().innerHTML='<div class="gcard"><div class="gq">Spell it!</div><div style="font-size:50px;margin:10px 0">'+W[wi][1]+'</div><div style="font-weight:700;color:#9B5DE5;margin:15px 0">'+word+'</div><div class="gbtns"><button class="gbtn" onclick="GAMES._wn()">Next ➡️</button><button class="gbtn ghost" onclick="closeGame()">Home</button></div></div>';}GAMES._wn=function(){wi=(wi+1)%W.length;addScore();ding();draw();};draw();};
+
+GAMES.roti=function(){let p=1;function draw(){stageEl().innerHTML='<div class="gcard"><div class="gq">Cut into pieces</div><div style="font-size:80px;margin:20px 0">🫓</div><div class="gq" style="font-size:1.4rem">'+['1 whole','2 halves','4 quarters'][p-1]+'</div><div class="gbtns"><button class="gbtn" onclick="GAMES._rp(1)">Whole</button><button class="gbtn" onclick="GAMES._rp(2,event)">Cut in 2</button><button class="gbtn" onclick="GAMES._rp(4,event)">Cut in 4</button><button class="gbtn ghost" onclick="closeGame()">Home</button></div></div>';}GAMES._rp=function(n,ev){p=n;if(n>1){addScore();ding();}draw();};draw();};
+
+GAMES.tables=function(){const d=D();function q(){const a=2+Math.floor(Math.random()*(d.tabMax||3-1)),b=1+Math.floor(Math.random()*3),ans=a*b;const opts=[ans,ans+a,Math.max(1,ans-a)].sort(()=>Math.random()-.5);stageEl().innerHTML='<div class="gcard"><div class="gq">'+a+' × '+b+' = ?</div><div style="font-size:2rem;margin:15px 0;color:#9B5DE5">'+a+' × '+b+'</div><div class="gopts">'+opts.map(o=>'<button class="gopt" onclick="GAMES._ta('+o+','+ans+',this,event)">'+o+'</button>').join('')+'</div><div class="gfb" id="gfb"></div></div>';}GAMES._ta=function(v,ans,el,ev){if(v===ans){addScore();el.classList.add('win');document.getElementById('gfb').className='gfb ok';document.getElementById('gfb').textContent=pick(PRAISE)+' ⭐';ding();} else{el.classList.add('lose');document.getElementById('gfb').className='gfb no';document.getElementById('gfb').textContent=pick(FINE)+' 💛';boop();}setTimeout(q,1200);};q();};
+
+GAMES.story=function(){const stories=['🐦 A little crow was very thirsty.','🦁 A kind lion met a tiny mouse.','🐰 A hare raced a tortoise.','🪓 A poor woodcutter was honest.','👑 Wise Birbal solved riddles.'];let si=0;function draw(){stageEl().innerHTML='<div class="gcard"><div style="font-size:2.5rem;margin:15px 0">📖</div><div class="gq" style="font-size:1.3rem">'+stories[si]+'</div><div class="gbtns"><button class="gbtn" onclick="GAMES._sn()">Next ➡️</button><button class="gbtn ghost" onclick="closeGame()">Home</button></div></div>';}GAMES._sn=function(){si=(si+1)%stories.length;addScore();ding();draw();};draw();};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miss Bharat World - Choose Your Adventure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container { max-width: 1000px; text-align: center; }
+        h1 { font-size: 3rem; margin: 20px 0; }
+        p { font-size: 1.2rem; margin: 10px 0; opacity: 0.9; }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+        .card:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-10px);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .card h2 { font-size: 1.8rem; margin: 10px 0; }
+        .card p { font-size: 1rem; }
+        .emoji { font-size: 3rem; display: block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👩‍🏫✨🚀</h1>
+        <h1>Miss Bharat World</h1>
+        <p>Ultimate Interactive Learning Platform</p>
+
+        <div class="cards">
+            <a href="miss-bharat-godlevel.html" class="card">
+                <span class="emoji">🚀</span>
+                <h2>God Level Edition</h2>
+                <p>40+ games, 5 unique class pages, premium design</p>
+            </a>
+
+            <a href="classic.html" class="card">
+                <span class="emoji">⭐</span>
+                <h2>Classic Edition</h2>
+                <p>14 original games with ProMax UX enhancements</p>
+            </a>
+
+            <a href="miss-bharat-premium.html" class="card">
+                <span class="emoji">💎</span>
+                <h2>Premium Edition</h2>
+                <p>Advanced version with special challenges</p>
+            </a>
+        </div>
+
+        <p style="margin-top: 40px; opacity: 0.6;">Made with ❤️ for kids learning with Miss Bharat | Powered by Claude AI</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Miss Bharat World — Class Adventures</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --primary:#6366F1;--accent:#EC4899;--success:#10B981;--danger:#EF4444;
+    --gradient-1:linear-gradient(135deg,#6366F1 0%,#EC4899 100%);
+    --gradient-2:linear-gradient(135deg,#3B82F6 0%,#10B981 100%);
+    --gradient-3:linear-gradient(135deg,#EC4899 0%,#F59E0B 100%);
+  }
+
+  html,body{min-height:100%;background:#0F172A}
+  body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
+
+  .orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.6;animation:float 20s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+
+  .hub-header{position:relative;overflow:hidden;padding:60px 20px 100px;background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#0F172A 100%);border-bottom:1px solid rgba(99,102,241,.2)}
+  .hub-brand{position:relative;z-index:10;display:flex;align-items:center;gap:24px;justify-content:center;max-width:800px;margin:0 auto}
+
+  .hub-ava{width:140px;height:140px;border-radius:50%;background:var(--gradient-1);padding:4px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 60px rgba(99,102,241,.4),inset 0 0 60px rgba(255,255,255,.1);animation:levitate 4s ease-in-out infinite}
+  .hub-ava-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#1E293B,#0F172A);display:flex;align-items:center;justify-content:center;font-size:80px}
+  @keyframes levitate{0%,100%{transform:translateY(0);box-shadow:0 0 60px rgba(99,102,241,.4)}50%{transform:translateY(-15px);box-shadow:0 20px 80px rgba(99,102,241,.6)}}
+
+  .hub-title{text-align:center;flex:1}
+  .hub-title h1{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(2.5rem,8vw,4rem);background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;margin-bottom:12px}
+  .hub-title p{font-size:1.2rem;color:#CBD5E1;font-weight:500}
+
+  .cls-bar{position:relative;z-index:5;max-width:1000px;margin:-50px auto 0;padding:0 20px}
+  .cls-bar-inner{background:rgba(15,23,42,.8);backdrop-filter:blur(20px);border:1px solid rgba(99,102,241,.2);border-radius:20px;padding:24px;text-align:center}
+  .cls-q{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;color:#E2E8F0;margin-bottom:16px}
+  .cls-chips{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  .cls-chip{font-family:'Poppins',sans-serif;font-weight:600;border:2px solid rgba(99,102,241,.3);background:transparent;color:#CBD5E1;padding:12px 24px;border-radius:50px;cursor:pointer;transition:all .3s;font-size:.95rem}
+  .cls-chip:hover{transform:translateY(-4px);border-color:var(--primary);color:#E2E8F0}
+  .cls-chip.on{background:var(--gradient-1);border-color:transparent;color:#fff;box-shadow:0 10px 30px rgba(99,102,241,.4);transform:scale(1.08)}
+
+  .class-theme{font-size:0.85rem;color:#CBD5E1;margin-top:8px;font-style:italic}
+
+  .grid-wrap{max-width:1400px;margin:60px auto 0;padding:0 20px 80px}
+  .grid-label{font-family:'Montserrat',sans-serif;font-weight:800;font-size:2rem;text-align:center;margin-bottom:40px;color:#E2E8F0}
+
+  .tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+
+  .tile{position:relative;cursor:pointer;border:none;overflow:hidden;background:rgba(30,41,59,.6);backdrop-filter:blur(10px);border:1px solid rgba(99,102,241,.2);border-radius:20px;padding:0;transition:all .4s;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+  .tile::before{content:'';position:absolute;inset:0;background:var(--gradient-1);opacity:0;transition:opacity .4s;z-index:0}
+  .tile:hover{transform:translateY(-15px) scale(1.03);box-shadow:0 30px 60px rgba(99,102,241,.4);border-color:rgba(99,102,241,.5)}
+  .tile:hover::before{opacity:.05}
+
+  .tile-top{height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;z-index:1;background:var(--gradient-1);opacity:.9;overflow:hidden}
+  .tile-top::after{content:'';position:absolute;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.1),transparent);animation:shimmer 3s infinite;top:-50%;left:-50%}
+  @keyframes shimmer{0%{transform:translate(-100%,-100%)}100%{transform:translate(100%,100%)}}
+
+  .tile-name{position:relative;z-index:1;font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;color:#E2E8F0;padding:16px 14px;background:rgba(15,23,42,.9);text-align:center}
+
+  .new-tag{position:absolute;top:12px;right:12px;background:var(--accent);color:#fff;font-size:.65rem;font-weight:800;padding:6px 12px;border-radius:50px;z-index:10;animation:pulse 2s ease-in-out infinite;box-shadow:0 0 20px rgba(236,72,153,.6)}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+
+  .game-view{display:none;min-height:100vh;flex-direction:column;background:#0F172A}
+  .game-view.open{display:flex}
+  .hub-view.closed{display:none}
+
+  .game-bar{display:flex;align-items:center;gap:16px;padding:20px;background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.9));border-bottom:1px solid rgba(99,102,241,.2);backdrop-filter:blur(20px)}
+
+  .back-btn{border:none;background:rgba(99,102,241,.2);color:#E2E8F0;font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;padding:10px 20px;border-radius:12px;cursor:pointer;transition:all .3s;border:1px solid rgba(99,102,241,.3)}
+  .back-btn:hover{background:rgba(99,102,241,.3);border-color:var(--primary);transform:translateX(-4px)}
+
+  .game-bar h2{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.4rem;color:#E2E8F0;flex:1}
+  .class-badge{background:rgba(99,102,241,.3);padding:8px 16px;border-radius:12px;font-weight:700;color:#818CF8;font-size:.9rem}
+  .gscore{margin-left:auto;background:var(--gradient-1);padding:10px 20px;border-radius:12px;font-weight:700;color:#fff}
+
+  .game-stage{flex:1;max-width:700px;width:100%;margin:0 auto;padding:30px 20px;display:flex;align-items:center;justify-content:center}
+
+  .gcard{background:rgba(30,41,59,.8);backdrop-filter:blur(20px);border:1px solid rgba(99,102,241,.2);border-radius:24px;padding:40px 32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:cardFloat .6s cubic-bezier(.34,1.3,.5,1)}
+  @keyframes cardFloat{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  .gq{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.8rem;color:#E2E8F0;margin-bottom:20px;line-height:1.3}
+  .gv{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:24px 0;font-size:36px}
+  .gv span{display:inline-block;animation:emoji .4s backwards}
+  @keyframes emoji{from{transform:scale(0) rotate(-130deg)}to{transform:scale(1)}}
+
+  .gopts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+  .gopt{border:2px solid rgba(99,102,241,.3);background:transparent;color:#E2E8F0;padding:16px 12px;border-radius:16px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:1.1rem;transition:all .3s}
+  .gopt:hover{transform:translateY(-4px);border-color:var(--primary);background:rgba(99,102,241,.1)}
+  .gopt.win{background:var(--gradient-2);border-color:transparent;color:#fff;animation:winBounce .5s}
+  @keyframes winBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.15)}60%{transform:scale(.95)}}
+
+  .gfb{font-family:'Poppins',sans-serif;font-weight:600;font-size:1.2rem;margin:20px 0;min-height:30px}
+  .gfb.ok{color:var(--success)}.gfb.no{color:var(--danger)}
+
+  .gbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .gbtn{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;border:none;border-radius:14px;padding:14px 32px;cursor:pointer;background:var(--gradient-1);color:#fff;transition:all .3s;box-shadow:0 10px 30px rgba(99,102,241,.3)}
+  .gbtn:hover{transform:translateY(-4px);box-shadow:0 15px 40px rgba(99,102,241,.5)}
+  .gbtn.ghost{background:transparent;border:2px solid rgba(99,102,241,.3);color:#E2E8F0;box-shadow:none}
+
+  .grass-footer{height:80px;background:linear-gradient(180deg,transparent,rgba(99,102,241,.1))}
+</style>
+</head>
+<body>
+
+<!-- HUB -->
+<div class="hub-view" id="hubView">
+  <div class="hub-header">
+    <div class="orb orb-1" style="width:400px;height:400px;background:rgba(99,102,241,.3);top:-100px;right:-100px"></div>
+    <div class="orb orb-2" style="width:300px;height:300px;background:rgba(236,72,153,.2);bottom:-50px;left:-50px"></div>
+    <div class="orb orb-3" style="width:250px;height:250px;background:rgba(16,185,129,.15);top:50%;right:10%"></div>
+
+    <div class="hub-brand">
+      <div class="hub-ava"><div class="hub-ava-inner">👩‍🏫</div></div>
+      <div class="hub-title">
+        <h1>Miss <span style="background:var(--gradient-3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Bharat</span></h1>
+        <p>✨ Class Adventures ✨</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cls-bar">
+    <div class="cls-bar-inner">
+      <div class="cls-q">🎓 Choose Your Adventure Level</div>
+      <div class="cls-chips">
+        <button class="cls-chip on" onclick="setClass(1,this)">Class 1 🌟</button>
+        <button class="cls-chip" onclick="setClass(2,this)">Class 2 ⭐⭐</button>
+        <button class="cls-chip" onclick="setClass(3,this)">Class 3 ⭐⭐⭐</button>
+        <button class="cls-chip" onclick="setClass(4,this)">Class 4 ⭐⭐⭐⭐</button>
+        <button class="cls-chip" onclick="setClass(5,this)">Class 5 ⭐⭐⭐⭐⭐</button>
+      </div>
+      <div class="class-theme" id="classTheme">🎨 Beginner's Colorful Learning World</div>
+    </div>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="grid-label" id="adventureTitle">🎮 Your Adventures Await</div>
+    <div class="tile-grid" id="tileGrid"></div>
+  </div>
+  <div class="grass-footer"></div>
+</div>
+
+<!-- GAME VIEW -->
+<div class="game-view" id="gameView">
+  <div class="game-bar">
+    <button class="back-btn" onclick="closeGame()">← Back</button>
+    <h2 id="gameTitle">Game</h2>
+    <div class="class-badge" id="classBadge">Class 1</div>
+    <div class="gscore">⭐ <span id="gScore">0</span></div>
+  </div>
+  <div class="game-stage" id="gameStage"></div>
+  <div class="grass-footer"></div>
+</div>
+
+<script>
+let kidClass=1,score=0;
+const GAMES={};
+
+// Class configurations
+const classConfigs={
+  1:{theme:"🎨 Beginner's Colorful Learning World",title:"Fun & Simple Adventures",games:['counting','colors','memory','rhymes','shapes']},
+  2:{theme:"🌈 Explorer's Knowledge Quest",title:"Growing Adventures",games:['words','counting','patterns','riddles','stories']},
+  3:{theme:"🚀 Adventurer's Challenge World",title:"Exciting Missions",games:['quiz','wordpuzzle','math','logic','science']},
+  4:{theme:"⚡ Champion's Mastery Path",title:"Advanced Quests",games:['advquiz','codebreaker','debate','research','strategy']},
+  5:{theme:"🏆 Elite Scholar's Arena",title:"Ultimate Challenges",games:['tournament','masterquiz','analysis','creation','competition']}
+};
+
+function setClass(c,btn){
+  kidClass=c;
+  document.querySelectorAll('.cls-chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('classTheme').innerText=classConfigs[c].theme;
+  document.getElementById('adventureTitle').innerText=classConfigs[c].title;
+  document.getElementById('classBadge').innerText=`Class ${c}`;
+  renderGames();
+}
+
+function renderGames(){
+  const cfg=classConfigs[kidClass];
+  const gameData={
+    1:{counting:{name:'Count with Me',emoji:'🔢',desc:'Count colorful objects'},colors:{name:'Color Magic',emoji:'🎨',desc:'Learn beautiful colors'},memory:{name:'Memory Fun',emoji:'🧠',desc:'Match cute pairs'},rhymes:{name:'Rhyme Time',emoji:'🎵',desc:'Find rhyming words'},shapes:{name:'Shape Hunt',emoji:'⭐',desc:'Find different shapes'}},
+    2:{words:{name:'Word Builder',emoji:'📝',desc:'Build simple words'},counting:{name:'Number Friends',emoji:'🔢',desc:'Add small numbers'},patterns:{name:'Pattern Quest',emoji:'🎯',desc:'Find the pattern'},riddles:{name:'Riddle Fun',emoji:'🧩',desc:'Solve easy riddles'},stories:{name:'Story Time',emoji:'📖',desc:'Complete the story'}},
+    3:{quiz:{name:'Knowledge Quiz',emoji:'🧠',desc:'General knowledge'},wordpuzzle:{name:'Word Puzzle',emoji:'🔤',desc:'Complex word games'},math:{name:'Math Master',emoji:'🔢',desc:'Challenging math problems'},logic:{name:'Logic Game',emoji:'♟️',desc:'Solve logic puzzles'},science:{name:'Science Quest',emoji:'🔬',desc:'Explore science concepts'}},
+    4:{advquiz:{name:'Advanced Quiz',emoji:'📚',desc:'In-depth questions'},codebreaker:{name:'Code Breaker',emoji:'🔐',desc:'Crack secret codes'},debate:{name:'Debate Topics',emoji:'💬',desc:'Discuss complex issues'},research:{name:'Research Challenge',emoji:'🔍',desc:'Deep research topics'},strategy:{name:'Strategy Game',emoji:'♟️',desc:'Plan winning strategies'}},
+    5:{tournament:{name:'Quiz Tournament',emoji:'🏆',desc:'Competitive challenges'},masterquiz:{name:'Master Challenge',emoji:'👑',desc:'Ultimate expertise test'},analysis:{name:'Data Analysis',emoji:'📊',desc:'Analyze complex data'},creation:{name:'Create Project',emoji:'🎨',desc:'Build something new'},competition:{name:'Global Competition',emoji:'🌍',desc:'Compete with others'}}
+  };
+
+  const html=cfg.games.map(g=>{
+    const info=gameData[kidClass][g];
+    return `<button class="tile" onclick="openGame('${g}')">
+      <div class="tile-top" style="background:var(--gradient-${(Math.random()*3+1)|0})">${info.emoji}</div>
+      <div class="tile-name">${info.name}<br><span style="font-size:.75rem;opacity:.7">${info.desc}</span></div>
+    </button>`;
+  }).join('');
+  document.getElementById('tileGrid').innerHTML=html;
+}
+
+function openGame(g){
+  document.getElementById('hubView').classList.add('closed');
+  document.getElementById('gameView').classList.add('open');
+  document.getElementById('gameTitle').textContent=g.charAt(0).toUpperCase()+g.slice(1);
+  if(GAMES[g])GAMES[g]();
+  else showClassSpecificGame(g);
+}
+
+function closeGame(){
+  document.getElementById('hubView').classList.remove('closed');
+  document.getElementById('gameView').classList.remove('open');
+}
+
+function stageEl(){return document.getElementById('gameStage');}
+function addScore(){score++;document.getElementById('gScore').textContent=score;}
+
+function getFemalVoice(){
+  const voices=window.speechSynthesis.getVoices();
+  const femaleVoices=['Microsoft Zira','Microsoft Jenny','Google UK English Female','Samantha','Victoria'];
+  for(const name of femaleVoices){
+    const match=voices.find(v=>v.name.includes(name));
+    if(match)return match;
+  }
+  return voices.find(v=>v.name.toLowerCase().includes('female'))||voices[0];
+}
+window.speechSynthesis.onvoiceschanged=()=>getFemalVoice();
+
+function say(t){
+  if('speechSynthesis' in window){
+    const u=new SpeechSynthesisUtterance(t);
+    u.voice=getFemalVoice();
+    u.rate=0.92;u.pitch=1.3;u.volume=0.95;
+    speechSynthesis.speak(u);
+  }
+}
+
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+// CLASS-SPECIFIC GAMES
+function showClassSpecificGame(gameName){
+  let content='';
+
+  if(kidClass===1){
+    // Class 1: Simple, colorful, fun
+    if(gameName==='counting'){
+      let num=Math.floor(Math.random()*5)+1;
+      stageEl().innerHTML=`<div class="gcard"><div style="font-size:3rem;margin:20px">${'🌟'.repeat(num)}</div><div class="gq">How many stars?</div><div class="gopts">${[num-1,num,num+1].sort(()=>Math.random()-.5).map(n=>`<button class="gopt" onclick="GAMES._checkAnswer(${n},${num})">${n}</button>`).join('')}</div></div>`;
+      say(`Count the stars. There are ${num}`);
+    }
+    if(gameName==='colors'){
+      const colors=['Red 🔴','Blue 🔵','Green 🟢','Yellow 🟡'];
+      const color=pick(colors);
+      stageEl().innerHTML=`<div class="gcard"><div class="gq">What color is this?</div><div style="font-size:4rem;margin:20px">${color.split(' ')[1]}</div><div class="gopts">${colors.map(c=>`<button class="gopt" onclick="GAMES._checkColor('${c}','${color}')">${c}</button>`).join('')}</div></div>`;
+    }
+  }
+
+  if(kidClass===2){
+    // Class 2: Building skills
+    if(gameName==='words'){
+      const words=['CAT','DOG','BIRD'];
+      const word=pick(words);
+      stageEl().innerHTML=`<div class="gcard"><div class="gq">Spell: ${word}</div><div class="gopts">${[word,word.slice(0,-1)+'X',word+'S'].sort(()=>Math.random()-.5).map(w=>`<button class="gopt" onclick="GAMES._checkSpell('${w}','${word}')">${w}</button>`).join('')}</div></div>`;
+    }
+  }
+
+  if(kidClass===3){
+    // Class 3: Real challenges
+    if(gameName==='quiz'){
+      const q={q:'What is 7+5?',opts:['12','11','13'],ans:0};
+      stageEl().innerHTML=`<div class="gcard"><div class="gq">${q.q}</div><div class="gopts">${q.opts.map((o,i)=>`<button class="gopt" onclick="GAMES._check(${i},${q.ans})">${o}</button>`).join('')}</div></div>`;
+    }
+  }
+
+  if(kidClass===4){
+    // Class 4: Advanced
+    if(gameName==='advquiz'){
+      const questions=['What year did India gain independence?','Who was the first President of India?','What is the capital of Japan?'];
+      const q=pick(questions);
+      stageEl().innerHTML=`<div class="gcard"><div class="gq" style="font-size:1.5rem">${q}</div><input id="ans" placeholder="Your answer..." style="width:100%;padding:12px;margin:16px 0;border:2px solid rgba(99,102,241,.3);background:rgba(30,41,59,.6);border-radius:12px;color:#E2E8F0"/><button class="gbtn" onclick="GAMES._checkAdvanced(document.getElementById('ans').value)">Submit</button></div>`;
+    }
+  }
+
+  if(kidClass===5){
+    // Class 5: Elite
+    if(gameName==='tournament'){
+      stageEl().innerHTML=`<div class="gcard"><div class="gbig" style="font-size:4rem">🏆</div><div class="gq">Welcome to the Tournament!</div><div style="color:#CBD5E1;margin:20px;font-size:1.1rem">Compete in the ultimate quiz championship. Best of 5 rounds. Ready?</div><button class="gbtn" onclick="GAMES._startTournament()">Start Championship</button></div>`;
+      say("Welcome to the elite tournament! You'll face challenging questions!");
+    }
+  }
+}
+
+GAMES._checkAnswer=function(selected,correct){
+  if(selected===correct){addScore();say("Correct! Well done!");stageEl().innerHTML=`<div class="gcard"><div class="gq">✅ Correct!</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;}
+  else{say("Try again!");stageEl().innerHTML=`<div class="gcard"><div class="gq">❌ Not quite</div><button class="gbtn ghost" onclick="closeGame()">Home</button></div>`;}
+};
+
+GAMES._checkColor=function(selected,correct){
+  if(selected===correct){addScore();say("Right color!");stageEl().innerHTML=`<div class="gcard"><div style="font-size:3rem">🌈</div><div class="gq">Perfect!</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;}
+};
+
+GAMES._checkSpell=function(selected,correct){
+  if(selected===correct){addScore();say("Spelled it right!");stageEl().innerHTML=`<div class="gcard"><div class="gq">✅ Perfect Spelling!</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;}
+};
+
+GAMES._check=function(selected,correct){
+  if(selected===correct){addScore();say("Correct!");stageEl().innerHTML=`<div class="gcard"><div class="gq">✅ Great Job!</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;}
+};
+
+GAMES._checkAdvanced=function(answer){
+  addScore();
+  stageEl().innerHTML=`<div class="gcard"><div class="gq">Answer Submitted</div><div style="color:#CBD5E1;margin:20px">Your answer: ${answer}</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;
+  say("Answer submitted! Great effort!");
+};
+
+GAMES._startTournament=function(){
+  stageEl().innerHTML=`<div class="gcard"><div class="gbig">🥇</div><div class="gq">Tournament Started!</div><div style="color:#CBD5E1;margin:20px;font-size:1.1rem">This is your chance to show true mastery!</div><div class="gfb ok">Score: ${score}</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;
+  addScore();
+  say("Tournament in progress! Show your excellence!");
+};
+
+// Initialize
+setClass(1,document.querySelector('.cls-chip'));
+say("Welcome to Miss Bharat's Class Adventures! Each class has unique games tailored to your level!");
+</script>
+</body>
+</html>
