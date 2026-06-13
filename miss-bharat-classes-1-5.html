@@ -299,6 +299,7 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
         <button class="page-btn" id="prevBtn" onclick="storyPrev()">‹ Back</button>
         <span class="page-count" id="pageCount">1 / 5</span>
         <button class="page-btn" id="readBtn" onclick="readPage()">🔊 Read to me</button>
+        <button class="page-btn" id="saveBtn" onclick="saveCurrentStory()" style="display:none">💾 Save</button>
         <button class="page-btn next" id="nextBtn" onclick="storyNext()">Next ›</button>
       </div>
     </div>
@@ -932,7 +933,35 @@ function showPage(){
   document.getElementById('pageCount').textContent = (pageIndex + 1) + ' / ' + st.pages.length;
   document.getElementById('prevBtn').disabled = pageIndex === 0;
   document.getElementById('nextBtn').textContent = isLast ? 'The End 🎉' : 'Next ›';
+  // show Save only for AI-made stories that aren't saved yet
+  const saveBtn = document.getElementById('saveBtn');
+  if (st._ai && !st._saved) { saveBtn.style.display = ''; saveBtn.textContent = '💾 Save'; }
+  else { saveBtn.style.display = 'none'; }
   stopSpeaking();
+}
+
+/* ---- persist AI stories so they survive a page refresh ---- */
+function loadSavedStories(){
+  try {
+    const saved = JSON.parse(localStorage.getItem('saved_stories') || '[]');
+    saved.forEach(s => { s._saved = true; STORIES.push(s); });
+  } catch (e) {}
+}
+function saveCurrentStory(){
+  const st = STORIES[storyIndex];
+  if (!st) return;
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem('saved_stories') || '[]'); } catch (e) {}
+  if (saved.some(x => x.title === st.title)) { st._saved = true; document.getElementById('saveBtn').style.display = 'none'; return; }
+  saved.push({ title: st.title, blurb: st.blurb, moral: st.moral, cover: st.cover, pages: st.pages });
+  try { localStorage.setItem('saved_stories', JSON.stringify(saved)); } catch (e) {
+    document.getElementById('saveBtn').textContent = '⚠️ Too big'; return;
+  }
+  st._saved = true;
+  const b = document.getElementById('saveBtn');
+  b.textContent = '✓ Saved!';
+  setTimeout(() => { b.style.display = 'none'; }, 1200);
+  renderStoryLibrary();
 }
 
 function storyNext(){
@@ -991,6 +1020,13 @@ function cleanStory(s){
           .trim();
 }
 
+// quick safety net: reject a story if it slips through with unsafe words
+function isChildSafe(text){
+  const t = ' ' + text.toLowerCase() + ' ';
+  const BAD = /\b(kill|killed|killing|murder|blood|bloody|gun|guns|knife|knives|sword fight|stab|die|died|death|dead|corpse|drug|drugs|alcohol|beer|wine|drunk|sex|sexy|naked|kiss(ing)?|hell|damn|stupid|hate|war|bomb|gore|scary monster|nightmare|ghost attack|suicide)\b/;
+  return !BAD.test(t);
+}
+
 async function generateAIStory(){
   if (!getKey()){
     document.querySelector('.ai-setup').open = true;
@@ -1005,6 +1041,9 @@ async function generateAIStory(){
   const len    = document.getElementById('aiLen').value;
   const words  = len === 'medium' ? 300 : 160;
 
+  // strict child-safety rule added to every stage
+  const SAFE = ' Strictly keep it 100% safe for young children: absolutely NO violence, weapons, blood, death, scary/horror content, romance, dating, religion, politics, brand names, or rude/unkind language. Be gentle, kind, and encouraging.';
+
   const btn = document.getElementById('aiGoBtn');
   const prog = document.getElementById('aiProgress');
   btn.disabled = true;
@@ -1014,23 +1053,28 @@ async function generateAIStory(){
     const outline = await orChat(
       `You are a gentle children's storyteller for kids aged 5 to 10 in India. Write a short OUTLINE (3 to 5 simple bullet points) for a ${style.toLowerCase()} story.\n` +
       `Main character: ${hero}\nFriend/companion: ${friend}\nPlace: ${place}\nWhat happens: ${plot}\n` +
-      `Keep it wholesome, positive, and age-appropriate, with a happy ending and a gentle lesson. Reply with ONLY the outline.`, 0.8);
+      `Keep it wholesome, positive, and age-appropriate, with a happy ending and a gentle lesson.` + SAFE + ` Reply with ONLY the outline.`, 0.8);
 
     prog.textContent = '📖 Step 2 of 3: Writing your story...';
     const draft = await orChat(
       `Using this outline, write a children's story of about ${words} words for kids aged 5 to 10. ` +
-      `Use simple words, short sentences, a warm friendly tone, and a happy ending with a gentle lesson. ` +
+      `Use simple words, short sentences, a warm friendly tone, and a happy ending with a gentle lesson. ` + SAFE + ` ` +
       `Put a fun TITLE on the very first line, then the story. Reply with ONLY the title and story.\n\nOutline:\n${outline}`, 0.85);
 
     prog.textContent = '✨ Step 3 of 3: Adding the finishing touches...';
     let finalStory;
     try {
       finalStory = await orChat(
-        `Improve this children's story for ages 5 to 10: fix any grammar, keep simple words, make it flow smoothly, keep it wholesome with a happy ending. ` +
+        `Improve this children's story for ages 5 to 10: fix any grammar, keep simple words, make it flow smoothly, keep it wholesome with a happy ending.` + SAFE + ` ` +
         `Keep the TITLE on the first line. Reply with ONLY the final title and story.\n\n${draft}`, 0.4);
     } catch(e){ finalStory = draft; }   // polish is optional — fall back to the draft
 
-    buildAndOpenAIStory(cleanStory(finalStory), style);
+    finalStory = cleanStory(finalStory);
+    if (!isChildSafe(finalStory)) {
+      prog.textContent = '🛡️ That story didn\'t pass our safety check. Please try again with different words.';
+      return;
+    }
+    buildAndOpenAIStory(finalStory, style);
     prog.textContent = '';
   } catch (err) {
     prog.textContent = '😕 ' + err.message + '\nTip: check your key/model in setup, or try again.';
@@ -1065,6 +1109,7 @@ function buildAndOpenAIStory(text, style){
     title,
     blurb: 'Your very own AI story.',
     moral: '',
+    _ai: true,
     cover: S(sky('aicov','#C9A0DC','#F3E6FF') + `<rect width="800" height="480" fill="url(#aicov)"/>` + sun(120,90,48) + hills('#8FD46A','#6FB94E') + tree(660,300,1.3)),
     pages: pageObjs.length ? pageObjs : [{ illus: pageObjs[0] ? pageObjs[0].illus : '', text: body }]
   };
@@ -1422,6 +1467,7 @@ function stopSpeaking(){ try { if (window.meSpeak) meSpeak.stop(); } catch(e){} 
 
 // Initialize
 renderGames();
+loadSavedStories();
 renderStoryLibrary();
 loadAIKeyUI();
 </script>
