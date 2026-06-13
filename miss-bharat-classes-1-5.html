@@ -382,6 +382,8 @@ let gameScore = 0;
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.continuous = false;
+recognition.interimResults = true;   // react to first words = fast response
+recognition.maxAlternatives = 1;
 recognition.lang = 'en-US';
 
 // CLASS CONTENT DEFINITIONS
@@ -565,18 +567,20 @@ function generateQuestion(type) {
   return qList[Math.floor(Math.random() * qList.length)];
 }
 
+let voiceResponded = false;
+
 function playVoiceGame() {
   const btn = document.getElementById('voiceGameBtn');
   const feedback = document.getElementById('gameFeedback');
   btn.classList.add('listening');
   feedback.textContent = '🎤 Listening...';
+  voiceResponded = false;
 
-  recognition.onresult = (event) => {
+  const respond = (transcript) => {
+    if (voiceResponded) return;          // only react once, instantly
+    voiceResponded = true;
+    try { recognition.stop(); } catch (e) {}
     btn.classList.remove('listening');
-    let transcript = '';
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
-    }
 
     gameScore++;
     const responses = ['Excellent! 🌟', 'Great job! 👏', 'Perfect! ⭐', 'Well done! 🎉', 'Super! 🚀'];
@@ -584,9 +588,20 @@ function playVoiceGame() {
     feedback.className = 'game-feedback feedback-good';
     feedback.textContent = responses[rand];
     document.getElementById('scoreDisplay').textContent = `🎯 Score: ${gameScore}`;
-
     speak(`${responses[rand]} You said: ${transcript}`);
   };
+
+  recognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+    // fire as soon as we hear actual words (don't wait for the long silence timeout)
+    if (transcript.trim().length >= 2) respond(transcript.trim());
+  };
+
+  // stop listening the moment the child finishes speaking → quick result
+  recognition.onspeechend = () => { try { recognition.stop(); } catch (e) {} };
 
   recognition.onerror = () => {
     btn.classList.remove('listening');
@@ -594,7 +609,7 @@ function playVoiceGame() {
     feedback.textContent = '❌ Try again! Speak louder.';
   };
 
-  recognition.start();
+  try { recognition.start(); } catch (e) { try { recognition.stop(); } catch (e2) {} }
 }
 
 function nextQuestion() {
