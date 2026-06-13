@@ -383,8 +383,8 @@ let gameScore = 0;
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.continuous = false;
 recognition.interimResults = true;   // react to first words = fast response
-recognition.maxAlternatives = 1;
-recognition.lang = 'en-US';
+recognition.maxAlternatives = 5;     // read several guesses, check them all
+recognition.lang = 'en-IN';          // Indian English — matches our young users best
 
 // CLASS CONTENT DEFINITIONS
 const CLASSES = {
@@ -517,8 +517,10 @@ function startGame(type, emoji, title) {
   if (type === 'chess') { startChess(); return; }
   if (type === 'tictactoe') { startTicTacToe(); return; }
   currentGameType = type;
+  const q = generateQuestion(type);
   document.getElementById('gameTitleEmoji').textContent = emoji;
-  document.getElementById('gameQuestion').textContent = generateQuestion(type);
+  document.getElementById('gameQuestion').textContent = q;
+  currentExpected = deriveExpected(type, q);
   document.getElementById('gameFeedback').textContent = '';
   gameScore = 0;
   document.getElementById('scoreDisplay').textContent = '🎯 Score: 0';
@@ -568,6 +570,7 @@ function generateQuestion(type) {
 }
 
 let voiceResponded = false;
+let currentExpected = null;   // array of acceptable answers, or null = accept anything (open-ended)
 
 function playVoiceGame() {
   const btn = document.getElementById('voiceGameBtn');
@@ -576,28 +579,38 @@ function playVoiceGame() {
   feedback.textContent = '🎤 Listening...';
   voiceResponded = false;
 
-  const respond = (transcript) => {
+  const respond = (alts) => {
     if (voiceResponded) return;          // only react once, instantly
     voiceResponded = true;
     try { recognition.stop(); } catch (e) {}
     btn.classList.remove('listening');
 
-    gameScore++;
-    const responses = ['Excellent! 🌟', 'Great job! 👏', 'Perfect! ⭐', 'Well done! 🎉', 'Super! 🚀'];
-    const rand = Math.floor(Math.random() * responses.length);
-    feedback.className = 'game-feedback feedback-good';
-    feedback.textContent = responses[rand];
-    document.getElementById('scoreDisplay').textContent = `🎯 Score: ${gameScore}`;
-    speak(`${responses[rand]} You said: ${transcript}`);
+    const said = (alts[0] || '').trim();
+    const correct = matchesExpected(alts, currentExpected);
+
+    if (correct) {
+      gameScore++;
+      const responses = ['Excellent! 🌟', 'Great job! 👏', 'Perfect! ⭐', 'Well done! 🎉', 'Super! 🚀'];
+      const r = responses[Math.floor(Math.random() * responses.length)];
+      feedback.className = 'game-feedback feedback-good';
+      feedback.textContent = r;
+      document.getElementById('scoreDisplay').textContent = `🎯 Score: ${gameScore}`;
+      speak(`${r} You said ${said}.`);
+    } else {
+      feedback.className = 'game-feedback feedback-try';
+      feedback.textContent = `🙂 Almost! I heard “${said}”. Tap the mic and try again!`;
+      speak(`Almost! I heard ${said}. Try again, you can do it!`, 'oops');
+    }
   };
 
   recognition.onresult = (event) => {
-    let transcript = '';
+    // collect every alternative guess (maxAlternatives) so we can match any of them
+    let alts = [];
     for (let i = event.resultIndex; i < event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
+      const res = event.results[i];
+      for (let j = 0; j < res.length; j++) alts.push(res[j].transcript);
     }
-    // fire as soon as we hear actual words (don't wait for the long silence timeout)
-    if (transcript.trim().length >= 2) respond(transcript.trim());
+    if ((alts[0] || '').trim().length >= 1) respond(alts);
   };
 
   // stop listening the moment the child finishes speaking → quick result
@@ -612,10 +625,67 @@ function playVoiceGame() {
   try { recognition.start(); } catch (e) { try { recognition.stop(); } catch (e2) {} }
 }
 
+/* ---- answer checking: derive the expected answer + fuzzy match ---- */
+const NUM_WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function numberWord(n){
+  n = Math.round(n);
+  if (n < 0 || n > 99) return String(n);
+  if (n < 20) return NUM_WORDS[n];
+  const t = Math.floor(n/10), o = n%10;
+  return o ? TENS[t] + ' ' + NUM_WORDS[o] : TENS[t];
+}
+function numberAnswers(n){ return [String(Math.round(n)), numberWord(n)]; }
+
+function deriveExpected(type, q){
+  const quoted = q.match(/"([^"]+)"/);
+  if (/^(Say|Read|Spell):/i.test(q) && quoted) return [quoted[1].toLowerCase()];
+  let m = q.match(/Say a (\w+) color/i);  if (m) return [m[1].toLowerCase()];
+  m = q.match(/Name a (\w+)/i);           if (m) return [m[1].toLowerCase()];
+  // arithmetic:  "What is 5 + 3?"  /  "Solve: 25 + 37"
+  m = q.match(/(\d+)\s*([+\-×x*÷\/])\s*(\d+)/);
+  if (m){ const a=+m[1], b=+m[3], op=m[2]; let r;
+    if (op==='+') r=a+b; else if (op==='-') r=a-b; else if (/[×x*]/.test(op)) r=a*b; else r=a/b;
+    return numberAnswers(r); }
+  // simple algebra:  "x + 5 = 12" / "2x = 10" / "3x + 2 = 11"
+  m = q.match(/(\d*)\s*x\s*([+\-]\s*\d+)?\s*=\s*(\d+)/i);
+  if (m){ const coef=m[1]?+m[1]:1, add=m[2]?+m[2].replace(/\s/g,''):0, rhs=+m[3], x=(rhs-add)/coef;
+    if (Number.isFinite(x)) return numberAnswers(x); }
+  return null;  // open-ended → accept any spoken answer
+}
+
+function lev(a,b){
+  const dp = Array.from({length:a.length+1}, (_,i)=>[i]);
+  for (let j=0;j<=b.length;j++) dp[0][j]=j;
+  for (let i=1;i<=a.length;i++) for (let j=1;j<=b.length;j++)
+    dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1] + (a[i-1]===b[j-1]?0:1));
+  return dp[a.length][b.length];
+}
+function matchesExpected(alts, expected){
+  if (!expected) return true;            // open-ended prompt → any answer is fine
+  const norm = s => (s||'').toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();
+  for (const alt of alts){
+    const full = norm(alt), words = full.split(/\s+/);
+    for (const exp of expected){
+      const e = norm(exp);
+      if (!e) continue;
+      if (full.includes(e)) return true;                 // phrase contains the answer
+      for (const w of words){
+        if (w === e) return true;
+        const tol = e.length <= 4 ? 1 : 2;               // allow tiny pronunciation slips
+        if (lev(w, e) <= tol) return true;
+      }
+    }
+  }
+  return false;
+}
+
 function nextQuestion() {
   const question = generateQuestion(currentGameType);
   document.getElementById('gameQuestion').textContent = question;
+  currentExpected = deriveExpected(currentGameType, question);
   document.getElementById('gameFeedback').textContent = '';
+  voiceResponded = false;
 }
 
 function sendMessage() {
