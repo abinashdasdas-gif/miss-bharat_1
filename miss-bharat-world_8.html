@@ -817,6 +817,109 @@ GAMES.shapes=function(){
   newRound();
 };
 
+/* ===== STORY CREATOR ===== */
+GAMES.storyteller=function(){
+  const heroes=['🧑‍🎓 Student','👨‍🍳 Chef','🦸 Superhero','🧙 Wizard','🚀 Astronaut','🐉 Dragon','🦁 Lion','🦊 Fox'];
+  const settings=['🏰 Castle','🌲 Forest','🌊 Ocean','🚀 Space','🏙️ City','🏔️ Mountain','🏝️ Island','⚔️ Battlefield'];
+
+  let selectedHero=null,selectedSetting=null,loading=false;
+
+  function draw(){
+    const h=`
+      <div class="gcard">
+        <div class="gq" style="font-size:1.6rem;margin-bottom:16px">✨ Story Creator ✨</div>
+
+        <div style="text-align:left;background:#F4EFFF;padding:14px;border-radius:14px;margin:14px 0;font-size:.95rem">
+          <strong>Class ${kidClass}:</strong> Your stories will have ${kidClass<=2?'simple words':'creative language'} and ${kidClass<=2?'fun adventures':'interesting plot twists'}!
+        </div>
+
+        <div style="margin:16px 0">
+          <div style="font-weight:800;margin-bottom:8px;color:var(--purple)">1️⃣ Pick your Hero:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+            ${heroes.map((h,i)=>`<button style="padding:10px 14px;border:2px solid ${selectedHero===i?'var(--purple)':'#D8D2EE'};background:${selectedHero===i?'var(--purple)':'#fff'};color:${selectedHero===i?'#fff':'var(--ink)'};border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .15s" onclick="GAMES._heroSet(${i})">${h}</button>`).join('')}
+          </div>
+        </div>
+
+        <div style="margin:16px 0">
+          <div style="font-weight:800;margin-bottom:8px;color:var(--purple)">2️⃣ Pick your Setting:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+            ${settings.map((s,i)=>`<button style="padding:10px 14px;border:2px solid ${selectedSetting===i?'var(--purple)':'#D8D2EE'};background:${selectedSetting===i?'var(--purple)':'#fff'};color:${selectedSetting===i?'#fff':'var(--ink)'};border-radius:12px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .15s" onclick="GAMES._settingSet(${i})">${s}</button>`).join('')}
+          </div>
+        </div>
+
+        <div style="margin-top:20px">
+          <button class="gbtn" style="width:100%;opacity:${selectedHero!==null&&selectedSetting!==null?'1':'.5'};cursor:${selectedHero!==null&&selectedSetting!==null?'pointer':'not-allowed'}" onclick="GAMES._createStory()" ${selectedHero===null||selectedSetting===null?'disabled':''}>${loading?'✨ Creating...':'📖 Create My Story'}</button>
+        </div>
+      </div>
+    `;
+    stageEl().innerHTML=h;
+  }
+
+  GAMES._heroSet=function(i){selectedHero=i;draw();};
+  GAMES._settingSet=function(i){selectedSetting=i;draw();};
+  GAMES._createStory=async function(){
+    if(selectedHero===null||selectedSetting===null||loading)return;
+    loading=true;draw();
+
+    const hero=heroes[selectedHero].split(' ')[1];
+    const setting=settings[selectedSetting].split(' ')[1];
+
+    let prompt;
+    if(kidClass===1){
+      prompt=\`Write a very short, fun story for a Class 1 child (age 6). Use simple 3-4 letter words like: cat, dog, run, play, fun, big, sun, sit. The hero is a \${hero} in a \${setting}. Make it about playing and having fun. 3-4 sentences maximum. Use very simple phonics-friendly words.\`;
+    }else if(kidClass===2){
+      prompt=\`Write a short, engaging story for a Class 2 child (age 7). Use 4-5 letter words and simple sentences. The hero is a \${hero} in a \${setting}. Include a simple challenge and how they solve it. 4-5 sentences. Use age-appropriate vocabulary.\`;
+    }else if(kidClass===3){
+      prompt=\`Write a fun story for a Class 3 child (age 8). Use varied vocabulary and compound sentences. The hero is a \${hero} in a \${setting}. Include a problem, attempt, and solution. 5-6 sentences with descriptive words.\`;
+    }else if(kidClass===4){
+      prompt=\`Write an exciting story for a Class 4 child (age 9). Use complex sentences and interesting adjectives. The hero is a \${hero} in a \${setting}. Include plot development with a challenge and clever solution. 6-7 sentences with good narrative flow.\`;
+    }else{
+      prompt=\`Write a captivating story for a Class 5 child (age 10). Use sophisticated vocabulary and varied sentence structures. The hero is a \${hero} in a \${setting}. Include character development, plot twists, and a satisfying conclusion. 7-8 sentences with rich descriptive language.\`;
+    }
+
+    try{
+      const apiUrl=window.location.hostname==='localhost'?'http://localhost:3000/api/generate-story':'/api/generate-story';
+      const response=await fetch(apiUrl,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({prompt:prompt})
+      });
+
+      if(!response.ok)throw new Error('Story generation failed');
+      const data=await response.json();
+      const story=data.story;
+
+      loading=false;
+      addScore();confetti(20);fanfare();
+      stageEl().innerHTML=\`<div class="gcard">
+        <div class="gq" style="font-size:1.4rem;margin-bottom:14px">📖 Your Amazing Story! ✨</div>
+        <div style="background:#FFF6E9;border-radius:14px;padding:16px;line-height:1.8;font-size:1.05rem;margin:14px 0;color:var(--ink)">\${story}</div>
+        <div style="font-weight:800;color:var(--purple);margin:10px 0">- Featuring: \${heroes[selectedHero]} in the \${settings[selectedSetting]}</div>
+        <div class="gfb ok" style="margin:14px 0">Shabash! What an amazing story! 🌟</div>
+        <div class="gbtns">
+          <button class="gbtn ghost" onclick="GAMES.storyteller()">📖 Create Another</button>
+          <button class="gbtn" onclick="closeGame()">Home 🏠</button>
+        </div>
+      </div>\`;
+      say(\`Your story about the \${heroes[selectedHero].toLowerCase()} in a \${settings[selectedSetting].toLowerCase()} is ready! Shabash!\`);
+      say(story);
+    }catch(e){
+      console.error(e);
+      loading=false;
+      stageEl().innerHTML=\`<div class="gcard">
+        <div class="gq" style="color:var(--coral)">Oops! Story creation failed</div>
+        <div style="color:#666;margin:14px 0">Make sure the backend server is running on localhost:3000</div>
+        <div class="gfb no">Check that you ran: npm start</div>
+        <button class="gbtn" onclick="closeGame()">Go Home</button>
+      </div>\`;
+      say("Oops! I couldn't create the story. Make sure the server is running!");
+    }
+  };
+
+  say("Welcome to Story Creator! Pick a hero and a setting, and I'll create an amazing story for you!");
+  draw();
+};
+
 /* ===== CHAT ===== */
 GAMES.chat=function(){
   stageEl().innerHTML='<div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:12px"><div style="width:80px;flex-shrink:0">'+bharatSVG('happy')+'</div><div style="background:#fff;border:2px solid #FF9933;border-radius:16px 16px 16px 4px;padding:10px 14px;font-weight:800;font-size:.9rem">Ask me anything, maths, spelling, or just say hi! 🌟</div></div>'
