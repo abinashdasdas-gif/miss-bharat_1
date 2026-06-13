@@ -1068,11 +1068,20 @@ if (window.meSpeak) {
 function pickTeacherVoice() {
   const voices = speechSynthesis.getVoices();
   if (!voices.length) return null;
+  // 1) Indian English / Hindi voices by NAME (warm, friendly Indian accent)
+  const indianByName = voices.find(v => /neerja|heera|veena|kalpana|swara|aditi|raveena|priya/i.test(v.name));
+  if (indianByName) return indianByName;
+  // 2) Any voice tagged Indian by language code (en-IN, hi-IN), prefer female
+  const indianLang = voices.filter(v => /(^|[-_])(en[-_]IN|hi[-_]IN)/i.test(v.lang || ''));
+  if (indianLang.length) {
+    return indianLang.find(v => /female|woman|neerja|heera|veena/i.test(v.name)) || indianLang[0];
+  }
+  // 3) Fall back to other warm natural voices
   const tiers = [
-    /natural|aria|jenny|michelle|sonia|libby/i,        // Microsoft neural (very human)
-    /google (us|uk) english/i,                          // Google natural voices
-    /samantha|karen|moira|tessa|fiona|serena/i,         // warm Apple voices
-    /female|woman|zira|girl/i                            // generic female
+    /natural|aria|jenny|michelle|sonia|libby/i,
+    /google (us|uk) english/i,
+    /samantha|karen|moira|tessa|fiona|serena/i,
+    /female|woman|zira|girl/i
   ];
   for (const re of tiers) { const v = voices.find(x => re.test(x.name)); if (v) return v; }
   return voices[0];
@@ -1087,8 +1096,8 @@ function speak(text, mood) {
   // PRIMARY: browser natural voice — warm, deep, friendly-teacher tone
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(text);
-    u.pitch  = 0.92;   // a little deeper than normal = warm & grown-up
-    u.rate   = 0.9;    // calm, clear teacher pace
+    u.pitch  = 1.0;    // natural & warm
+    u.rate   = 0.92;   // calm, clear, friendly teacher pace
     u.volume = 1;
     const v = pickTeacherVoice();
     if (v) u.voice = v;
