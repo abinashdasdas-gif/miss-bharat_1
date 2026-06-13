@@ -31,3 +31,6 @@ build/
 !miss-bharat-world_8.html
 !voice-assistant.html
 !vercel.json
+!start.sh
+!.devcontainer/
+!.devcontainer/devcontainer.json
