@@ -1050,8 +1050,8 @@ function moveSound(capture){
 }
 
 // Funny, bouncy cartoon expressions sprinkled in for personality
-const FUN_HAPPY = ['Yay!', 'Woohoo!', 'Wheee!', 'Ta-da!', 'Hooray!', 'Boing!', 'Yippee!'];
-const FUN_OOPS  = ['Oopsie!', 'Uh-oh!', 'Aw, shucks!', 'Whoopsie-daisy!'];
+const FUN_HAPPY = ['Wonderful!', 'Well done!', 'Excellent!', 'Brilliant!', 'Great job!', 'Fantastic!'];
+const FUN_OOPS  = ['Good try!', 'Almost!', 'Nice effort!', "Don't worry!"];
 
 // Load meSpeak's free, open-source voice (runs fully in-browser — our own consistent voice)
 let meSpeakReady = false;
@@ -1063,33 +1063,44 @@ if (window.meSpeak) {
   } catch (e) { meSpeakReady = false; }
 }
 
+// Pick the warmest, most natural "friendly teacher" voice the browser offers.
+// Priority: modern neural voices (Aria/Jenny/Natural/Google) → warm Apple voices → any female → first available.
+function pickTeacherVoice() {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  const tiers = [
+    /natural|aria|jenny|michelle|sonia|libby/i,        // Microsoft neural (very human)
+    /google (us|uk) english/i,                          // Google natural voices
+    /samantha|karen|moira|tessa|fiona|serena/i,         // warm Apple voices
+    /female|woman|zira|girl/i                            // generic female
+  ];
+  for (const re of tiers) { const v = voices.find(x => re.test(x.name)); if (v) return v; }
+  return voices[0];
+}
+
 function speak(text, mood) {
   if (!text) return;
-  // add a playful exclamation for happy/sad moments
+  // gentle encouraging words for happy/sad moments (warm, not silly)
   if (mood === 'happy') text = pickFun(FUN_HAPPY) + ' ' + text;
   else if (mood === 'oops') text = pickFun(FUN_OOPS) + ' ' + text;
 
-  // PRIMARY: our own meSpeak voice — funny + identical on every device
-  if (meSpeakReady && window.meSpeak) {
-    meSpeak.stop();
-    meSpeak.speak(text, {
-      variant: 'f5',                          // playful female-style variant
-      pitch: 65 + Math.floor(Math.random()*20), // 65–85, bouncy & high
-      speed: 165 + Math.floor(Math.random()*20),
-      amplitude: 100,
-      wordgap: 1
-    });
+  // PRIMARY: browser natural voice — warm, deep, friendly-teacher tone
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(text);
+    u.pitch  = 0.92;   // a little deeper than normal = warm & grown-up
+    u.rate   = 0.9;    // calm, clear teacher pace
+    u.volume = 1;
+    const v = pickTeacherVoice();
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
     return;
   }
 
-  // FALLBACK: browser voice (if meSpeak hasn't loaded, e.g. offline)
-  const u = new SpeechSynthesisUtterance(text);
-  u.pitch = 1.5 + (Math.random() * 0.35);
-  u.rate  = 1.06 + (Math.random() * 0.18);
-  u.volume = 1;
-  const voices = speechSynthesis.getVoices();
-  u.voice = voices.find(v => /(zira|samantha|google uk english female|female|woman|girl)/i.test(v.name)) || voices[0];
-  speechSynthesis.speak(u);
+  // LAST RESORT: meSpeak (only if the browser has no speech at all)
+  if (meSpeakReady && window.meSpeak) {
+    meSpeak.stop();
+    meSpeak.speak(text, { variant: 'm3', pitch: 40, speed: 150, amplitude: 100 });
+  }
 }
 function pickFun(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 function stopSpeaking(){ try { if (window.meSpeak) meSpeak.stop(); } catch(e){} speechSynthesis.cancel(); }
