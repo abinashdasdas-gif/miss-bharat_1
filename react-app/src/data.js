@@ -46,7 +46,8 @@ export const FALLBACK_QUESTIONS = {
 
 export const STORIES = [
   {
-    title: 'The Thirsty Crow', emoji: '🐦',
+    title: 'The Thirsty Crow', emoji: '🐦', seed: 21,
+    art: 'a cute friendly black crow and a brown clay water pot in a sunny green garden of an Indian village',
     blurb: 'A clever crow finds a smart way to drink water.',
     moral: 'Where there is a will, there is a way.',
     pages: [
@@ -58,7 +59,8 @@ export const STORIES = [
     ]
   },
   {
-    title: 'The Lion and the Mouse', emoji: '🦁',
+    title: 'The Lion and the Mouse', emoji: '🦁', seed: 44,
+    art: 'a friendly big cartoon lion with a fluffy mane and a tiny cute grey mouse, in a lush green sunlit jungle',
     blurb: 'A tiny mouse proves even the smallest friend can help.',
     moral: 'No act of kindness is ever wasted.',
     pages: [
@@ -70,7 +72,8 @@ export const STORIES = [
     ]
   },
   {
-    title: 'The Peacock and the Rain', emoji: '🦚',
+    title: 'The Peacock and the Rain', emoji: '🦚', seed: 77,
+    art: 'a beautiful colorful peacock with bright blue and green feathers in a green forest',
     blurb: 'A proud peacock learns to dance with joy.',
     moral: 'True beauty shines when we share our joy.',
     pages: [
