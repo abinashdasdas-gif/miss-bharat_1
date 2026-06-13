@@ -31,3 +31,22 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 
 .btn{background:var(--gradient);color:#fff;border:none;padding:14px 30px;border-radius:50px;font-weight:700;cursor:pointer;font-size:1rem}
 .center{text-align:center;margin-top:40px}
+
+/* CHESS — wood board + 3D glossy pieces (brown/cream vs black) */
+.chess-board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:min(90vw,440px);aspect-ratio:1;margin:0 auto;border:5px solid #5B3A1E;border-radius:8px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.5)}
+.chess-cell{aspect-ratio:1;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:min(9.5vw,42px);cursor:pointer;user-select:none}
+.chess-cell.light{background:#E8C49A}
+.chess-cell.dark{background:#9C6B43}
+.chess-cell.sel{background:#F2D06B !important}
+.chess-cell.move{box-shadow:inset 0 0 0 4px rgba(16,185,129,.7)}
+.cp{display:inline-block;line-height:1}
+.cp-white{
+  background:linear-gradient(160deg,#FFFDF7 0%,#F4ECDC 34%,#E2D2B6 68%,#C9B493 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:.7px #6e5c3c;
+  filter:drop-shadow(0 -1px 0 rgba(255,255,255,.55)) drop-shadow(0 1px 0 #b9a884) drop-shadow(0 2px 0 #a08e6a) drop-shadow(0 3px 2px rgba(0,0,0,.35)) drop-shadow(0 5px 5px rgba(0,0,0,.4));
+}
+.cp-black{
+  background:linear-gradient(160deg,#7a8494 0%,#454e5c 38%,#222934 72%,#0c0f15 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:.7px #05070b;
+  filter:drop-shadow(0 -1px 0 rgba(255,255,255,.28)) drop-shadow(0 1px 0 #20262f) drop-shadow(0 2px 0 #11151c) drop-shadow(0 4px 4px rgba(0,0,0,.5)) drop-shadow(0 6px 6px rgba(0,0,0,.45));
+}
