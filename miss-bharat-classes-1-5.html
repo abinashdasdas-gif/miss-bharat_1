@@ -370,6 +370,9 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
   <p>Made with ❤️ for learning | Classes 1-5 | Safe & Age-Appropriate</p>
 </div>
 
+<!-- meSpeak.js — free, open-source, in-browser speech engine (our own consistent voice, no API key) -->
+<script src="https://cdn.jsdelivr.net/gh/masswerk/mespeak/mespeak.js"></script>
+
 <script>
 let currentClass = 1;
 let currentPage = 'home';
@@ -759,7 +762,7 @@ function showPage(){
   document.getElementById('pageCount').textContent = (pageIndex + 1) + ' / ' + st.pages.length;
   document.getElementById('prevBtn').disabled = pageIndex === 0;
   document.getElementById('nextBtn').textContent = isLast ? 'The End 🎉' : 'Next ›';
-  speechSynthesis.cancel();
+  stopSpeaking();
 }
 
 function storyNext(){
@@ -768,7 +771,7 @@ function storyNext(){
   else { switchPage('stories'); }
 }
 function storyPrev(){ if (pageIndex > 0){ pageIndex--; showPage(); readPage(); } }
-function readPage(){ speechSynthesis.cancel(); speak(document.getElementById('bookText').textContent); }
+function readPage(){ stopSpeaking(); speak(document.getElementById('bookText').textContent); }
 
 /* ===================== CHESS ENGINE ===================== */
 let chessBoard = [], chessSel = null, chessLegal = [], chessTurn = 'w', chessOver = false;
@@ -784,8 +787,8 @@ const PIECE_INFO = {
   K: 'King. He moves one square in any direction. Keep him safe!'
 };
 let teachOn = true;
-function toggleTeach(btn){ teachOn = !teachOn; btn.textContent = teachOn ? '🗣️ Teaching: On' : '🗣️ Teaching: Off'; if(!teachOn) speechSynthesis.cancel(); }
-function narrate(text, mood){ if(!teachOn) return; speechSynthesis.cancel(); speak(text, mood); }
+function toggleTeach(btn){ teachOn = !teachOn; btn.textContent = teachOn ? '🗣️ Teaching: On' : '🗣️ Teaching: Off'; if(!teachOn) stopSpeaking(); }
+function narrate(text, mood){ if(!teachOn) return; stopSpeaking(); speak(text, mood); }
 
 function startChess() {
   currentGameType = 'chess';
@@ -1050,23 +1053,46 @@ function moveSound(capture){
 const FUN_HAPPY = ['Yay!', 'Woohoo!', 'Wheee!', 'Ta-da!', 'Hooray!', 'Boing!', 'Yippee!'];
 const FUN_OOPS  = ['Oopsie!', 'Uh-oh!', 'Aw, shucks!', 'Whoopsie-daisy!'];
 
+// Load meSpeak's free, open-source voice (runs fully in-browser — our own consistent voice)
+let meSpeakReady = false;
+const MS = 'https://cdn.jsdelivr.net/gh/masswerk/mespeak/';
+if (window.meSpeak) {
+  try {
+    meSpeak.loadConfig(MS + 'mespeak_config.json');
+    meSpeak.loadVoice(MS + 'voices/en/en-us.json', (success) => { meSpeakReady = !!success; });
+  } catch (e) { meSpeakReady = false; }
+}
+
 function speak(text, mood) {
   if (!text) return;
   // add a playful exclamation for happy/sad moments
   if (mood === 'happy') text = pickFun(FUN_HAPPY) + ' ' + text;
   else if (mood === 'oops') text = pickFun(FUN_OOPS) + ' ' + text;
 
+  // PRIMARY: our own meSpeak voice — funny + identical on every device
+  if (meSpeakReady && window.meSpeak) {
+    meSpeak.stop();
+    meSpeak.speak(text, {
+      variant: 'f5',                          // playful female-style variant
+      pitch: 65 + Math.floor(Math.random()*20), // 65–85, bouncy & high
+      speed: 165 + Math.floor(Math.random()*20),
+      amplitude: 100,
+      wordgap: 1
+    });
+    return;
+  }
+
+  // FALLBACK: browser voice (if meSpeak hasn't loaded, e.g. offline)
   const u = new SpeechSynthesisUtterance(text);
-  // bouncy cartoon voice: high pitch + lively rate, with a little random jitter so it sounds alive
-  u.pitch = 1.5 + (Math.random() * 0.35);   // 1.50 – 1.85 (squeaky & fun)
-  u.rate  = 1.06 + (Math.random() * 0.18);  // 1.06 – 1.24 (peppy)
+  u.pitch = 1.5 + (Math.random() * 0.35);
+  u.rate  = 1.06 + (Math.random() * 0.18);
   u.volume = 1;
   const voices = speechSynthesis.getVoices();
-  // prefer a clearly playful/female voice when available
   u.voice = voices.find(v => /(zira|samantha|google uk english female|female|woman|girl)/i.test(v.name)) || voices[0];
   speechSynthesis.speak(u);
 }
 function pickFun(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+function stopSpeaking(){ try { if (window.meSpeak) meSpeak.stop(); } catch(e){} speechSynthesis.cancel(); }
 
 // Initialize
 renderGames();
