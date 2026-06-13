@@ -445,6 +445,12 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 <!-- meSpeak.js — free, open-source, in-browser speech engine (our own consistent voice, no API key) -->
 <script src="https://cdn.jsdelivr.net/gh/masswerk/mespeak/mespeak.js"></script>
 
+<!-- Motion (motion npm package) loaded via CDN as an ES module, exposed for our classic script -->
+<script type="module">
+  import { animate, stagger, inView } from 'https://cdn.jsdelivr.net/npm/motion@11/+esm';
+  window.Motion = { animate, stagger, inView };
+</script>
+
 <script>
 let currentClass = 1;
 let currentPage = 'home';
@@ -569,12 +575,27 @@ function renderGames() {
     tile.innerHTML = `<span class="game-emoji">${game.emoji}</span><div class="game-title">${game.title}</div><div class="game-desc">${game.desc}</div>`;
     gamesGrid.appendChild(tile);
   });
+
+  // Motion: pop the tiles in one after another
+  if (window.Motion) {
+    window.Motion.animate('.game-tile',
+      { opacity: [0, 1], transform: ['translateY(20px) scale(.96)', 'translateY(0) scale(1)'] },
+      { duration: 0.45, delay: window.Motion.stagger(0.05), easing: [0.25, 1, 0.5, 1] });
+  }
 }
 
 function switchPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(page).classList.add('active');
+  const el = document.getElementById(page);
+  el.classList.add('active');
   currentPage = page;
+
+  // Motion: smooth fade + slide-up as the page appears
+  if (window.Motion) {
+    window.Motion.animate(el,
+      { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] },
+      { duration: 0.4, easing: [0.25, 1, 0.5, 1] });
+  }
 
   if (page !== 'boardPlayer' && musicOn) {
     stopMusic();
