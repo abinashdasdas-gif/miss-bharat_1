@@ -59,9 +59,15 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 .game-back{margin-bottom:20px}
 .game-back button{background:var(--primary);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600}
 .game-question{font-size:1.4rem;color:#E2E8F0;margin:30px 0;font-weight:700}
-.voice-btn-large{width:180px;height:180px;border-radius:50%;background:var(--gradient);border:none;color:#fff;font-size:50px;cursor:pointer;margin:30px auto;display:flex;align-items:center;justify-content:center;transition:all .3s;animation:pulse 2s ease-in-out infinite}
+.voice-btn-large{position:relative;width:180px;height:180px;border-radius:50%;background:var(--gradient);border:none;color:#fff;font-size:50px;cursor:pointer;margin:30px auto;display:flex;align-items:center;justify-content:center;transition:all .3s;animation:pulse 2s ease-in-out infinite}
 .voice-btn-large:hover{transform:scale(1.1)}
 .voice-btn-large.listening{animation:bounce .5s ease-in-out infinite}
+/* listening = expanding sound rings; thinking = spinning ring */
+.voice-btn-large.listening::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;border:3px solid rgba(255,255,255,.55);animation:ring 1.1s ease-out infinite}
+.voice-btn-large.thinking{animation:none;cursor:wait}
+.voice-btn-large.thinking::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;border:5px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin .8s linear infinite}
+@keyframes ring{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.5);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
 .game-feedback{font-size:1.2rem;margin:20px 0;font-weight:700;min-height:40px}
 .feedback-good{color:var(--success)}
 .feedback-try{color:var(--danger)}
@@ -583,7 +589,7 @@ function playVoiceGame() {
     if (voiceResponded) return;          // only react once, instantly
     voiceResponded = true;
     try { recognition.stop(); } catch (e) {}
-    btn.classList.remove('listening');
+    btn.classList.remove('listening', 'thinking');
 
     const said = (alts[0] || '').trim();
     const correct = matchesExpected(alts, currentExpected);
@@ -614,13 +620,21 @@ function playVoiceGame() {
   };
 
   // stop listening the moment the child finishes speaking → quick result
-  recognition.onspeechend = () => { try { recognition.stop(); } catch (e) {} };
+  recognition.onspeechend = () => {
+    if (voiceResponded) return;                    // already have an answer — don't clobber it
+    btn.classList.remove('listening');
+    btn.classList.add('thinking');                 // show "thinking…" while it processes
+    feedback.className = 'game-feedback';
+    feedback.textContent = '💭 Thinking...';
+    try { recognition.stop(); } catch (e) {}
+  };
 
   recognition.onerror = () => {
-    btn.classList.remove('listening');
+    btn.classList.remove('listening', 'thinking');
     feedback.className = 'game-feedback feedback-try';
     feedback.textContent = '❌ Try again! Speak louder.';
   };
+  recognition.onend = () => { btn.classList.remove('listening', 'thinking'); };
 
   try { recognition.start(); } catch (e) { try { recognition.stop(); } catch (e2) {} }
 }
