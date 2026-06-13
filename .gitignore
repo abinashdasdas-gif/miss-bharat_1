@@ -42,3 +42,7 @@ build/
 !.devcontainer/devcontainer.json
 !data/
 !data/content.json
+!react-app/
+!react-app/**
+react-app/node_modules/
+react-app/dist/
