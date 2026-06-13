@@ -1,0 +1,60 @@
+name: Deploy site (HTML + React app)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: react-app/package-lock.json
+
+      - name: Build React app
+        working-directory: react-app
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assemble site (HTML at root, React under /app)
+        run: |
+          mkdir -p _site/app
+          # keep the existing static site exactly as-is
+          cp *.html _site/ 2>/dev/null || true
+          cp -r data _site/ 2>/dev/null || true
+          [ -f vercel.json ] && cp vercel.json _site/ || true
+          # the built React app lives at /app
+          cp -r react-app/dist/* _site/app/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

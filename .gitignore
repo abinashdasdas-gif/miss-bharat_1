@@ -46,3 +46,5 @@ build/
 !react-app/**
 react-app/node_modules/
 react-app/dist/
+!.github/
+!.github/**
