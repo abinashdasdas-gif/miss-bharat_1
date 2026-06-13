@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Chess from '../components/Chess.jsx';
+import TicTacToe from '../components/TicTacToe.jsx';
 import { speak } from '../voice.js';
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -17,15 +18,18 @@ export default function Games({ classes }) {
 
   const openGame = (g) => {
     if (g.type === 'chess') { setActive('chess'); return; }
+    if (g.type === 'tictactoe') { setActive('tictactoe'); return; }
     alert(`Game: ${g.title}\n(Full gameplay ports next.)`);
   };
 
-  if (active === 'chess') {
+  if (active === 'chess' || active === 'tictactoe') {
     return (
       <div className="container">
         <button className="class-chip" onClick={() => setActive(null)}>← Back to Games</button>
-        <h1 className="page-title" style={{ marginTop: 20 }}>♟️ Chess vs Computer</h1>
-        <Chess speak={speak} />
+        <h1 className="page-title" style={{ marginTop: 20 }}>
+          {active === 'chess' ? '♟️ Chess vs Computer' : '⭕ Tic-Tac-Toe'}
+        </h1>
+        {active === 'chess' ? <Chess speak={speak} /> : <TicTacToe speak={speak} />}
       </div>
     );
   }

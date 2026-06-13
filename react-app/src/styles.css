@@ -50,3 +50,7 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
   -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:.7px #05070b;
   filter:drop-shadow(0 -1px 0 rgba(255,255,255,.28)) drop-shadow(0 1px 0 #20262f) drop-shadow(0 2px 0 #11151c) drop-shadow(0 4px 4px rgba(0,0,0,.5)) drop-shadow(0 6px 6px rgba(0,0,0,.45));
 }
+
+/* TIC-TAC-TOE */
+.ttt-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(80vw,300px);margin:0 auto}
+.ttt-cell{aspect-ratio:1;background:rgba(99,102,241,.15);border:2px solid rgba(99,102,241,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:min(15vw,60px);cursor:pointer;font-weight:900}
