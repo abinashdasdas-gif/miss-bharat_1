@@ -949,6 +949,7 @@ function startTicTacToe() {
   document.getElementById('boardStatus').textContent = 'You are ❌ — tap a square';
   renderTTT();
   switchPage('boardPlayer');
+  narrate("Let's play Tic-Tac-Toe! You are X. Try to get three in a row!");
 }
 
 function renderTTT() {
@@ -976,10 +977,12 @@ function tttWinner(b) {
 function tttClick(i) {
   if (tttOver || tttBoard[i]) return;
   tttBoard[i] = '❌';
+  moveSound(false);
   renderTTT();
+  narrate('You placed an X.');
   let w = tttWinner(tttBoard);
-  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '🎉 You win!'; return; }
-  if (!tttBoard.includes('')) { tttOver = true; document.getElementById('boardStatus').textContent = "🤝 It's a draw!"; return; }
+  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '🎉 You win!'; moveSound(true); narrate('Three in a row! You win! Hooray!'); return; }
+  if (!tttBoard.includes('')) { tttOver = true; document.getElementById('boardStatus').textContent = "🤝 It's a draw!"; narrate("It's a draw! Good game!"); return; }
   document.getElementById('boardStatus').textContent = 'Computer thinking...';
   setTimeout(tttComputerMove, 400);
 }
@@ -998,10 +1001,12 @@ function tttComputerMove() {
   if (move === null) { const corners = [0,2,6,8].filter(i => tttBoard[i] === ''); if (corners.length) move = corners[Math.floor(Math.random() * corners.length)]; }
   if (move === null) move = empties[Math.floor(Math.random() * empties.length)];
   tttBoard[move] = '⭕';
+  moveSound(false);
   renderTTT();
+  narrate('Computer placed an O.');
   let w = tttWinner(tttBoard);
-  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '💻 Computer wins! Try again.'; return; }
-  if (!tttBoard.includes('')) { tttOver = true; document.getElementById('boardStatus').textContent = "🤝 It's a draw!"; return; }
+  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '💻 Computer wins! Try again.'; narrate('Computer got three in a row. Try again, you can do it!'); return; }
+  if (!tttBoard.includes('')) { tttOver = true; document.getElementById('boardStatus').textContent = "🤝 It's a draw!"; narrate("It's a draw! Good game!"); return; }
   document.getElementById('boardStatus').textContent = 'You are ❌ — tap a square';
 }
 
