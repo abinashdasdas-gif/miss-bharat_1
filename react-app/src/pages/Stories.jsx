@@ -15,7 +15,7 @@ export default function Stories() {
   if (open !== null) {
     return (
       <div className="container">
-        <StoryReader story={STORIES[open]} onBack={() => setOpen(null)} />
+        <StoryReader story={STORIES[open]} storyIndex={open} onBack={() => setOpen(null)} />
       </div>
     );
   }
