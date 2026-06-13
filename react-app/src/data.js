@@ -30,6 +30,20 @@ export const FALLBACK_CLASSES = {
   ]}
 };
 
+export const FALLBACK_QUESTIONS = {
+  speaking1: ['Say: "Apple"', 'Say: "Ball"', 'Say: "Cat"', 'Say: "Dog"', 'Say: "Elephant"'],
+  count1: ['Count to 5', 'Count to 10', 'Count to 15'],
+  colors1: ['Say a red color', 'Say a blue color', 'Say a yellow color', 'Say a green color'],
+  reading2: ['Read: "The cat sat on mat"', 'Read: "I like to play"', 'Read: "She has a book"'],
+  addition2: ['What is 5 + 3?', 'What is 7 + 2?', 'What is 6 + 4?', 'What is 8 + 3?'],
+  tables3: ['What is 2 × 3?', 'What is 3 × 4?', 'What is 4 × 5?', 'What is 5 × 6?'],
+  division3: ['What is 10 ÷ 2?', 'What is 15 ÷ 3?', 'What is 20 ÷ 4?'],
+  math4: ['Solve: 25 + 37', 'Solve: 50 - 23', 'Solve: 6 × 8', 'Solve: 56 ÷ 7'],
+  grammar4: ['Correct sentence', 'Use tense properly', 'Fix punctuation'],
+  algebra5: ['Solve: x + 5 = 12', 'Solve: 2x = 10', 'Solve: 3x + 2 = 11'],
+  gk5: ['Capital of France?', 'Largest planet?', 'When was internet invented?']
+};
+
 export const STORIES = [
   { title: 'The Thirsty Crow', blurb: 'A clever crow finds a smart way to drink water.', emoji: '🐦' },
   { title: 'The Lion and the Mouse', blurb: 'A tiny mouse proves even the smallest friend can help.', emoji: '🦁' },

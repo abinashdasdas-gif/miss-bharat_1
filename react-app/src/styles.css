@@ -51,6 +51,11 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
   filter:drop-shadow(0 -1px 0 rgba(255,255,255,.28)) drop-shadow(0 1px 0 #20262f) drop-shadow(0 2px 0 #11151c) drop-shadow(0 4px 4px rgba(0,0,0,.5)) drop-shadow(0 6px 6px rgba(0,0,0,.45));
 }
 
+/* VOICE GAME MIC */
+.mic-btn{position:relative;width:170px;height:170px;border-radius:50%;background:var(--gradient);border:none;color:#fff;font-size:54px;cursor:pointer;margin:20px auto;display:flex;align-items:center;justify-content:center}
+.mic-btn .ring{position:absolute;width:170px;height:170px;border-radius:50%;border:3px solid rgba(255,255,255,.6)}
+.mic-btn .spin{position:absolute;width:190px;height:190px;border-radius:50%;border:5px solid rgba(255,255,255,.25);border-top-color:#fff}
+
 /* TIC-TAC-TOE */
 .ttt-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(80vw,300px);margin:0 auto}
 .ttt-cell{aspect-ratio:1;background:rgba(99,102,241,.15);border:2px solid rgba(99,102,241,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:min(15vw,60px);cursor:pointer;font-weight:900}
