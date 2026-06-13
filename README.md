@@ -18,13 +18,22 @@ A beautiful, interactive educational game for kids with voice control and AI-pow
 1. Go to your GitHub repo: https://github.com/abinashdasdas-gif/miss-bharat_1
 2. Click **"Code"** → **"Codespaces"** → **"Create codespace on main"**
 3. Wait 2-3 minutes for the environment to load
-4. In the terminal, run:
+4. **Copy the env file:**
    ```bash
-   CLAUDE_API_KEY=sk-ant-xxxxxxxxxxxxx npm start
+   cp .env.example .env
    ```
-   (Replace with your actual Claude API key)
-5. Click the notification to open the app in a browser
-6. Share the URL with anyone!
+5. **Edit .env** and add your Claude API key:
+   ```bash
+   # Open .env and replace sk-ant-your-api-key-here with your actual key
+   nano .env
+   ```
+6. **Install and start:**
+   ```bash
+   npm install
+   npm start
+   ```
+7. Click the notification to open the app in a browser
+8. Share the URL with anyone!
 
 ### Local Development
 
