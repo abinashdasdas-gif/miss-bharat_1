@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Builds
+dist/
+build/
+
+# Temp files
+*.tmp
+*.lock
+
+# Exclude everything by default
+*
+!.gitignore
+!README.md
+!server.js
+!package.json
+!miss-bharat-world_8.html
+!voice-assistant.html
