@@ -342,7 +342,7 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
       <button class="btn-primary" id="aiGoBtn" onclick="generateAIStory()" style="width:100%;margin-top:20px">📖 Create My Story</button>
       <div id="aiProgress" class="ai-progress"></div>
 
-      <details class="ai-setup">
+      <details class="ai-setup" id="aiSetup" style="display:none">
         <summary>⚙️ Advanced: use a cloud AI key (optional)</summary>
         <p class="ai-note">Only needed if your browser can't run in-browser AI (no WebGPU). Get a free key at <b>openrouter.ai/keys</b> and paste it below. 🔒 Saved <b>only on this device</b> — never uploaded or shared.</p>
         <label>OpenRouter API key</label>
@@ -980,6 +980,8 @@ const DEFAULT_MODEL = 'meta-llama/llama-3.3-8b-instruct:free';
 function loadAIKeyUI(){
   document.getElementById('aiKey').value = localStorage.getItem('or_key') || '';
   document.getElementById('aiModel').value = localStorage.getItem('or_model') || DEFAULT_MODEL;
+  // only surface the cloud-key panel on browsers that can't run in-browser AI
+  if (!('gpu' in navigator)) document.getElementById('aiSetup').style.display = '';
 }
 function saveAIKey(){
   const k = document.getElementById('aiKey').value.trim();
@@ -1065,7 +1067,7 @@ function isChildSafe(text){
 
 async function generateAIStory(){
   if (!('gpu' in navigator) && !getKey()){
-    document.querySelector('.ai-setup').open = true;
+    const s = document.getElementById('aiSetup'); s.style.display = ''; s.open = true;
     document.getElementById('aiProgress').textContent = "⚠️ Your browser can't run in-browser AI (no WebGPU). Use Chrome/Edge, or add a free cloud key in the setup below.";
     return;
   }
@@ -1114,7 +1116,7 @@ async function generateAIStory(){
     prog.textContent = '';
   } catch (err) {
     if (err.message === 'NO_WEBGPU' || err.message === 'NO_WEBGPU_NO_KEY') {
-      document.querySelector('.ai-setup').open = true;
+      const s = document.getElementById('aiSetup'); s.style.display = ''; s.open = true;
       prog.textContent = "😕 This browser can't run in-browser AI (needs WebGPU). Try Chrome or Edge, or add a free cloud key in the setup below.";
     } else {
       prog.textContent = '😕 ' + err.message + '\nPlease try again.';
