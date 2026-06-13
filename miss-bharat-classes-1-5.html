@@ -314,7 +314,7 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
     </div>
     <div class="ai-form">
       <h1>✨ Create Your Own Story</h1>
-      <p class="ai-sub">Tell me a few things and Miss Bharat will write a brand-new story just for you!</p>
+      <p class="ai-sub">Tell me a few things and Miss Bharat will write a brand-new story just for you!<br><span style="font-size:.85rem;color:#94A3B8">🆓 No key needed — the AI runs right in your browser. First story downloads it once (works best in Chrome or Edge).</span></p>
 
       <label>Hero's name</label>
       <input id="aiHero" placeholder="e.g., Maya">
@@ -343,8 +343,8 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
       <div id="aiProgress" class="ai-progress"></div>
 
       <details class="ai-setup">
-        <summary>⚙️ One-time setup (free AI key)</summary>
-        <p class="ai-note">This uses <b>OpenRouter</b>'s free AI models. Get a free key at <b>openrouter.ai/keys</b>, paste it below. 🔒 It is saved <b>only on this device</b> (your browser) — never uploaded or shared.</p>
+        <summary>⚙️ Advanced: use a cloud AI key (optional)</summary>
+        <p class="ai-note">Only needed if your browser can't run in-browser AI (no WebGPU). Get a free key at <b>openrouter.ai/keys</b> and paste it below. 🔒 Saved <b>only on this device</b> — never uploaded or shared.</p>
         <label>OpenRouter API key</label>
         <input id="aiKey" type="password" placeholder="sk-or-...">
         <label>Model (free)</label>
@@ -991,6 +991,42 @@ function saveAIKey(){
 function getKey(){ return (localStorage.getItem('or_key') || '').trim(); }
 function getModel(){ return (localStorage.getItem('or_model') || DEFAULT_MODEL).trim(); }
 
+/* ---- In-browser AI (WebLLM) — no key, no server. Falls back to OpenRouter key only if WebGPU is missing. ---- */
+let webllmEngine = null, webllmLoading = null;
+const WEBLLM_MODEL = 'Llama-3.2-1B-Instruct-q4f32_1-MLC';   // small, broadly compatible
+
+async function ensureWebLLM(progressEl){
+  if (webllmEngine) return webllmEngine;
+  if (!('gpu' in navigator)) throw new Error('NO_WEBGPU');
+  if (!webllmLoading){
+    webllmLoading = (async () => {
+      const webllm = await import('https://esm.run/@mlc-ai/web-llm');
+      const engine = await webllm.CreateMLCEngine(WEBLLM_MODEL, {
+        initProgressCallback: (p) => {
+          if (progressEl) progressEl.textContent = '⬇️ Getting the AI ready (first time only)… ' + Math.round((p.progress || 0) * 100) + '%';
+        }
+      });
+      webllmEngine = engine;
+      return engine;
+    })();
+  }
+  return webllmLoading;
+}
+
+// Unified chat: prefer in-browser AI; use the cloud key only when WebGPU isn't available.
+async function aiChat(prompt, temperature, progressEl){
+  if ('gpu' in navigator){
+    const engine = await ensureWebLLM(progressEl);
+    const r = await engine.chat.completions.create({
+      messages: [{ role: 'user', content: prompt }],
+      temperature
+    });
+    return (r.choices && r.choices[0].message.content || '').trim();
+  }
+  if (getKey()) return orChat(prompt, temperature);
+  throw new Error('NO_WEBGPU_NO_KEY');
+}
+
 async function orChat(prompt, temperature){
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
@@ -1028,9 +1064,9 @@ function isChildSafe(text){
 }
 
 async function generateAIStory(){
-  if (!getKey()){
+  if (!('gpu' in navigator) && !getKey()){
     document.querySelector('.ai-setup').open = true;
-    document.getElementById('aiProgress').textContent = '⚠️ Please add your free OpenRouter key in the setup below first.';
+    document.getElementById('aiProgress').textContent = "⚠️ Your browser can't run in-browser AI (no WebGPU). Use Chrome/Edge, or add a free cloud key in the setup below.";
     return;
   }
   const hero   = (document.getElementById('aiHero').value || 'a brave child').trim();
@@ -1050,23 +1086,23 @@ async function generateAIStory(){
 
   try {
     prog.textContent = '✍️ Step 1 of 3: Planning the story...';
-    const outline = await orChat(
+    const outline = await aiChat(
       `You are a gentle children's storyteller for kids aged 5 to 10 in India. Write a short OUTLINE (3 to 5 simple bullet points) for a ${style.toLowerCase()} story.\n` +
       `Main character: ${hero}\nFriend/companion: ${friend}\nPlace: ${place}\nWhat happens: ${plot}\n` +
-      `Keep it wholesome, positive, and age-appropriate, with a happy ending and a gentle lesson.` + SAFE + ` Reply with ONLY the outline.`, 0.8);
+      `Keep it wholesome, positive, and age-appropriate, with a happy ending and a gentle lesson.` + SAFE + ` Reply with ONLY the outline.`, 0.8, prog);
 
     prog.textContent = '📖 Step 2 of 3: Writing your story...';
-    const draft = await orChat(
+    const draft = await aiChat(
       `Using this outline, write a children's story of about ${words} words for kids aged 5 to 10. ` +
       `Use simple words, short sentences, a warm friendly tone, and a happy ending with a gentle lesson. ` + SAFE + ` ` +
-      `Put a fun TITLE on the very first line, then the story. Reply with ONLY the title and story.\n\nOutline:\n${outline}`, 0.85);
+      `Put a fun TITLE on the very first line, then the story. Reply with ONLY the title and story.\n\nOutline:\n${outline}`, 0.85, prog);
 
     prog.textContent = '✨ Step 3 of 3: Adding the finishing touches...';
     let finalStory;
     try {
-      finalStory = await orChat(
+      finalStory = await aiChat(
         `Improve this children's story for ages 5 to 10: fix any grammar, keep simple words, make it flow smoothly, keep it wholesome with a happy ending.` + SAFE + ` ` +
-        `Keep the TITLE on the first line. Reply with ONLY the final title and story.\n\n${draft}`, 0.4);
+        `Keep the TITLE on the first line. Reply with ONLY the final title and story.\n\n${draft}`, 0.4, prog);
     } catch(e){ finalStory = draft; }   // polish is optional — fall back to the draft
 
     finalStory = cleanStory(finalStory);
@@ -1077,7 +1113,12 @@ async function generateAIStory(){
     buildAndOpenAIStory(finalStory, style);
     prog.textContent = '';
   } catch (err) {
-    prog.textContent = '😕 ' + err.message + '\nTip: check your key/model in setup, or try again.';
+    if (err.message === 'NO_WEBGPU' || err.message === 'NO_WEBGPU_NO_KEY') {
+      document.querySelector('.ai-setup').open = true;
+      prog.textContent = "😕 This browser can't run in-browser AI (needs WebGPU). Try Chrome or Edge, or add a free cloud key in the setup below.";
+    } else {
+      prog.textContent = '😕 ' + err.message + '\nPlease try again.';
+    }
   } finally {
     btn.disabled = false;
   }
