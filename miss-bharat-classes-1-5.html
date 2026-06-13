@@ -785,7 +785,7 @@ const PIECE_INFO = {
 };
 let teachOn = true;
 function toggleTeach(btn){ teachOn = !teachOn; btn.textContent = teachOn ? '🗣️ Teaching: On' : '🗣️ Teaching: Off'; if(!teachOn) speechSynthesis.cancel(); }
-function narrate(text){ if(!teachOn) return; speechSynthesis.cancel(); speak(text); }
+function narrate(text, mood){ if(!teachOn) return; speechSynthesis.cancel(); speak(text, mood); }
 
 function startChess() {
   currentGameType = 'chess';
@@ -864,13 +864,13 @@ function doChessMove(fr, fc, tr, tc) {
   let msg = captured ? `${who} moved the ${name} and captured the ${PIECE_NAMES[captured[1]]}!`
                      : `${who} moved the ${name}.`;
   if (promoted) msg += ' The Pawn became a Queen!';
-  narrate(msg);
+  narrate(msg, (captured && piece[0] === 'w') ? 'happy' : null);
 
   if (captured && captured[1] === 'K') {
     chessOver = true;
     const win = (piece[0] === 'w') ? '🎉 You win! Checkmate!' : '💻 Computer wins! Try again.';
     document.getElementById('boardStatus').textContent = win;
-    narrate((piece[0] === 'w') ? 'Hooray! You win the game!' : 'The computer wins. Try again, you can do it!');
+    narrate((piece[0] === 'w') ? 'You win the game!' : 'The computer wins. Try again, you can do it!', (piece[0] === 'w') ? 'happy' : 'oops');
   }
   chessTurn = (chessTurn === 'w') ? 'b' : 'w';
 }
@@ -981,7 +981,7 @@ function tttClick(i) {
   renderTTT();
   narrate('You placed an X.');
   let w = tttWinner(tttBoard);
-  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '🎉 You win!'; moveSound(true); narrate('Three in a row! You win! Hooray!'); return; }
+  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '🎉 You win!'; moveSound(true); narrate('Three in a row! You win!', 'happy'); return; }
   if (!tttBoard.includes('')) { tttOver = true; document.getElementById('boardStatus').textContent = "🤝 It's a draw!"; narrate("It's a draw! Good game!"); return; }
   document.getElementById('boardStatus').textContent = 'Computer thinking...';
   setTimeout(tttComputerMove, 400);
@@ -1005,7 +1005,7 @@ function tttComputerMove() {
   renderTTT();
   narrate('Computer placed an O.');
   let w = tttWinner(tttBoard);
-  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '💻 Computer wins! Try again.'; narrate('Computer got three in a row. Try again, you can do it!'); return; }
+  if (w) { tttOver = true; document.getElementById('boardStatus').textContent = '💻 Computer wins! Try again.'; narrate('Computer got three in a row. Try again, you can do it!', 'oops'); return; }
   if (!tttBoard.includes('')) { tttOver = true; document.getElementById('boardStatus').textContent = "🤝 It's a draw!"; narrate("It's a draw! Good game!"); return; }
   document.getElementById('boardStatus').textContent = 'You are ❌ — tap a square';
 }
@@ -1046,13 +1046,27 @@ function moveSound(capture){
   else { tone(440, t, 0.09, 0.18, 'sine'); }
 }
 
-function speak(text) {
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.9;
-  utterance.pitch = 1.2;
-  utterance.voice = speechSynthesis.getVoices().find(v => v.name.includes('Female')) || speechSynthesis.getVoices()[0];
-  speechSynthesis.speak(utterance);
+// Funny, bouncy cartoon expressions sprinkled in for personality
+const FUN_HAPPY = ['Yay!', 'Woohoo!', 'Wheee!', 'Ta-da!', 'Hooray!', 'Boing!', 'Yippee!'];
+const FUN_OOPS  = ['Oopsie!', 'Uh-oh!', 'Aw, shucks!', 'Whoopsie-daisy!'];
+
+function speak(text, mood) {
+  if (!text) return;
+  // add a playful exclamation for happy/sad moments
+  if (mood === 'happy') text = pickFun(FUN_HAPPY) + ' ' + text;
+  else if (mood === 'oops') text = pickFun(FUN_OOPS) + ' ' + text;
+
+  const u = new SpeechSynthesisUtterance(text);
+  // bouncy cartoon voice: high pitch + lively rate, with a little random jitter so it sounds alive
+  u.pitch = 1.5 + (Math.random() * 0.35);   // 1.50 – 1.85 (squeaky & fun)
+  u.rate  = 1.06 + (Math.random() * 0.18);  // 1.06 – 1.24 (peppy)
+  u.volume = 1;
+  const voices = speechSynthesis.getVoices();
+  // prefer a clearly playful/female voice when available
+  u.voice = voices.find(v => /(zira|samantha|google uk english female|female|woman|girl)/i.test(v.name)) || voices[0];
+  speechSynthesis.speak(u);
 }
+function pickFun(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
 // Initialize
 renderGames();
