@@ -445,11 +445,9 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 <!-- meSpeak.js — free, open-source, in-browser speech engine (our own consistent voice, no API key) -->
 <script src="https://cdn.jsdelivr.net/gh/masswerk/mespeak/mespeak.js"></script>
 
-<!-- Motion (motion npm package) loaded via CDN as an ES module, exposed for our classic script -->
-<script type="module">
-  import { animate, stagger, inView } from 'https://cdn.jsdelivr.net/npm/motion@11/+esm';
-  window.Motion = { animate, stagger, inView };
-</script>
+<!-- Motion UI (ZURB) — CSS effect classes + JS trigger -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@2.0.8/dist/motion-ui.min.css">
+<script src="https://cdn.jsdelivr.net/npm/motion-ui@2.0.8/dist/motion-ui.min.js"></script>
 
 <script>
 let currentClass = 1;
@@ -457,6 +455,17 @@ let currentPage = 'home';
 let gameActive = false;
 let currentGameType = '';
 let gameScore = 0;
+
+/* ---- Motion UI helpers (ZURB) — trigger CSS effect classes ---- */
+function mui(el, effect){
+  if (!el || !window.MotionUI) return;
+  try { MotionUI.animateIn(el, effect); } catch (e) {}
+}
+function muiStagger(selector, effect, step){
+  if (!window.MotionUI) return;
+  document.querySelectorAll(selector).forEach((el, i) =>
+    setTimeout(() => mui(el, effect), i * (step || 60)));
+}
 
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.continuous = false;
@@ -576,12 +585,8 @@ function renderGames() {
     gamesGrid.appendChild(tile);
   });
 
-  // Motion: pop the tiles in one after another
-  if (window.Motion) {
-    window.Motion.animate('.game-tile',
-      { opacity: [0, 1], transform: ['translateY(20px) scale(.96)', 'translateY(0) scale(1)'] },
-      { duration: 0.45, delay: window.Motion.stagger(0.05), easing: [0.25, 1, 0.5, 1] });
-  }
+  // Motion UI: pop the tiles in one after another
+  muiStagger('.game-tile', 'slide-in-up', 50);
 }
 
 function switchPage(page) {
@@ -590,12 +595,8 @@ function switchPage(page) {
   el.classList.add('active');
   currentPage = page;
 
-  // Motion: smooth fade + slide-up as the page appears
-  if (window.Motion) {
-    window.Motion.animate(el,
-      { opacity: [0, 1], transform: ['translateY(14px)', 'translateY(0)'] },
-      { duration: 0.4, easing: [0.25, 1, 0.5, 1] });
-  }
+  // Motion UI: smooth fade as the page appears
+  mui(el, 'fade-in');
 
   if (page !== 'boardPlayer' && musicOn) {
     stopMusic();
@@ -938,12 +939,8 @@ function renderStoryLibrary(){
     grid.appendChild(card);
   });
 
-  // Motion: stagger the story cards in
-  if (window.Motion) {
-    window.Motion.animate('.story-card',
-      { opacity: [0, 1], transform: ['translateY(20px) scale(.96)', 'translateY(0) scale(1)'] },
-      { duration: 0.45, delay: window.Motion.stagger(0.05), easing: [0.25, 1, 0.5, 1] });
-  }
+  // Motion UI: stagger the story cards in
+  muiStagger('.story-card', 'slide-in-up', 50);
 }
 
 function openStory(i){
@@ -965,11 +962,9 @@ function showPage(){
   const saveBtn = document.getElementById('saveBtn');
   if (st._ai && !st._saved) { saveBtn.style.display = ''; saveBtn.textContent = '💾 Save'; }
   else { saveBtn.style.display = 'none'; }
-  // Motion: page-turn feel — illustration zooms in, text rises
-  if (window.Motion) {
-    window.Motion.animate('#bookIllus', { opacity: [0, 1], transform: ['scale(1.05)', 'scale(1)'] }, { duration: 0.45, easing: [0.25, 1, 0.5, 1] });
-    window.Motion.animate('#bookText', { opacity: [0, 1], transform: ['translateY(12px)', 'translateY(0)'] }, { duration: 0.4, delay: 0.06 });
-  }
+  // Motion UI: page-turn feel — illustration scales in, text slides up
+  mui(document.getElementById('bookIllus'), 'scale-in-up');
+  mui(document.getElementById('bookText'), 'slide-in-up');
   stopSpeaking();
 }
 
