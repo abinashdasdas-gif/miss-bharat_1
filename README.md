@@ -13,9 +13,18 @@ A beautiful, interactive educational game for kids with voice control and AI-pow
 
 ## Setup
 
-### Prerequisites
-- Node.js 14+ installed
-- A Claude API key from [Anthropic](https://console.anthropic.com)
+### ⚡ Quick Start with GitHub Codespaces (Easiest!)
+
+1. Go to your GitHub repo: https://github.com/abinashdasdas-gif/miss-bharat_1
+2. Click **"Code"** → **"Codespaces"** → **"Create codespace on main"**
+3. Wait 2-3 minutes for the environment to load
+4. In the terminal, run:
+   ```bash
+   CLAUDE_API_KEY=sk-ant-xxxxxxxxxxxxx npm start
+   ```
+   (Replace with your actual Claude API key)
+5. Click the notification to open the app in a browser
+6. Share the URL with anyone!
 
 ### Local Development
 
