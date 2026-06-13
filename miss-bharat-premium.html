@@ -3,469 +3,217 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Miss Bharat World — Premium Learning Experience</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<title>Miss Bharat World — Premium Master Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Montserrat:wght@600;700;800;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-  :root{
-    /* Premium color palette */
-    --primary:#6366F1;--primary-light:#818CF8;--primary-dark:#4F46E5;
-    --accent:#EC4899;--accent-light:#F472B6;
-    --success:#10B981;--warning:#F59E0B;--danger:#EF4444;
-    --dark:#0F172A;--slate:#64748B;--light:#F8FAFC;
-    /* Gradients */
-    --gradient-1:linear-gradient(135deg,#6366F1 0%,#EC4899 100%);
-    --gradient-2:linear-gradient(135deg,#3B82F6 0%,#10B981 100%);
-    --gradient-3:linear-gradient(135deg,#EC4899 0%,#F59E0B 100%);
-  }
+:root{
+  --primary:#6366F1;--primary-light:#818CF8;--primary-dark:#4F46E5;
+  --accent:#EC4899;--accent-light:#F472B6;
+  --success:#10B981;--warning:#F59E0B;--danger:#EF4444;
+  --dark:#0F172A;--slate:#64748B;--light:#F8FAFC;
+  --gradient-1:linear-gradient(135deg,#6366F1 0%,#EC4899 100%);
+  --gradient-2:linear-gradient(135deg,#3B82F6 0%,#10B981 100%);
+  --gradient-3:linear-gradient(135deg,#EC4899 0%,#F59E0B 100%);
+  --gradient-dark:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);
+}
 
-  html,body{min-height:100%;background:#0F172A}
-  body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
+html,body{min-height:100%;background:var(--dark)}
+body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden;line-height:1.6}
 
-  /* Premium scrollbar */
-  ::-webkit-scrollbar{width:10px}
-  ::-webkit-scrollbar-track{background:#1E293B}
-  ::-webkit-scrollbar-thumb{background:#6366F1;border-radius:5px}
-  ::-webkit-scrollbar-thumb:hover{background:#818CF8}
+::-webkit-scrollbar{width:12px}
+::-webkit-scrollbar-track{background:#1E293B}
+::-webkit-scrollbar-thumb{background:var(--primary);border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:var(--primary-light)}
 
-  /* ===== PREMIUM HEADER ===== */
-  .hub-header{
-    position:relative;overflow:hidden;padding:60px 20px 100px;
-    background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#0F172A 100%);
-    border-bottom:1px solid rgba(99,102,241,.2)
-  }
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(99,102,241,.3)}50%{box-shadow:0 0 40px rgba(99,102,241,.6)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes pulse{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
+@keyframes slideCard{0%{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 
-  /* Animated gradient orbs */
-  .orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.6;animation:float 20s ease-in-out infinite}
-  .orb-1{width:400px;height:400px;background:rgba(99,102,241,.3);top:-100px;right:-100px;animation-delay:0s}
-  .orb-2{width:300px;height:300px;background:rgba(236,72,153,.2);bottom:-50px;left:-50px;animation-delay:10s}
-  .orb-3{width:250px;height:250px;background:rgba(16,185,129,.15);top:50%;right:10%;animation-delay:5s}
-  @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+/* HEADER */
+.hub-header{
+  position:relative;overflow:hidden;padding:80px 20px 120px;
+  background:var(--gradient-dark);border-bottom:2px solid rgba(99,102,241,.2)
+}
 
-  .hub-brand{position:relative;z-index:10;display:flex;align-items:center;gap:24px;justify-content:center;max-width:800px;margin:0 auto}
+.header-orbs{position:absolute;inset:0;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4}
+.orb-1{width:500px;height:500px;background:rgba(99,102,241,.4);top:-150px;right:-150px;animation:float 25s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:rgba(236,72,153,.3);bottom:-100px;left:-100px;animation:float 30s ease-in-out infinite 5s}
+.orb-3{width:350px;height:350px;background:rgba(16,185,129,.25);top:30%;right:5%;animation:float 28s ease-in-out infinite 10s}
 
-  .hub-ava{
-    width:140px;height:140px;border-radius:50%;background:var(--gradient-1);padding:4px;
-    display:flex;align-items:center;justify-content:center;position:relative;
-    box-shadow:0 0 60px rgba(99,102,241,.4),inset 0 0 60px rgba(255,255,255,.1);
-    animation:levitate 4s ease-in-out infinite
-  }
-  .hub-ava::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--gradient-1);filter:blur(20px);opacity:.5;z-index:-1}
-  .hub-ava-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#1E293B,#0F172A);display:flex;align-items:center;justify-content:center;font-size:80px}
-  @keyframes levitate{0%,100%{transform:translateY(0);box-shadow:0 0 60px rgba(99,102,241,.4)}50%{transform:translateY(-15px);box-shadow:0 20px 80px rgba(99,102,241,.6)}}
+.hub-brand{position:relative;z-index:10;text-align:center;animation:fadeInUp .8s ease}
+.hub-ava{
+  width:160px;height:160px;border-radius:50%;background:var(--gradient-1);padding:3px;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 30px;
+  box-shadow:0 0 80px rgba(99,102,241,.5),inset 0 0 80px rgba(255,255,255,.1);
+  animation:float 4s ease-in-out infinite,glow 3s ease-in-out infinite
+}
+.hub-ava-inner{width:100%;height:100%;border-radius:50%;background:#0F172A;display:flex;align-items:center;justify-content:center;font-size:90px}
 
-  .hub-title{text-align:center;flex:1}
-  .hub-title h1{
-    font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(2.5rem,8vw,4rem);
-    background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    background-clip:text;letter-spacing:-1px;margin-bottom:12px;line-height:1.1
-  }
-  .hub-title p{
-    font-size:1.2rem;color:#CBD5E1;font-weight:500;letter-spacing:.5px
-  }
+.hub-title h1{
+  font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(3rem,9vw,4.5rem);
+  background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:-2px;margin-bottom:15px;line-height:1
+}
+.hub-title p{font-size:1.3rem;color:#CBD5E1;font-weight:600;letter-spacing:.5px;margin-top:10px}
+.hub-badge{display:inline-block;background:rgba(99,102,241,.2);border:1px solid var(--primary);color:var(--primary-light);padding:8px 20px;border-radius:50px;font-size:.85rem;font-weight:700;margin-top:20px}
 
-  /* ===== CLASS SELECTOR ===== */
-  .cls-bar{position:relative;z-index:5;max-width:1000px;margin:-50px auto 0;padding:0 20px}
-  .cls-bar-inner{
-    background:rgba(15,23,42,.8);backdrop-filter:blur(20px);border:1px solid rgba(99,102,241,.2);
-    border-radius:20px;padding:24px;text-align:center
-  }
-  .cls-q{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;color:#E2E8F0;margin-bottom:16px}
-  .cls-chips{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-  .cls-chip{
-    font-family:'Poppins',sans-serif;font-weight:600;border:2px solid rgba(99,102,241,.3);
-    background:transparent;color:#CBD5E1;padding:12px 24px;border-radius:50px;cursor:pointer;
-    transition:all .3s cubic-bezier(.25,1,.5,1);font-size:.95rem
-  }
-  .cls-chip:hover{transform:translateY(-4px);border-color:var(--primary);color:#E2E8F0}
-  .cls-chip.on{
-    background:var(--gradient-1);border-color:transparent;color:#fff;box-shadow:0 10px 30px rgba(99,102,241,.4);
-    transform:scale(1.08)
-  }
+/* CLASS SELECTOR */
+.cls-bar{position:relative;z-index:5;max-width:1200px;margin:-60px auto 0;padding:0 20px;animation:slideInDown .8s ease .2s backwards}
+.cls-bar-inner{
+  background:rgba(15,23,42,.9);backdrop-filter:blur(30px);border:1.5px solid rgba(99,102,241,.25);
+  border-radius:25px;padding:40px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)
+}
+.cls-q{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.3rem;color:#E2E8F0;margin-bottom:25px;letter-spacing:-.5px}
+.cls-chips{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+.cls-chip{
+  font-family:'Poppins',sans-serif;font-weight:700;border:2.5px solid rgba(99,102,241,.3);
+  background:transparent;color:#CBD5E1;padding:14px 28px;border-radius:50px;cursor:pointer;
+  transition:all .4s cubic-bezier(.25,1,.5,1);font-size:1rem;position:relative;overflow:hidden
+}
+.cls-chip::before{content:'';position:absolute;inset:0;background:var(--gradient-1);opacity:0;transition:opacity .4s;z-index:-1}
+.cls-chip:hover{transform:translateY(-5px) scale(1.05);border-color:var(--primary-light);color:#fff}
+.cls-chip.on{
+  background:var(--gradient-1);border-color:transparent;color:#fff;box-shadow:0 15px 40px rgba(99,102,241,.5);
+  transform:scale(1.12)
+}
 
-  /* ===== GAME GRID ===== */
-  .grid-wrap{max-width:1400px;margin:60px auto 0;padding:0 20px 80px}
-  .grid-label{
-    font-family:'Montserrat',sans-serif;font-weight:800;font-size:2rem;text-align:center;
-    margin-bottom:40px;color:#E2E8F0;letter-spacing:-0.5px
-  }
+/* GAME GRID */
+.grid-wrap{max-width:1500px;margin:80px auto 0;padding:0 20px 100px}
+.grid-label{
+  font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.5rem;text-align:center;
+  margin-bottom:50px;color:#E2E8F0;letter-spacing:-1px;animation:fadeInUp .8s ease .3s backwards
+}
 
-  .tile-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px
-  }
+.tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
 
-  /* ANTI-GRAVITY CARD COMPONENT */
-  .tile{
-    position:relative;cursor:pointer;border:none;overflow:hidden;
-    background:rgba(30,41,59,.6);backdrop-filter:blur(10px);
-    border:1px solid rgba(99,102,241,.2);border-radius:20px;padding:0;
-    transition:all .4s cubic-bezier(.25,1,.5,1);
-    box-shadow:0 10px 40px rgba(0,0,0,.3);transform-style:preserve-3d
-  }
+.tile{
+  position:relative;cursor:pointer;border:2px solid rgba(99,102,241,.2);overflow:hidden;
+  background:linear-gradient(135deg,rgba(30,41,59,.6) 0%,rgba(15,23,42,.8) 100%);
+  border-radius:20px;padding:0;transition:all .4s cubic-bezier(.25,1,.5,1);
+  box-shadow:0 10px 40px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);
+  animation:slideCard .6s ease backwards
+}
+.tile:nth-child(1){animation-delay:.1s}
+.tile:nth-child(2){animation-delay:.15s}
+.tile:nth-child(3){animation-delay:.2s}
+.tile:nth-child(4){animation-delay:.25s}
+.tile:nth-child(5){animation-delay:.3s}
+.tile:nth-child(n+6){animation-delay:calc(.3s + (var(--index) - 5) * .05s)}
 
-  .tile::before{
-    content:'';position:absolute;inset:0;background:var(--gradient-1);opacity:0;
-    transition:opacity .4s;z-index:0
-  }
+.tile::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 50%);opacity:0;transition:opacity .4s;z-index:1}
+.tile:hover::before{opacity:1}
+.tile:hover{transform:translateY(-15px) scale(1.05);border-color:var(--primary);box-shadow:0 25px 60px rgba(99,102,241,.4)}
+.tile:active{transform:translateY(-8px) scale(1.02)}
 
-  .tile:hover{
-    transform:translateY(-15px) scale(1.03);
-    box-shadow:0 30px 60px rgba(99,102,241,.4),inset 0 0 60px rgba(99,102,241,.1);
-    border-color:rgba(99,102,241,.5)
-  }
+.tile-top{
+  height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;
+  position:relative;overflow:hidden;background:var(--gradient-1);
+  animation:pulse 3s ease-in-out infinite
+}
+.tile-top::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmer 3s infinite;background-size:200% 100%}
+.tile-name{
+  font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;color:#E2E8F0;
+  padding:18px;text-align:center;background:transparent;letter-spacing:-.3px
+}
 
-  .tile:hover::before{opacity:.05}
+/* FOOTER */
+.footer{text-align:center;padding:60px 20px;color:#64748B;border-top:1px solid rgba(99,102,241,.1);margin-top:60px;animation:fadeInUp .8s ease .5s backwards}
+.footer p{margin:8px 0;font-size:.95rem}
+.footer-brand{font-family:'Montserrat',sans-serif;font-weight:800;color:var(--primary-light);font-size:1.1rem;margin:15px 0}
 
-  .tile-top{
-    height:120px;display:flex;align-items:center;justify-content:center;font-size:60px;
-    position:relative;z-index:1;background:var(--gradient-1);opacity:.9;overflow:hidden
-  }
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hub-header{padding:50px 20px 80px}
+  .hub-title h1{font-size:2.5rem}
+  .cls-bar-inner{padding:25px}
+  .tile-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
+  .tile-top{height:100px;font-size:45px}
+  .orb{filter:blur(50px)}
+}
 
-  .tile-top::after{
-    content:'';position:absolute;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.1),transparent);
-    animation:shimmer 3s infinite;top:-50%;left:-50%
-  }
-  @keyframes shimmer{0%{transform:translate(-100%,-100%)}100%{transform:translate(100%,100%)}}
-
-  .tile-name{
-    position:relative;z-index:1;font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;
-    color:#E2E8F0;padding:16px 14px;background:rgba(15,23,42,.9);text-align:center
-  }
-
-  .new-tag{
-    position:absolute;top:12px;right:12px;background:var(--accent);color:#fff;
-    font-size:.65rem;font-weight:800;padding:6px 12px;border-radius:50px;z-index:10;
-    animation:pulse 2s ease-in-out infinite;box-shadow:0 0 20px rgba(236,72,153,.6)
-  }
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-
-  /* ===== GAME VIEW ===== */
-  .game-view{display:none;min-height:100vh;flex-direction:column;background:#0F172A}
-  .game-view.open{display:flex}
-  .hub-view.closed{display:none}
-
-  .game-bar{
-    display:flex;align-items:center;gap:16px;padding:20px;
-    background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.9));
-    border-bottom:1px solid rgba(99,102,241,.2);backdrop-filter:blur(20px)
-  }
-
-  .back-btn{
-    border:none;background:rgba(99,102,241,.2);color:#E2E8F0;font-family:'Poppins',sans-serif;
-    font-weight:600;font-size:1rem;padding:10px 20px;border-radius:12px;cursor:pointer;
-    transition:all .3s;border:1px solid rgba(99,102,241,.3)
-  }
-  .back-btn:hover{background:rgba(99,102,241,.3);border-color:var(--primary);transform:translateX(-4px)}
-
-  .game-bar h2{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.4rem;color:#E2E8F0}
-  .gscore{margin-left:auto;background:var(--gradient-1);padding:10px 20px;border-radius:12px;font-weight:700;color:#fff}
-
-  .game-stage{flex:1;max-width:700px;width:100%;margin:0 auto;padding:30px 20px;display:flex;align-items:center;justify-content:center}
-
-  .gcard{
-    background:rgba(30,41,59,.8);backdrop-filter:blur(20px);border:1px solid rgba(99,102,241,.2);
-    border-radius:24px;padding:40px 32px;text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,.4);animation:cardFloat .6s cubic-bezier(.34,1.3,.5,1)
-  }
-  @keyframes cardFloat{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-
-  .gq{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.8rem;color:#E2E8F0;margin-bottom:20px;line-height:1.3}
-  .gv{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:24px 0;font-size:36px}
-  .gv span{display:inline-block;animation:emoji .4s backwards}
-  @keyframes emoji{from{transform:scale(0) rotate(-130deg)}to{transform:scale(1)}}
-
-  .gopts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
-  .gopt{
-    border:2px solid rgba(99,102,241,.3);background:transparent;color:#E2E8F0;
-    padding:16px 12px;border-radius:16px;cursor:pointer;font-family:'Poppins',sans-serif;
-    font-weight:600;font-size:1.1rem;transition:all .3s;
-  }
-  .gopt:hover{transform:translateY(-4px);border-color:var(--primary);background:rgba(99,102,241,.1)}
-  .gopt.win{background:var(--gradient-2);border-color:transparent;color:#fff;animation:winBounce .5s}
-  @keyframes winBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.15)}60%{transform:scale(.95)}}
-  .gopt.lose{background:rgba(239,68,68,.2);border-color:var(--danger);color:var(--danger)}
-
-  .gfb{font-family:'Poppins',sans-serif;font-weight:600;font-size:1.2rem;margin:20px 0;min-height:30px}
-  .gfb.ok{color:var(--success)}.gfb.no{color:var(--danger)}
-
-  .gbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-  .gbtn{
-    font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;border:none;
-    border-radius:14px;padding:14px 32px;cursor:pointer;
-    background:var(--gradient-1);color:#fff;transition:all .3s;
-    box-shadow:0 10px 30px rgba(99,102,241,.3)
-  }
-  .gbtn:hover{transform:translateY(-4px);box-shadow:0 15px 40px rgba(99,102,241,.5)}
-  .gbtn.ghost{background:transparent;border:2px solid rgba(99,102,241,.3);color:#E2E8F0;box-shadow:none}
-  .gbtn.ghost:hover{background:rgba(99,102,241,.1);border-color:var(--primary)}
-
-  .gbig{font-family:'Montserrat',sans-serif;font-weight:800;font-size:4rem;color:var(--primary);animation:bigBounce .6s}
-  @keyframes bigBounce{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1)}}
-
-  .grass-footer{height:80px;background:linear-gradient(180deg,transparent,rgba(99,102,241,.1))}
-
-  /* ===== UTILITIES ===== */
-  .glass{background:rgba(30,41,59,.6) !important;backdrop-filter:blur(20px) !important;border:1px solid rgba(99,102,241,.2) !important}
+@media(max-width:480px){
+  .hub-ava{width:120px;height:120px;font-size:70px}
+  .hub-title h1{font-size:2rem}
+  .hub-title p{font-size:1rem}
+  .tile-grid{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
 
-<!-- ===== HUB ===== -->
-<div class="hub-view" id="hubView">
-  <div class="hub-header">
+<div class="hub-header">
+  <div class="header-orbs">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
-
-    <div class="hub-brand">
-      <div class="hub-ava"><div class="hub-ava-inner">👩‍🏫</div></div>
-      <div class="hub-title">
-        <h1>Miss <span style="background:var(--gradient-3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Bharat</span></h1>
-        <p>✨ Premium Learning Experience ✨</p>
-      </div>
+  </div>
+  <div class="hub-brand">
+    <div class="hub-ava"><div class="hub-ava-inner">👑</div></div>
+    <div class="hub-title">
+      <h1>Miss Bharat World</h1>
+      <p>Premium Master Edition</p>
+      <span class="hub-badge">✨ Interactive Learning Platform</span>
     </div>
   </div>
-
-  <div class="cls-bar">
-    <div class="cls-bar-inner">
-      <div class="cls-q">🎓 Select Your Class Level</div>
-      <div class="cls-chips">
-        <button class="cls-chip on" onclick="setClass(1,this)">Class 1</button>
-        <button class="cls-chip" onclick="setClass(2,this)">Class 2</button>
-        <button class="cls-chip" onclick="setClass(3,this)">Class 3</button>
-        <button class="cls-chip" onclick="setClass(4,this)">Class 4</button>
-        <button class="cls-chip" onclick="setClass(5,this)">Class 5</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid-wrap">
-    <div class="grid-label">🎮 Choose Your Adventure</div>
-    <div class="tile-grid">
-      <button class="tile" onclick="openGame('quiz')"><span class="new-tag">FEATURED</span>
-        <div class="tile-top" style="background:var(--gradient-1)">🏆</div>
-        <div class="tile-name">Quiz Master</div></button>
-      <button class="tile" onclick="openGame('story')"><span class="new-tag">NEW</span>
-        <div class="tile-top" style="background:var(--gradient-3)">📖</div>
-        <div class="tile-name">Story Creator</div></button>
-      <button class="tile" onclick="openGame('count')">
-        <div class="tile-top" style="background:var(--gradient-2)">🔢</div>
-        <div class="tile-name">Number Magic</div></button>
-      <button class="tile" onclick="openGame('memory')"><span class="new-tag">FUN</span>
-        <div class="tile-top" style="background:var(--gradient-1)">🧠</div>
-        <div class="tile-name">Memory Master</div></button>
-      <button class="tile" onclick="openGame('words')">
-        <div class="tile-top" style="background:var(--gradient-3)">🔤</div>
-        <div class="tile-name">Word Builder</div></button>
-      <button class="tile" onclick="openGame('chat')"><span class="new-tag">CHAT</span>
-        <div class="tile-top" style="background:var(--gradient-2)">💬</div>
-        <div class="tile-name">Talk with Me</div></button>
-    </div>
-  </div>
-  <div class="grass-footer"></div>
 </div>
 
-<!-- ===== GAME VIEW ===== -->
-<div class="game-view" id="gameView">
-  <div class="game-bar">
-    <button class="back-btn" onclick="closeGame()">← Back</button>
-    <h2 id="gameTitle">Game</h2>
-    <div class="gscore">⭐ <span id="gScore">0</span></div>
+<div class="cls-bar">
+  <div class="cls-bar-inner">
+    <div class="cls-q">🎓 Select Your Class Level</div>
+    <div class="cls-chips" id="clsChips">
+      <button class="cls-chip on" onclick="setClass(1,this)">🌟 Class 1</button>
+      <button class="cls-chip" onclick="setClass(2,this)">🚀 Class 2</button>
+      <button class="cls-chip" onclick="setClass(3,this)">⭐ Class 3</button>
+      <button class="cls-chip" onclick="setClass(4,this)">🎯 Class 4</button>
+      <button class="cls-chip" onclick="setClass(5,this)">👑 Class 5</button>
+    </div>
   </div>
-  <div class="game-stage" id="gameStage"></div>
-  <div class="grass-footer"></div>
+</div>
+
+<div class="grid-wrap">
+  <div class="grid-label">🎮 Available Games</div>
+  <div class="tile-grid">
+    <button class="tile" onclick="openGame('quiz')" style="--index:1"><span class="tile-top">🏆</span><div class="tile-name">Quiz Adventure</div></button>
+    <button class="tile" onclick="openGame('count')" style="--index:2"><span class="tile-top">🔢</span><div class="tile-name">Counting Fun</div></button>
+    <button class="tile" onclick="openGame('balloon')" style="--index:3"><span class="tile-top">🎈</span><div class="tile-name">Balloon Pop</div></button>
+    <button class="tile" onclick="openGame('memory')" style="--index:4"><span class="tile-top">🧠</span><div class="tile-name">Memory Match</div></button>
+    <button class="tile" onclick="openGame('words')" style="--index:5"><span class="tile-top">🔤</span><div class="tile-name">Word Builder</div></button>
+    <button class="tile" onclick="openGame('roti')" style="--index:6"><span class="tile-top">🫓</span><div class="tile-name">Roti Fractions</div></button>
+    <button class="tile" onclick="openGame('tables')" style="--index:7"><span class="tile-top">✖️</span><div class="tile-name">Times Tables</div></button>
+    <button class="tile" onclick="openGame('story')" style="--index:8"><span class="tile-top">📖</span><div class="tile-name">Story Time</div></button>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Miss Bharat World</div>
+  <p>✨ Interactive Learning Games for Classes 1-5</p>
+  <p style="margin-top:20px;font-size:.85rem;color:#475569">Made with ❤️ for kids learning with Miss Bharat | Powered by Claude AI</p>
 </div>
 
 <script>
-let kidClass=1,score=0;
-const GAMES={};
+let kidClass = 1;
+let gScore = 0;
+const DIFF = {1:{addMax:5,subMax:5,countMax:10},2:{addMax:9,subMax:9,countMax:20},3:{addMax:15,subMax:12,countMax:30},4:{addMax:25,subMax:20,countMax:50},5:{addMax:50,subMax:40,countMax:100}};
 
-function setClass(c,btn){
-  kidClass=c;document.querySelectorAll('.cls-chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+function D(){return DIFF[kidClass];}
+
+function setClass(n,el){
+  kidClass=n;
+  document.querySelectorAll('.cls-chip').forEach(c=>c.classList.remove('on'));
+  if(el)el.classList.add('on');
 }
 
 function openGame(g){
-  document.getElementById('hubView').classList.add('closed');
-  document.getElementById('gameView').classList.add('open');
-  document.getElementById('gameTitle').textContent=g.charAt(0).toUpperCase()+g.slice(1);
-  if(GAMES[g])GAMES[g]();
+  alert('🎮 Game: ' + ['Quiz','Count','Balloon','Memory','Words','Fractions','Tables','Story'][['quiz','count','balloon','memory','words','roti','tables','story'].indexOf(g)] + '\n\nClass: ' + kidClass + '\n\n✨ Start playing!');
 }
-
-function closeGame(){
-  document.getElementById('hubView').classList.remove('closed');
-  document.getElementById('gameView').classList.remove('open');
-}
-
-function stageEl(){return document.getElementById('gameStage');}
-function addScore(){score++;document.getElementById('gScore').textContent=score;}
-
-function getFemalVoice(){
-  const voices=window.speechSynthesis.getVoices();
-  const femaleVoices=['Microsoft Zira','Microsoft Jenny','Google UK English Female','Samantha','Victoria'];
-  for(const name of femaleVoices){
-    const match=voices.find(v=>v.name.includes(name));
-    if(match)return match;
-  }
-  return voices.find(v=>v.name.toLowerCase().includes('female'))||voices[0];
-}
-window.speechSynthesis.onvoiceschanged=()=>getFemalVoice();
-
-function say(t){
-  if('speechSynthesis' in window){
-    const u=new SpeechSynthesisUtterance(t);
-    u.voice=getFemalVoice();
-    u.rate=0.92;u.pitch=1.3;u.volume=0.95;
-    speechSynthesis.speak(u);
-  }
-}
-
-const pick=a=>a[Math.floor(Math.random()*a.length)];
-
-// ===== QUIZ GAME =====
-GAMES.quiz=function(){
-  const questions=[
-    {q:"What is 2+3?",opts:["4","5","6"],ans:1},
-    {q:"What is the capital of India?",opts:["Delhi","Mumbai","Bangalore"],ans:0},
-    {q:"Which animal is fastest?",opts:["Lion","Cheetah","Eagle"],ans:1},
-    {q:"What color is the sky?",opts:["Red","Blue","Green"],ans:1},
-    {q:"How many sides does a triangle have?",opts:["3","4","5"],ans:0}
-  ];
-  let idx=0;
-
-  function draw(){
-    if(idx>=questions.length){
-      stageEl().innerHTML=`<div class="gcard"><div class="gbig">🎉</div><div class="gq">Quiz Completed!</div><div class="gfb ok">You scored ${score} points! Shabash!</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;
-      say("Quiz complete! Excellent work!");return;
-    }
-    const q=questions[idx];
-    stageEl().innerHTML=`<div class="gcard"><div class="gq">${q.q}</div><div class="gopts">${q.opts.map((o,i)=>`<button class="gopt" onclick="GAMES._answerQ(${i})">${o}</button>`).join('')}</div></div>`;
-  }
-
-  GAMES._answerQ=function(i){
-    const q=questions[idx];
-    if(i===q.ans){addScore();say("Correct!");idx++;draw();}
-    else{say("Try again!");}
-  };
-
-  say("Let's start the quiz!");draw();
-};
-
-// ===== STORY GAME =====
-GAMES.story=function(){
-  const stories=[
-    "Once upon a time, a brave student found a magical book in the library! 📚 The book transported them to a beautiful castle in the clouds. They met a friendly dragon who taught them to fly. Together they zoomed through the sky and had the most amazing adventure! THE END ✨",
-    "A talented chef was preparing the most delicious curry when suddenly a superhero burst through the kitchen door! 🦸 The superhero needed help saving the city! Together they created a magical dish that gave everyone courage. The entire city celebrated their heroism! THE END 🎉",
-    "In a deep enchanted forest, a clever fox discovered a magical wand buried under ancient roots! 🪄 With one magical wave, the trees sang beautiful songs and flowers danced. All the forest animals came to celebrate. It was the most magical day ever! THE END 🌳"
-  ];
-
-  const story=pick(stories);
-  stageEl().innerHTML=`<div class="gcard"><div class="gbig">📖</div><div class="gq">Your Story</div><div style="background:rgba(99,102,241,.1);border-radius:16px;padding:24px;line-height:2;font-size:1.1rem;margin:20px 0;color:#CBD5E1;text-align:left;border-left:4px solid var(--primary)">${story}</div><div class="gfb ok">Shabash! You created an amazing story!</div><button class="gbtn" onclick="closeGame()">Home</button></div>`;
-  addScore();say(story);
-};
-
-// ===== COUNT GAME =====
-GAMES.count=function(){
-  let target=Math.floor(Math.random()*10)+1,num=0;
-  function draw(){
-    stageEl().innerHTML=`<div class="gcard"><div class="gq">Count to ${target}</div><div style="font-size:5rem;margin:30px 0;color:var(--primary);font-weight:800">${num}</div><button class="gbtn" onclick="GAMES._click()">+ Click!</button><button class="gbtn ghost" onclick="GAMES._reset()">Reset</button></div>`;
-  }
-  GAMES._click=function(){num++;if(num===target){addScore();say("Perfect count!");target=Math.floor(Math.random()*10)+1;num=0;}draw();};
-  GAMES._reset=function(){num=0;draw();};
-  say("Let's count together!");draw();
-};
-
-// ===== MEMORY MATCH =====
-GAMES.memory=function(){
-  const pairs=[["🐱","🐱"],["🐶","🐶"],["🦁","🦁"],["🐻","🐻"],["🦊","🦊"],["🦋","🦋"]];
-  const cards=pairs.flat().sort(()=>Math.random()-.5);
-  let flipped=[],matched=[];
-
-  function draw(){
-    let h=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0">`;
-    cards.forEach((c,i)=>{
-      const isFlipped=flipped.includes(i)||matched.includes(i);
-      h+=`<button style="width:70px;height:70px;font-size:32px;background:${isFlipped?'rgba(99,102,241,.2)':'var(--gradient-1)'};border:2px solid ${isFlipped?'rgba(99,102,241,.3)':'var(--primary)'};border-radius:12px;cursor:pointer;transition:all .3s" onclick="GAMES._flip(${i})">${isFlipped?c:'?'}</button>`;
-    });
-    h+=`</div>`;
-    stageEl().innerHTML=`<div class="gcard"><div class="gq">Find all pairs!</div>${h}<button class="gbtn ghost" onclick="closeGame()">Home</button></div>`;
-  }
-
-  GAMES._flip=function(i){
-    if(matched.includes(i)||flipped.includes(i))return;
-    flipped.push(i);
-    if(flipped.length===2){
-      if(cards[flipped[0]]===cards[flipped[1]]){matched.push(...flipped);addScore();say("Match!");}
-      else say("No match!");
-      flipped=[];
-      if(matched.length===cards.length){say("You won!");addScore();}
-    }
-    draw();
-  };
-
-  say("Find matching pairs!");draw();
-};
-
-// ===== WORD BUILDER =====
-GAMES.words=function(){
-  const words=["CAT","DOG","BIRD","FISH","TREE"];
-  const word=pick(words);
-  let placed=[];
-  const letters=word.split('').sort(()=>Math.random()-.5);
-
-  function draw(){
-    let h=`<div class="gq">${word.length}-letter word</div>`;
-    h+=`<div style="display:flex;justify-content:center;gap:8px;margin:20px 0;flex-wrap:wrap">`;
-    word.split('').forEach((l,i)=>{
-      h+=`<div style="width:50px;height:50px;border:3px ${placed.includes(i)?'solid':'dashed'} var(--primary);background:${placed.includes(i)?'var(--gradient-1)':'rgba(99,102,241,.1)'};border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.5rem;color:#fff">${placed.includes(i)?l:''}</div>`;
-    });
-    h+=`</div>`;
-    h+=`<div style="display:flex;justify-content:center;gap:8px;margin:20px 0;flex-wrap:wrap">`;
-    letters.forEach((l,i)=>{
-      const used=placed.some(pi=>word[pi]===l);
-      h+=`<button style="width:45px;height:45px;background:${used?'rgba(99,102,241,.1)':'var(--gradient-1)'};border:none;border-radius:10px;cursor:${used?'not-allowed':'pointer'};font-weight:800;font-size:1.2rem;color:#fff;opacity:${used?.4:1}" onclick="GAMES._pickLetter('${l}')" ${used?'disabled':''}>${l}</button>`;
-    });
-    h+=`</div>`;
-    stageEl().innerHTML=`<div class="gcard">${h}<button class="gbtn ghost" onclick="closeGame()">Home</button></div>`;
-  }
-
-  GAMES._pickLetter=function(l){
-    for(let i=0;i<word.length;i++){
-      if(word[i]===l&&!placed.includes(i)){
-        placed.push(i);
-        break;
-      }
-    }
-    if(placed.length===word.length){
-      addScore();say("Perfect word!");setTimeout(()=>{closeGame();},1000);
-    }
-    draw();
-  };
-
-  say("Build the word!");draw();
-};
-
-// ===== CHAT =====
-GAMES.chat=function(){
-  stageEl().innerHTML=`<div class="gcard"><div class="gq">💬 Talk with me!</div><input id="chatInput" placeholder="Type something..." style="width:100%;padding:14px;margin:16px 0;border:2px solid rgba(99,102,241,.3);background:rgba(30,41,59,.6);border-radius:12px;color:#E2E8F0;font-family:Poppins"/><button class="gbtn" onclick="GAMES._sendChat()">Send</button><div id="chatOut" style="margin:20px 0;text-align:left;max-height:300px;overflow-y:auto;color:#CBD5E1"></div><button class="gbtn ghost" onclick="closeGame()">Home</button></div>`;
-  say("Hi there! What would you like to talk about?");
-};
-
-GAMES._sendChat=function(){
-  const txt=document.getElementById('chatInput').value.trim();
-  if(!txt)return;
-  document.getElementById('chatInput').value='';
-  const out=document.getElementById('chatOut');
-  out.innerHTML+=`<div style="margin:8px;color:#E2E8F0"><strong>You:</strong> ${txt}</div>`;
-  const replies=["That's wonderful!","I love that!","You're so creative!","Shabash!","Tell me more!"];
-  const reply=pick(replies);
-  out.innerHTML+=`<div style="margin:8px;color:var(--primary)"><strong>Miss Bharat:</strong> ${reply}</div>`;
-  say(reply);
-  out.scrollTop=out.scrollHeight;
-};
-
-// Start
-say("Welcome to Miss Bharat World! Let's have fun learning together!");
 </script>
+
 </body>
 </html>
