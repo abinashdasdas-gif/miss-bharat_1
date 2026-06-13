@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Miss Bharat World — Premium Level 👑</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&family=Montserrat:wght@500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+@keyframes slideInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(99,102,241,.3)}50%{box-shadow:0 0 40px rgba(99,102,241,.6)}}
+@keyframes shimmer{0%,100%{background-position:200% center}50%{background-position:-200% center}}
+
+html,body{min-height:100%;font-family:'Nunito',sans-serif;scroll-behavior:smooth}
+
+/* CLASS THEMES */
+.theme-c1{background:linear-gradient(135deg,#FFE5EC 0%,#FFF0E6 100%)}
+.theme-c2{background:linear-gradient(135deg,#E8F8F0 0%,#E8F5F7 100%)}
+.theme-c3{background:linear-gradient(135deg,#F0E8FF 0%,#F0EBFF 100%)}
+.theme-c4{background:linear-gradient(135deg,#FFE8F5 0%,#F0E8FF 100%)}
+.theme-c5{background:linear-gradient(135deg,#1D3557 0%,#2E5090 100%);color:#fff}
+
+body{color:#2D3A52;overflow-x:hidden;transition:background 0.5s ease}
+
+/* HEADER */
+.header{padding:40px 20px;text-align:center;animation:slideInDown 0.8s ease;position:relative;z-index:10}
+.header-title{font-family:'Montserrat',sans-serif;font-size:clamp(2rem,8vw,3.5rem);font-weight:900;margin:15px 0;background:linear-gradient(135deg,#FF6B9D,#9B5DE5,#00D9FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px}
+.header-subtitle{font-size:1.3rem;opacity:0.8;margin:10px 0;font-weight:600}
+.header-emoji{font-size:3rem;animation:float 4s ease-in-out infinite;display:inline-block;margin-right:10px}
+
+/* CLASS SELECTOR */
+.class-selector{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin:35px auto;max-width:650px;padding:0 20px;animation:slideUp 0.8s ease 0.2s backwards}
+.class-btn{padding:18px;border:none;border-radius:16px;cursor:pointer;font-weight:700;font-size:1.1rem;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.15);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px}
+.class-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);transform:translateX(-100%);transition:transform 0.3s}
+.class-btn:hover::before{transform:translateX(100%)}
+.class-btn:hover{transform:translateY(-8px) scale(1.08);box-shadow:0 12px 30px rgba(0,0,0,0.25)}
+.class-btn:active{transform:translateY(-4px) scale(1.04)}
+.c1-btn{background:linear-gradient(135deg,#FF6B9D,#FF8E72);color:#fff}
+.c2-btn{background:linear-gradient(135deg,#6BCB77,#4D96FF);color:#fff}
+.c3-btn{background:linear-gradient(135deg,#9B5DE5,#00D9FF);color:#fff}
+.c4-btn{background:linear-gradient(135deg,#FF006E,#FF5E78);color:#fff}
+.c5-btn{background:linear-gradient(135deg,#1D3557,#F77F00);color:#fff}
+
+.class-label{font-size:0.75rem;opacity:0.9;font-weight:500}
+
+/* CONTAINER */
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* CLASS PAGE */
+.class-page{display:none;min-height:100vh;padding:40px 20px;animation:fadeIn 0.6s ease}
+.class-page.active{display:block}
+
+.class-info{text-align:center;margin-bottom:40px;animation:slideUp 0.8s ease 0.1s backwards}
+.class-info h2{font-family:'Montserrat',sans-serif;font-size:2.2rem;font-weight:900;margin:20px 0;letter-spacing:-0.5px}
+.class-info p{font-size:1.1rem;opacity:0.85;line-height:1.6;max-width:600px;margin:15px auto}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:15px;margin:30px 0;padding:25px;background:rgba(255,255,255,0.6);border-radius:20px;backdrop-filter:blur(10px);animation:slideUp 0.8s ease 0.2s backwards}
+.stat{text-align:center;padding:20px;background:rgba(255,255,255,0.8);border-radius:15px;transition:all 0.3s}
+.stat:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.1)}
+.stat-num{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#FF6B9D,#9B5DE5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.stat-label{font-size:0.85rem;opacity:0.7;margin-top:8px;font-weight:600}
+
+/* GAMES GRID */
+.games-title{font-family:'Montserrat',sans-serif;font-size:1.8rem;font-weight:800;text-align:center;margin:40px 0 25px;letter-spacing:-0.5px;animation:slideUp 0.8s ease 0.3s backwards}
+
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;margin:30px 0;animation:slideUp 0.8s ease 0.4s backwards}
+
+.game-card{background:#fff;border-radius:18px;padding:0;cursor:pointer;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.12);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;border:2px solid rgba(255,255,255,0)}
+.game-card:hover{transform:translateY(-15px) scale(1.05);box-shadow:0 16px 40px rgba(0,0,0,0.2);border-color:rgba(99,102,241,0.3)}
+.game-card:active{transform:translateY(-10px) scale(1.02)}
+
+.game-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.4));opacity:0;transition:opacity 0.3s;z-index:1}
+.game-card:hover::before{opacity:1}
+
+.game-icon{height:100px;display:flex;align-items:center;justify-content:center;font-size:50px;position:relative;z-index:0}
+.game-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:0.95rem;color:#2D3A52;padding:12px;text-align:center;background:#fff;position:relative;z-index:2}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px 20px;color:#888;margin-top:40px;animation:slideUp 0.8s ease 0.5s backwards}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+.header-title{font-size:1.8rem}
+.class-selector{grid-template-columns:repeat(5,1fr);gap:8px}
+.class-btn{padding:12px;font-size:0.9rem}
+.game-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+}
+
+/* SMOOTH TRANSITIONS */
+* {transition:color 0.3s ease,background 0.3s ease}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header theme-c1" id="headerBg">
+  <div class="header-emoji">👑</div>
+  <h1 class="header-title">Premium Level</h1>
+  <p class="header-subtitle">Interactive Learning Games for All Classes</p>
+</div>
+
+<!-- CLASS SELECTOR -->
+<div class="container">
+  <div class="class-selector">
+    <button class="class-btn c1-btn" onclick="selectClass(1)" data-class="1">
+      <span>🌟</span>
+      <span class="class-label">Class 1</span>
+    </button>
+    <button class="class-btn c2-btn" onclick="selectClass(2)" data-class="2">
+      <span>🚀</span>
+      <span class="class-label">Class 2</span>
+    </button>
+    <button class="class-btn c3-btn" onclick="selectClass(3)" data-class="3">
+      <span>⭐</span>
+      <span class="class-label">Class 3</span>
+    </button>
+    <button class="class-btn c4-btn" onclick="selectClass(4)" data-class="4">
+      <span>🎯</span>
+      <span class="class-label">Class 4</span>
+    </button>
+    <button class="class-btn c5-btn" onclick="selectClass(5)" data-class="5">
+      <span>👑</span>
+      <span class="class-label">Class 5</span>
+    </button>
+  </div>
+</div>
+
+<!-- CLASS PAGES -->
+<div id="classPages"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>✨ Made with ❤️ for kids learning with Miss Bharat</p>
+  <p style="margin-top:15px;font-size:0.9rem;opacity:0.6">🎮 Interactive Games | 🎤 Voice Control | 📖 Story Creator</p>
+</div>
+
+<script>
+const CLASS_DATA = {
+  1: {
+    title: 'Class 1 🌟',
+    subtitle: 'Fun Adventures for Little Learners (Age 6)',
+    description: 'Simple games with bright colors and lots of fun! Learn numbers, letters, shapes, and colors through play.',
+    themeClass: 'theme-c1',
+    games: [
+      {name: 'Count Me', emoji: '🔢'},
+      {name: 'Color Play', emoji: '🎨'},
+      {name: 'Letter Quest', emoji: '🔤'},
+      {name: 'Shape Hunt', emoji: '🔷'},
+      {name: 'Rhyme Time', emoji: '🎵'},
+      {name: 'Memory Game', emoji: '🧠'},
+      {name: 'Story Time', emoji: '📖'},
+      {name: 'Voice Chat', emoji: '👩‍🏫'},
+    ],
+    stats: {games: 8, level: 'Easy', time: '15-20 min'},
+  },
+  2: {
+    title: 'Class 2 🚀',
+    subtitle: 'Growing Smart with Adventures (Age 7)',
+    description: 'Challenge yourself with word building, patterns, and creative stories. Level up your skills with engaging games!',
+    themeClass: 'theme-c2',
+    games: [
+      {name: 'Word Builder', emoji: '📝'},
+      {name: 'Number Friends', emoji: '🔢'},
+      {name: 'Pattern Quest', emoji: '🎲'},
+      {name: 'Riddle Master', emoji: '🧩'},
+      {name: 'Story Creator', emoji: '📖'},
+      {name: 'Chat Master', emoji: '💬'},
+      {name: 'Music Rhythm', emoji: '🎵'},
+      {name: 'Speed Count', emoji: '⚡'},
+    ],
+    stats: {games: 8, level: 'Medium', time: '20-25 min'},
+  },
+  3: {
+    title: 'Class 3 ⭐',
+    subtitle: 'Knowledge Explorer (Age 8)',
+    description: 'Dive deep into quizzes, puzzles, and logic games. Expand your knowledge and problem-solving skills!',
+    themeClass: 'theme-c3',
+    games: [
+      {name: 'Knowledge Quiz', emoji: '🧠'},
+      {name: 'Word Puzzle', emoji: '🔍'},
+      {name: 'Math Master', emoji: '📐'},
+      {name: 'Logic Game', emoji: '⚙️'},
+      {name: 'Science Quest', emoji: '🔬'},
+      {name: 'Story Master', emoji: '📚'},
+      {name: 'Debate Time', emoji: '🗣️'},
+      {name: 'Chess Challenge', emoji: '♟️'},
+    ],
+    stats: {games: 8, level: 'Hard', time: '25-30 min'},
+  },
+  4: {
+    title: 'Class 4 🎯',
+    subtitle: 'Advanced Challenger (Age 9)',
+    description: 'Master complex challenges, strategic thinking, and advanced problem-solving. Push your limits!',
+    themeClass: 'theme-c4',
+    games: [
+      {name: 'Advanced Quiz', emoji: '🏆'},
+      {name: 'Code Breaker', emoji: '💻'},
+      {name: 'Debate Topics', emoji: '🎤'},
+      {name: 'Research Quest', emoji: '📊'},
+      {name: 'Strategy Game', emoji: '♟️'},
+      {name: 'Data Analysis', emoji: '📈'},
+      {name: 'Story Craft', emoji: '✍️'},
+      {name: 'Master Chat', emoji: '🧠'},
+    ],
+    stats: {games: 8, level: 'Very Hard', time: '30-40 min'},
+  },
+  5: {
+    title: 'Class 5 👑',
+    subtitle: 'Elite Champion League (Age 10)',
+    description: 'The ultimate challenge awaits! Compete, create, and showcase mastery across all domains!',
+    themeClass: 'theme-c5',
+    games: [
+      {name: 'Championship Quiz', emoji: '🏅'},
+      {name: 'Master Challenge', emoji: '👑'},
+      {name: 'Tournament Mode', emoji: '🏆'},
+      {name: 'Create Project', emoji: '🎨'},
+      {name: 'Global Quest', emoji: '🌍'},
+      {name: 'Leaderboard', emoji: '📊'},
+      {name: 'Master Craft', emoji: '⭐'},
+      {name: 'AI Chat Pro', emoji: '🤖'},
+    ],
+    stats: {games: 8, level: 'Insane', time: '40-50 min'},
+  }
+};
+
+function selectClass(classNum) {
+  // Update header theme
+  const header = document.getElementById('headerBg');
+  const data = CLASS_DATA[classNum];
+  header.className = 'header ' + data.themeClass;
+
+  // Update all buttons
+  document.querySelectorAll('.class-btn').forEach(btn => {
+    btn.style.opacity = btn.dataset.class == classNum ? '1' : '0.6';
+    btn.style.transform = btn.dataset.class == classNum ? 'scale(1)' : 'scale(0.95)';
+  });
+
+  // Show/hide class pages
+  document.querySelectorAll('.class-page').forEach(page => {
+    page.classList.remove('active');
+  });
+  document.getElementById(`class-page-${classNum}`).classList.add('active');
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function renderClassPages() {
+  const container = document.getElementById('classPages');
+
+  Object.entries(CLASS_DATA).forEach(([classNum, data]) => {
+    const page = document.createElement('div');
+    page.id = `class-page-${classNum}`;
+    page.className = `class-page ${data.themeClass} ${classNum == 1 ? 'active' : ''}`;
+
+    const gamesHTML = data.games.map((game, idx) => `
+      <div class="game-card" style="animation-delay:${idx * 0.05}s">
+        <div class="game-icon">${game.emoji}</div>
+        <div class="game-name">${game.name}</div>
+      </div>
+    `).join('');
+
+    page.innerHTML = `
+      <div class="container">
+        <div class="class-info">
+          <h2>${data.title}</h2>
+          <p style="font-size:1.2rem;font-weight:600;opacity:0.9">${data.subtitle}</p>
+          <p>${data.description}</p>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-num">${data.stats.games}</span>
+            <div class="stat-label">Games</div>
+          </div>
+          <div class="stat">
+            <span class="stat-num">${data.stats.level}</span>
+            <div class="stat-label">Difficulty</div>
+          </div>
+          <div class="stat">
+            <span class="stat-num">${data.stats.time}</span>
+            <div class="stat-label">Duration</div>
+          </div>
+        </div>
+
+        <h3 class="games-title">🎮 Available Games</h3>
+        <div class="game-grid">${gamesHTML}</div>
+      </div>
+    `;
+
+    container.appendChild(page);
+  });
+}
+
+// Initialize
+renderClassPages();
+</script>
+
+</body>
+</html>
