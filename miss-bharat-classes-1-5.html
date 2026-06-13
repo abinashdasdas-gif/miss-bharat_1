@@ -937,6 +937,13 @@ function renderStoryLibrary(){
     card.innerHTML = `<div class="story-cover">${st.cover}</div><div class="story-info"><h3>${st.title}</h3><p>${st.blurb}</p><div class="story-meta">📄 ${st.pages.length} pages · 🔊 Narrated</div></div>`;
     grid.appendChild(card);
   });
+
+  // Motion: stagger the story cards in
+  if (window.Motion) {
+    window.Motion.animate('.story-card',
+      { opacity: [0, 1], transform: ['translateY(20px) scale(.96)', 'translateY(0) scale(1)'] },
+      { duration: 0.45, delay: window.Motion.stagger(0.05), easing: [0.25, 1, 0.5, 1] });
+  }
 }
 
 function openStory(i){
@@ -958,6 +965,11 @@ function showPage(){
   const saveBtn = document.getElementById('saveBtn');
   if (st._ai && !st._saved) { saveBtn.style.display = ''; saveBtn.textContent = '💾 Save'; }
   else { saveBtn.style.display = 'none'; }
+  // Motion: page-turn feel — illustration zooms in, text rises
+  if (window.Motion) {
+    window.Motion.animate('#bookIllus', { opacity: [0, 1], transform: ['scale(1.05)', 'scale(1)'] }, { duration: 0.45, easing: [0.25, 1, 0.5, 1] });
+    window.Motion.animate('#bookText', { opacity: [0, 1], transform: ['translateY(12px)', 'translateY(0)'] }, { duration: 0.4, delay: 0.06 });
+  }
   stopSpeaking();
 }
 
