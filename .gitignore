@@ -40,3 +40,5 @@ build/
 !start.sh
 !.devcontainer/
 !.devcontainer/devcontainer.json
+!data/
+!data/content.json

@@ -1,0 +1,120 @@
+{
+  "classes": {
+    "1": {
+      "name": "Class 1",
+      "age": "6 years",
+      "title": "Building Foundations",
+      "description": "Learning numbers 1-20, basic shapes, colors, simple words, and early reading skills with voice interaction.",
+      "games": [
+        { "emoji": "🗣️", "title": "Speaking Quest", "desc": "Pronounce simple words", "type": "speaking1" },
+        { "emoji": "🔢", "title": "Count Numbers", "desc": "Count 1-20", "type": "count1" },
+        { "emoji": "🎨", "title": "Color Naming", "desc": "Learn color names", "type": "colors1" },
+        { "emoji": "▭", "title": "Shape Match", "desc": "Identify shapes", "type": "shapes1" },
+        { "emoji": "📚", "title": "Word Building", "desc": "Three-letter words", "type": "words1" },
+        { "emoji": "🦁", "title": "Animal Sounds", "desc": "Imitate animals", "type": "animals1" },
+        { "emoji": "♟️", "title": "Chess (Easy)", "desc": "Learn chess pieces", "type": "chess" },
+        { "emoji": "⭕", "title": "Tic-Tac-Toe", "desc": "Beat the computer", "type": "tictactoe" }
+      ]
+    },
+    "2": {
+      "name": "Class 2",
+      "age": "7 years",
+      "title": "Reading & Writing Basics",
+      "description": "Practicing reading, writing, addition up to 20, phonics, and sentence construction through interactive voice games.",
+      "games": [
+        { "emoji": "📖", "title": "Reading Practice", "desc": "Read simple sentences", "type": "reading2" },
+        { "emoji": "➕", "title": "Easy Addition", "desc": "Add up to 20", "type": "addition2" },
+        { "emoji": "✏️", "title": "Spelling Bee", "desc": "4-5 letter words", "type": "spelling2" },
+        { "emoji": "🎯", "title": "Rhyme Time", "desc": "Find rhyming words", "type": "rhyme2" },
+        { "emoji": "📝", "title": "Sentence Builder", "desc": "Make sentences", "type": "sentences2" },
+        { "emoji": "🔤", "title": "Vowel Sounds", "desc": "Learn vowel sounds", "type": "vowels2" },
+        { "emoji": "♟️", "title": "Chess", "desc": "Play vs computer", "type": "chess" },
+        { "emoji": "⭕", "title": "Tic-Tac-Toe", "desc": "Beat the computer", "type": "tictactoe" }
+      ]
+    },
+    "3": {
+      "name": "Class 3",
+      "age": "8 years",
+      "title": "Intermediate Mastery",
+      "description": "Multiplication tables, division basics, paragraph reading, writing paragraphs, and advanced vocabulary.",
+      "games": [
+        { "emoji": "✖️", "title": "Times Tables", "desc": "2-5 multiplication", "type": "tables3" },
+        { "emoji": "➗", "title": "Division Games", "desc": "Basic division", "type": "division3" },
+        { "emoji": "📚", "title": "Story Reading", "desc": "Read & answer questions", "type": "stories3" },
+        { "emoji": "🧩", "title": "Word Puzzles", "desc": "Solve word riddles", "type": "puzzles3" },
+        { "emoji": "📖", "title": "Comprehension", "desc": "Understand passages", "type": "comprehension3" },
+        { "emoji": "🎨", "title": "Creative Writing", "desc": "Write short stories", "type": "creative3" },
+        { "emoji": "♟️", "title": "Chess", "desc": "Play vs computer", "type": "chess" },
+        { "emoji": "⭕", "title": "Tic-Tac-Toe", "desc": "Beat the computer", "type": "tictactoe" }
+      ]
+    },
+    "4": {
+      "name": "Class 4",
+      "age": "9 years",
+      "title": "Advanced Learning",
+      "description": "Complex math problems, advanced reading, essay writing, grammar, and analytical thinking.",
+      "games": [
+        { "emoji": "🧮", "title": "Math Challenge", "desc": "Multi-step problems", "type": "math4" },
+        { "emoji": "📚", "title": "Novel Reading", "desc": "Chapter comprehension", "type": "novels4" },
+        { "emoji": "✍️", "title": "Essay Writing", "desc": "Compose essays", "type": "essays4" },
+        { "emoji": "🎓", "title": "Grammar Master", "desc": "Advanced grammar", "type": "grammar4" },
+        { "emoji": "🔍", "title": "Analysis Games", "desc": "Analyze texts", "type": "analysis4" },
+        { "emoji": "💡", "title": "Problem Solving", "desc": "Logic puzzles", "type": "logic4" },
+        { "emoji": "♟️", "title": "Chess", "desc": "Play vs computer", "type": "chess" },
+        { "emoji": "⭕", "title": "Tic-Tac-Toe", "desc": "Beat the computer", "type": "tictactoe" }
+      ]
+    },
+    "5": {
+      "name": "Class 5",
+      "age": "10 years",
+      "title": "Expert Excellence",
+      "description": "Advanced mathematics, literature analysis, research skills, debate preparation, and critical thinking.",
+      "games": [
+        { "emoji": "🧬", "title": "Advanced Math", "desc": "Algebra basics", "type": "algebra5" },
+        { "emoji": "📖", "title": "Literary Analysis", "desc": "Analyze literature", "type": "literature5" },
+        { "emoji": "🔬", "title": "Science Concepts", "desc": "Learn science", "type": "science5" },
+        { "emoji": "🗣️", "title": "Debate Skills", "desc": "Present arguments", "type": "debate5" },
+        { "emoji": "📊", "title": "Data Analysis", "desc": "Analyze data", "type": "data5" },
+        { "emoji": "🌍", "title": "General Knowledge", "desc": "GK questions", "type": "gk5" },
+        { "emoji": "♟️", "title": "Chess (Pro)", "desc": "Play vs computer", "type": "chess" },
+        { "emoji": "⭕", "title": "Tic-Tac-Toe", "desc": "Beat the computer", "type": "tictactoe" }
+      ]
+    }
+  },
+  "questions": {
+    "speaking1": ["Say: \"Apple\"", "Say: \"Ball\"", "Say: \"Cat\"", "Say: \"Dog\"", "Say: \"Elephant\""],
+    "count1": ["Count to 5", "Count to 10", "Count to 15", "Count backwards from 5", "Count even numbers"],
+    "colors1": ["Say a red color", "Say a blue color", "Say a yellow color", "Say a green color"],
+    "shapes1": ["Name a circle", "Name a square", "Name a triangle", "Name a rectangle"],
+    "words1": ["Say: \"Cat\"", "Say: \"Dog\"", "Say: \"Sun\"", "Say: \"Run\"", "Say: \"Sit\""],
+    "animals1": ["Make a dog sound", "Make a cat sound", "Make a cow sound", "Make a bird sound"],
+
+    "reading2": ["Read: \"The cat sat on mat\"", "Read: \"I like to play\"", "Read: \"She has a book\""],
+    "addition2": ["What is 5 + 3?", "What is 7 + 2?", "What is 6 + 4?", "What is 8 + 3?"],
+    "spelling2": ["Spell: \"Book\"", "Spell: \"Jump\"", "Spell: \"Play\"", "Spell: \"Help\""],
+    "rhyme2": ["Find rhyme for \"Cat\"", "Find rhyme for \"Dog\"", "Find rhyme for \"Sun\""],
+    "sentences2": ["Make a sentence with \"Run\"", "Make a sentence with \"Jump\"", "Make a sentence with \"Play\""],
+    "vowels2": ["Say words with \"A\"", "Say words with \"E\"", "Say words with \"O\""],
+
+    "tables3": ["What is 2 × 3?", "What is 3 × 4?", "What is 4 × 5?", "What is 5 × 6?"],
+    "division3": ["What is 10 ÷ 2?", "What is 15 ÷ 3?", "What is 20 ÷ 4?"],
+    "stories3": ["Read and understand story", "Answer story question", "Summarize paragraph"],
+    "puzzles3": ["Solve word puzzle", "Find the odd one", "Complete the pattern"],
+    "comprehension3": ["Understand passage", "Answer questions", "Find main idea"],
+    "creative3": ["Write a short story", "Describe an image", "Create dialogue"],
+
+    "math4": ["Solve: 25 + 37", "Solve: 50 - 23", "Solve: 6 × 8", "Solve: 56 ÷ 7"],
+    "novels4": ["Understand chapter", "Analyze character", "Predict outcome"],
+    "essays4": ["Write an essay", "Develop argument", "Conclude properly"],
+    "grammar4": ["Correct sentence", "Use tense properly", "Fix punctuation"],
+    "analysis4": ["Analyze poem", "Find literary devices", "Interpret message"],
+    "logic4": ["Solve logic puzzle", "Find pattern", "Deduce answer"],
+
+    "algebra5": ["Solve: x + 5 = 12", "Solve: 2x = 10", "Solve: 3x + 2 = 11"],
+    "literature5": ["Analyze symbolism", "Discuss theme", "Compare characters"],
+    "science5": ["Explain concept", "Describe process", "Apply knowledge"],
+    "debate5": ["Present argument", "Counter point", "Conclude debate"],
+    "data5": ["Analyze data", "Draw conclusion", "Present findings"],
+    "gk5": ["Capital of France?", "Largest planet?", "When was internet invented?"]
+  }
+}

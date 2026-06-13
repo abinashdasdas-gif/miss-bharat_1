@@ -473,8 +473,8 @@ recognition.interimResults = true;   // react to first words = fast response
 recognition.maxAlternatives = 5;     // read several guesses, check them all
 recognition.lang = 'en-IN';          // Indian English — matches our young users best
 
-// CLASS CONTENT DEFINITIONS
-const CLASSES = {
+// CLASS CONTENT DEFINITIONS (built-in defaults; overridden by data/content.json via AJAX)
+let CLASSES = {
   1: {
     name: 'Class 1',
     age: '6 years',
@@ -621,46 +621,63 @@ function startGame(type, emoji, title) {
   switchPage('gamePlayer');
 }
 
+// QUESTION BANK (built-in defaults; overridden by data/content.json via AJAX)
+let QUESTIONS = {
+  speaking1: ['Say: "Apple"', 'Say: "Ball"', 'Say: "Cat"', 'Say: "Dog"', 'Say: "Elephant"'],
+  count1: ['Count to 5', 'Count to 10', 'Count to 15', 'Count backwards from 5', 'Count even numbers'],
+  colors1: ['Say a red color', 'Say a blue color', 'Say a yellow color', 'Say a green color'],
+  shapes1: ['Name a circle', 'Name a square', 'Name a triangle', 'Name a rectangle'],
+  words1: ['Say: "Cat"', 'Say: "Dog"', 'Say: "Sun"', 'Say: "Run"', 'Say: "Sit"'],
+  animals1: ['Make a dog sound', 'Make a cat sound', 'Make a cow sound', 'Make a bird sound'],
+  reading2: ['Read: "The cat sat on mat"', 'Read: "I like to play"', 'Read: "She has a book"'],
+  addition2: ['What is 5 + 3?', 'What is 7 + 2?', 'What is 6 + 4?', 'What is 8 + 3?'],
+  spelling2: ['Spell: "Book"', 'Spell: "Jump"', 'Spell: "Play"', 'Spell: "Help"'],
+  rhyme2: ['Find rhyme for "Cat"', 'Find rhyme for "Dog"', 'Find rhyme for "Sun"'],
+  sentences2: ['Make a sentence with "Run"', 'Make a sentence with "Jump"', 'Make a sentence with "Play"'],
+  vowels2: ['Say words with "A"', 'Say words with "E"', 'Say words with "O"'],
+  tables3: ['What is 2 × 3?', 'What is 3 × 4?', 'What is 4 × 5?', 'What is 5 × 6?'],
+  division3: ['What is 10 ÷ 2?', 'What is 15 ÷ 3?', 'What is 20 ÷ 4?'],
+  stories3: ['Read and understand story', 'Answer story question', 'Summarize paragraph'],
+  puzzles3: ['Solve word puzzle', 'Find the odd one', 'Complete the pattern'],
+  comprehension3: ['Understand passage', 'Answer questions', 'Find main idea'],
+  creative3: ['Write a short story', 'Describe an image', 'Create dialogue'],
+  math4: ['Solve: 25 + 37', 'Solve: 50 - 23', 'Solve: 6 × 8', 'Solve: 56 ÷ 7'],
+  novels4: ['Understand chapter', 'Analyze character', 'Predict outcome'],
+  essays4: ['Write an essay', 'Develop argument', 'Conclude properly'],
+  grammar4: ['Correct sentence', 'Use tense properly', 'Fix punctuation'],
+  analysis4: ['Analyze poem', 'Find literary devices', 'Interpret message'],
+  logic4: ['Solve logic puzzle', 'Find pattern', 'Deduce answer'],
+  algebra5: ['Solve: x + 5 = 12', 'Solve: 2x = 10', 'Solve: 3x + 2 = 11'],
+  literature5: ['Analyze symbolism', 'Discuss theme', 'Compare characters'],
+  science5: ['Explain concept', 'Describe process', 'Apply knowledge'],
+  debate5: ['Present argument', 'Counter point', 'Conclude debate'],
+  data5: ['Analyze data', 'Draw conclusion', 'Present findings'],
+  gk5: ['Capital of France?', 'Largest planet?', 'When was internet invented?']
+};
+
 function generateQuestion(type) {
-  const questions = {
-    speaking1: ['Say: "Apple"', 'Say: "Ball"', 'Say: "Cat"', 'Say: "Dog"', 'Say: "Elephant"'],
-    count1: ['Count to 5', 'Count to 10', 'Count to 15', 'Count backwards from 5', 'Count even numbers'],
-    colors1: ['Say a red color', 'Say a blue color', 'Say a yellow color', 'Say a green color'],
-    shapes1: ['Name a circle', 'Name a square', 'Name a triangle', 'Name a rectangle'],
-    words1: ['Say: "Cat"', 'Say: "Dog"', 'Say: "Sun"', 'Say: "Run"', 'Say: "Sit"'],
-    animals1: ['Make a dog sound', 'Make a cat sound', 'Make a cow sound', 'Make a bird sound'],
-
-    reading2: ['Read: "The cat sat on mat"', 'Read: "I like to play"', 'Read: "She has a book"'],
-    addition2: ['What is 5 + 3?', 'What is 7 + 2?', 'What is 6 + 4?', 'What is 8 + 3?'],
-    spelling2: ['Spell: "Book"', 'Spell: "Jump"', 'Spell: "Play"', 'Spell: "Help"'],
-    rhyme2: ['Find rhyme for "Cat"', 'Find rhyme for "Dog"', 'Find rhyme for "Sun"'],
-    sentences2: ['Make a sentence with "Run"', 'Make a sentence with "Jump"', 'Make a sentence with "Play"'],
-    vowels2: ['Say words with "A"', 'Say words with "E"', 'Say words with "O"'],
-
-    tables3: ['What is 2 × 3?', 'What is 3 × 4?', 'What is 4 × 5?', 'What is 5 × 6?'],
-    division3: ['What is 10 ÷ 2?', 'What is 15 ÷ 3?', 'What is 20 ÷ 4?'],
-    stories3: ['Read and understand story', 'Answer story question', 'Summarize paragraph'],
-    puzzles3: ['Solve word puzzle', 'Find the odd one', 'Complete the pattern'],
-    comprehension3: ['Understand passage', 'Answer questions', 'Find main idea'],
-    creative3: ['Write a short story', 'Describe an image', 'Create dialogue'],
-
-    math4: ['Solve: 25 + 37', 'Solve: 50 - 23', 'Solve: 6 × 8', 'Solve: 56 ÷ 7'],
-    novels4: ['Understand chapter', 'Analyze character', 'Predict outcome'],
-    essays4: ['Write an essay', 'Develop argument', 'Conclude properly'],
-    grammar4: ['Correct sentence', 'Use tense properly', 'Fix punctuation'],
-    analysis4: ['Analyze poem', 'Find literary devices', 'Interpret message'],
-    logic4: ['Solve logic puzzle', 'Find pattern', 'Deduce answer'],
-
-    algebra5: ['Solve: x + 5 = 12', 'Solve: 2x = 10', 'Solve: 3x + 2 = 11'],
-    literature5: ['Analyze symbolism', 'Discuss theme', 'Compare characters'],
-    science5: ['Explain concept', 'Describe process', 'Apply knowledge'],
-    debate5: ['Present argument', 'Counter point', 'Conclude debate'],
-    data5: ['Analyze data', 'Draw conclusion', 'Present findings'],
-    gk5: ['Capital of France?', 'Largest planet?', 'When was internet invented?']
-  };
-
-  const qList = questions[type] || ['Say something!'];
+  const qList = QUESTIONS[type] || ['Say something!'];
   return qList[Math.floor(Math.random() * qList.length)];
+}
+
+// AJAX: load editable content (classes + questions) from the server-hosted JSON file
+async function loadContent() {
+  try {
+    const res = await fetch('data/content.json', { cache: 'no-store' });
+    if (!res.ok) return;                 // keep built-in defaults if not found
+    const data = await res.json();
+    if (data.classes)   CLASSES = data.classes;
+    if (data.questions) QUESTIONS = data.questions;
+    renderGames();
+    const cd = CLASSES[currentClass];
+    if (cd) {
+      document.getElementById('classBadgeHeader').textContent = '📚 ' + cd.name;
+      document.getElementById('classTitle').textContent = cd.name + ' - ' + cd.title;
+      document.getElementById('classDescription').textContent = cd.description;
+      document.getElementById('gamesTitle').textContent = '🎮 ' + cd.name + ' Games';
+      document.getElementById('gamesDesc').textContent = cd.title;
+    }
+  } catch (e) { /* offline / opened as a local file — built-in defaults stay */ }
 }
 
 let voiceResponded = false;
@@ -1529,6 +1546,7 @@ renderGames();
 loadSavedStories();
 renderStoryLibrary();
 loadAIKeyUI();
+loadContent();   // AJAX: pull latest classes + questions from data/content.json
 </script>
 
 </body>
