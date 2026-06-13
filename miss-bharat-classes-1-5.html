@@ -1068,23 +1068,28 @@ if (window.meSpeak) {
 function pickTeacherVoice() {
   const voices = speechSynthesis.getVoices();
   if (!voices.length) return null;
-  // 1) Indian English / Hindi voices by NAME (warm, friendly Indian accent)
-  const indianByName = voices.find(v => /neerja|heera|veena|kalpana|swara|aditi|raveena|priya/i.test(v.name));
-  if (indianByName) return indianByName;
-  // 2) Any voice tagged Indian by language code (en-IN, hi-IN), prefer female
-  const indianLang = voices.filter(v => /(^|[-_])(en[-_]IN|hi[-_]IN)/i.test(v.lang || ''));
-  if (indianLang.length) {
-    return indianLang.find(v => /female|woman|neerja|heera|veena/i.test(v.name)) || indianLang[0];
-  }
-  // 3) Fall back to other warm natural voices
-  const tiers = [
-    /natural|aria|jenny|michelle|sonia|libby/i,
-    /google (us|uk) english/i,
-    /samantha|karen|moira|tessa|fiona|serena/i,
-    /female|woman|zira|girl/i
-  ];
-  for (const re of tiers) { const v = voices.find(x => re.test(x.name)); if (v) return v; }
-  return voices[0];
+
+  const FEMALE = /female|woman|girl|neerja|heera|veena|kalpana|swara|aditi|raveena|priya|aria|jenny|michelle|sonia|libby|samantha|karen|moira|tessa|fiona|serena|zira|salli|joanna|kendra|ivy/i;
+  const MALE   = /\bmale\b|man\b|ravi|rishi|prabhat|madhur|hemant|david|mark|daniel|alex|fred|george|oliver|thomas|guy|brian|arthur|james|matthew|rishabh/i;
+  const isFemale = v => FEMALE.test(v.name) && !MALE.test(v.name);
+  const notMale  = v => !MALE.test(v.name);
+
+  // 1) Indian female by name/lang
+  const indianFemale = voices.find(v => /(^|[-_])(en[-_]IN|hi[-_]IN)/i.test(v.lang || '') && isFemale(v));
+  if (indianFemale) return indianFemale;
+  const indianFemaleName = voices.find(v => /neerja|heera|veena|kalpana|swara|aditi|raveena|priya/i.test(v.name));
+  if (indianFemaleName) return indianFemaleName;
+
+  // 2) Any clearly-female voice (warm/natural first)
+  const female = voices.find(isFemale);
+  if (female) return female;
+
+  // 3) Indian-tagged voice that isn't male
+  const indianSafe = voices.find(v => /(^|[-_])(en[-_]IN|hi[-_]IN)/i.test(v.lang || '') && notMale(v));
+  if (indianSafe) return indianSafe;
+
+  // 4) Last resort: any voice that isn't a known male
+  return voices.find(notMale) || voices[0];
 }
 
 function speak(text, mood) {
