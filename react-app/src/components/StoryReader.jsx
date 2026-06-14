@@ -18,12 +18,16 @@ export default function StoryReader({ story, storyIndex, onBack }) {
   // Best voice: play the saved studio narration if it exists; otherwise fall back to browser TTS.
   const read = () => {
     stopAll();
-    let fellBack = false;
-    const fallback = () => { if (!fellBack) { fellBack = true; speak(text); } };
     const a = new Audio(audioSrc);
     audioRef.current = a;
-    a.onerror = fallback;
-    a.play().catch(fallback);
+    let done = false;
+    // only speak with the browser if THIS clip is still current and genuinely failed to load
+    const fallback = () => { if (!done && audioRef.current === a) { done = true; speak(text); } };
+    a.addEventListener('error', fallback);
+    a.play().then(() => { done = true; }).catch(err => {
+      if (err && err.name === 'AbortError') return; // we paused/replaced it on purpose — ignore
+      fallback();
+    });
   };
 
   useEffect(() => { setImgOk(true); read(); return () => stopAll(); }, [i]); // eslint-disable-line
