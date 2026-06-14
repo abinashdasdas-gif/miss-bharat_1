@@ -2,33 +2,18 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { speak } from '../voice.js';
 import { STORY_SCENES } from '../scenes.js';
-import { gKey, buildPrompt, genImage } from '../imageGen.js';
-
-const STYLE = 'Disney-painted'; // single fixed art style
 
 export default function StoryReader({ story, storyIndex, onBack }) {
   const [i, setI] = useState(0);
-  const [imgUrl, setImgUrl] = useState(null);
-  const [imgState, setImgState] = useState('idle'); // idle | loading | error
+  const [imgOk, setImgOk] = useState(true);
   const last = i === story.pages.length - 1;
   const text = last ? story.pages[i] + '  ✨ Moral: ' + story.moral : story.pages[i];
   const scene = (STORY_SCENES[storyIndex] || [])[i];
-  const hasKey = !!gKey();
+  // pre-generated painted image saved in public/stories (free, instant, offline)
+  const imgSrc = `${import.meta.env.BASE_URL}stories/s${storyIndex}-p${i}.jpg`;
 
   const read = () => speak(text);
-  useEffect(() => { read(); return () => speechSynthesis.cancel(); }, [i]); // eslint-disable-line
-
-  // generate a painted illustration with Gemini (falls back to SVG scene)
-  useEffect(() => {
-    let cancelled = false;
-    setImgUrl(null);
-    if (!hasKey) { setImgState('idle'); return; }
-    setImgState('loading');
-    genImage(buildPrompt(STYLE, story, story.pages[i]), story.seed)
-      .then(url => { if (!cancelled) { setImgUrl(url); setImgState('idle'); } })
-      .catch(() => { if (!cancelled) setImgState('error'); });
-    return () => { cancelled = true; };
-  }, [i, story, hasKey]); // eslint-disable-line
+  useEffect(() => { setImgOk(true); read(); return () => speechSynthesis.cancel(); }, [i]); // eslint-disable-line
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
@@ -38,21 +23,14 @@ export default function StoryReader({ story, storyIndex, onBack }) {
 
       <div className="book" style={{ marginTop: 16 }}>
         <div className="book-illus">
-          {/* Show SVG scene only when there's no painted art (no key, or generation failed) */}
-          {(!hasKey || imgState === 'error') && (
-            <div style={{ position: 'absolute', inset: 0 }}
-              dangerouslySetInnerHTML={{ __html: scene || `<div style="font-size:120px;text-align:center">${story.emoji}</div>` }} />
-          )}
-          {/* Clean loader while the painted image generates (no SVG flash) */}
-          {hasKey && imgState === 'loading' && !imgUrl && (
-            <div className="book-painting">
-              <div className="paint-spinner" />
-              <div className="paint-text">🎨 Painting the picture…</div>
-            </div>
-          )}
+          {/* SVG scene is the always-present base / fallback */}
+          <div style={{ position: 'absolute', inset: 0 }}
+            dangerouslySetInnerHTML={{ __html: scene || `<div style="font-size:120px;text-align:center">${story.emoji}</div>` }} />
+          {/* saved painted image fades in on top when available */}
           <AnimatePresence>
-            {imgUrl && (
-              <motion.img key={imgUrl} className="book-img" src={imgUrl} alt={story.title}
+            {imgOk && (
+              <motion.img key={imgSrc} className="book-img" src={imgSrc} alt={story.title}
+                onError={() => setImgOk(false)}
                 initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} />
             )}
           </AnimatePresence>
@@ -78,12 +56,6 @@ export default function StoryReader({ story, storyIndex, onBack }) {
           </button>
         </div>
       </div>
-
-      {imgState === 'error' && (
-        <div style={{ color: '#EF4444', fontSize: '.85rem', marginTop: 10 }}>
-          ⚠️ Couldn’t generate the painted image (key/model/quota). Showing our built-in art.
-        </div>
-      )}
     </div>
   );
 }
