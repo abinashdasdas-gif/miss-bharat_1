@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { moveSound, winSound } from '../sound.js';
 
 const GLYPH = { K: '♚', Q: '♛', R: '♜', B: '♝', N: '♞', P: '♟' };
 const PIECE_NAMES = { K: 'King', Q: 'Queen', R: 'Rook', B: 'Bishop', N: 'Knight', P: 'Pawn' };
@@ -94,6 +95,7 @@ export default function Chess({ speak }) {
     const mv = best[Math.floor(Math.random() * best.length)];
     const { nb, piece, captured } = applyMove(b, mv[0], mv[1], mv[2], mv[3]);
     setBoard(nb);
+    moveSound(!!captured);
     say(`Computer moved the ${PIECE_NAMES[piece[1]]}.${captured ? ' And captured your ' + PIECE_NAMES[captured[1]] + '!' : ''}`);
     if (captured && captured[1] === 'K') { setStatus('💻 Computer wins! Try again.'); setOver(true); say('The computer wins. Try again, you can do it!'); return; }
     setTurn('w'); setStatus('Your turn — tap a piece');
@@ -105,8 +107,9 @@ export default function Chess({ speak }) {
     if (sel && legal.some(m => m[0] === r && m[1] === c)) {
       const { nb, piece, captured } = applyMove(board, sel[0], sel[1], r, c);
       setBoard(nb); setSel(null); setLegal([]);
+      moveSound(!!captured);
       say(`You moved the ${PIECE_NAMES[piece[1]]}.${captured ? ' Great capture!' : ''}`);
-      if (captured && captured[1] === 'K') { setStatus('🎉 You win! Checkmate!'); setOver(true); say('You win the game! Wonderful!'); return; }
+      if (captured && captured[1] === 'K') { setStatus('🎉 You win! Checkmate!'); setOver(true); winSound(); say('You win the game! Wonderful!'); return; }
       setTurn('b'); setStatus('Computer thinking...');
       setTimeout(() => computerMove(nb), 500);
       return;

@@ -4,6 +4,7 @@ import Header from './components/Header.jsx';
 import Home from './pages/Home.jsx';
 import Games from './pages/Games.jsx';
 import Stories from './pages/Stories.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import { FALLBACK_CLASSES, FALLBACK_QUESTIONS } from './data.js';
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           {page === 'home' && <Home setPage={setPage} />}
           {page === 'games' && <Games classes={classes} questions={questions} />}
           {page === 'stories' && <Stories />}
+          {page === 'dashboard' && <Dashboard />}
         </motion.main>
       </AnimatePresence>
     </>

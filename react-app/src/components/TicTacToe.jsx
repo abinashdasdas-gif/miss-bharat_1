@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { moveSound, winSound } from '../sound.js';
 
 const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 const winnerOf = (b) => { for (const [a,c,d] of LINES) if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a]; return null; };
@@ -19,6 +20,7 @@ export default function TicTacToe({ speak }) {
     if (m === null) { const corners = [0,2,6,8].filter(i => b[i] === ''); if (corners.length) m = corners[Math.floor(Math.random()*corners.length)]; }
     if (m === null) m = empties[Math.floor(Math.random()*empties.length)];
     const nb = [...b]; nb[m] = '⭕'; setBoard(nb);
+    moveSound(false);
     if (speak) speak('Computer placed an O.');
     const w = winnerOf(nb);
     if (w) { setOver(true); setStatus('💻 Computer wins! Try again.'); if (speak) speak('Computer got three in a row. Try again, you can do it!'); return; }
@@ -29,9 +31,10 @@ export default function TicTacToe({ speak }) {
   const onCell = (i) => {
     if (over || board[i]) return;
     const nb = [...board]; nb[i] = '❌'; setBoard(nb);
+    moveSound(false);
     if (speak) speak('You placed an X.');
     const w = winnerOf(nb);
-    if (w) { setOver(true); setStatus('🎉 You win!'); if (speak) speak('Three in a row! You win! Wonderful!'); return; }
+    if (w) { setOver(true); setStatus('🎉 You win!'); winSound(); if (speak) speak('Three in a row! You win! Wonderful!'); return; }
     if (!nb.includes('')) { setOver(true); setStatus("🤝 It's a draw!"); if (speak) speak("It's a draw! Good game!"); return; }
     setStatus('Computer thinking...');
     setTimeout(() => computerMove(nb), 400);

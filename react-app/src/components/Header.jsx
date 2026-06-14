@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { toggleMusic } from '../sound.js';
 
 const TABS = [
   { id: 'home', icon: '🏠' },
   { id: 'games', icon: '🎮' },
-  { id: 'stories', icon: '📖' }
+  { id: 'stories', icon: '📖' },
+  { id: 'dashboard', icon: '👨‍👩‍👧' }
 ];
 
 export default function Header({ page, setPage }) {
+  const [music, setMusic] = useState(false);
   return (
     <header className="header">
       <div className="header-content">
@@ -20,6 +24,7 @@ export default function Header({ page, setPage }) {
               {t.icon}
             </button>
           ))}
+          <button title="Music" onClick={() => setMusic(toggleMusic())}>{music ? '🔊' : '🎵'}</button>
         </nav>
       </div>
     </header>
