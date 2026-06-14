@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { speak } from '../voice.js';
 import { STORY_SCENES } from '../scenes.js';
-import { ART_STYLES, hfToken, hfModel, saveHf, buildPrompt, genImage } from '../imageGen.js';
+import { ART_STYLES, gKey, gModel, saveG, buildPrompt, genImage } from '../imageGen.js';
 
 export default function StoryReader({ story, storyIndex, onBack }) {
   const [i, setI] = useState(0);
   const [style, setStyle] = useState('Disney-painted');
   const [imgUrl, setImgUrl] = useState(null);
   const [imgState, setImgState] = useState('idle'); // idle | loading | error
-  const [tok, setTok] = useState(hfToken());
-  const [mdl, setMdl] = useState(hfModel());
+  const [tok, setTok] = useState(gKey());
+  const [mdl, setMdl] = useState(gModel());
   const [savedMsg, setSavedMsg] = useState('');
 
   const last = i === story.pages.length - 1;
@@ -24,7 +24,7 @@ export default function StoryReader({ story, storyIndex, onBack }) {
   useEffect(() => {
     let cancelled = false;
     setImgUrl(null);
-    if (!hfToken()) { setImgState('idle'); return; }
+    if (!gKey()) { setImgState('idle'); return; }
     setImgState('loading');
     genImage(buildPrompt(style, story, story.pages[i]))
       .then(url => { if (!cancelled) { setImgUrl(url); setImgState('idle'); } })
@@ -32,7 +32,7 @@ export default function StoryReader({ story, storyIndex, onBack }) {
     return () => { cancelled = true; };
   }, [i, style, story]); // eslint-disable-line
 
-  const save = () => { saveHf(tok, mdl); setSavedMsg(tok ? '✓ Saved — generating painted art!' : 'Key cleared.'); setI(x => x); };
+  const save = () => { saveG(tok, mdl); setSavedMsg(tok ? '✓ Saved — generating painted art!' : 'Key cleared.'); setI(x => x); };
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
@@ -82,15 +82,15 @@ export default function StoryReader({ story, storyIndex, onBack }) {
 
       <details className="ai-setup" style={{ marginTop: 16, background: 'rgba(30,41,59,.7)', border: '1px solid rgba(99,102,241,.25)', borderRadius: 12, padding: '12px 16px' }}>
         <summary style={{ cursor: 'pointer', fontWeight: 700, color: '#818CF8' }}>
-          🎨 {hfToken() ? 'Painted art is ON — manage key' : 'Turn on painted art (free key)'}
+          🎨 {gKey() ? 'Painted art is ON — manage key' : 'Turn on painted art (free Gemini key)'}
         </summary>
         <p style={{ color: '#94A3B8', fontSize: '.85rem', margin: '10px 0', lineHeight: 1.5 }}>
-          Get a free token at <b>huggingface.co/settings/tokens</b> (role: <b>Read</b>) and paste it below.
+          Get a free key at <b>aistudio.google.com/apikey</b> and paste it below.
           🔒 Saved only on this device. Without a key, the built-in scenes are shown.
         </p>
-        <input type="password" placeholder="hf_..." value={tok} onChange={e => setTok(e.target.value)}
+        <input type="password" placeholder="AIza..." value={tok} onChange={e => setTok(e.target.value)}
           style={{ width: '100%', padding: 10, marginBottom: 8, borderRadius: 8, background: 'rgba(15,23,42,.8)', color: '#E2E8F0', border: '1px solid rgba(99,102,241,.3)' }} />
-        <input placeholder="model (e.g. black-forest-labs/FLUX.1-schnell)" value={mdl} onChange={e => setMdl(e.target.value)}
+        <input placeholder="model (e.g. gemini-2.0-flash-preview-image-generation)" value={mdl} onChange={e => setMdl(e.target.value)}
           style={{ width: '100%', padding: 10, borderRadius: 8, background: 'rgba(15,23,42,.8)', color: '#E2E8F0', border: '1px solid rgba(99,102,241,.3)' }} />
         <button className="btn" style={{ marginTop: 10, padding: '10px 22px' }} onClick={save}>Save</button>
         <span style={{ marginLeft: 12, color: '#10B981', fontSize: '.85rem' }}>{savedMsg}</span>
