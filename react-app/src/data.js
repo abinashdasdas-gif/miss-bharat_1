@@ -1,47 +1,95 @@
 // Built-in fallback content. At runtime App tries to fetch ../data/content.json (AJAX)
 // so the same server-hosted data drives both the old site and this React app.
+// CBSE-aligned Math & English for Classes 1–5. `subject` enables Duolingo-style grouping.
 export const FALLBACK_CLASSES = {
-  1: { name: 'Class 1', title: 'Building Foundations', games: [
-    { emoji: '🗣️', title: 'Speaking Quest', desc: 'Pronounce simple words', type: 'speaking1' },
-    { emoji: '🔢', title: 'Count Numbers', desc: 'Count 1-20', type: 'count1' },
-    { emoji: '🎨', title: 'Color Naming', desc: 'Learn color names', type: 'colors1' },
-    { emoji: '♟️', title: 'Chess (Easy)', desc: 'Learn chess pieces', type: 'chess' },
-    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe' }
+  1: { name: 'Class 1', title: 'Numbers, Words & Shapes', games: [
+    { emoji: '🔢', title: 'Count 1–20', desc: 'Number names', type: 'count1', subject: 'Maths' },
+    { emoji: '➕', title: 'Easy Addition', desc: 'Add within 20', type: 'add1', subject: 'Maths' },
+    { emoji: '🔷', title: 'Shapes', desc: 'Circle, square, triangle', type: 'shapes1', subject: 'Maths' },
+    { emoji: '🔤', title: 'Say the Word', desc: 'Phonics & sounds', type: 'speaking1', subject: 'English' },
+    { emoji: '🎵', title: 'Rhyming Words', desc: 'Words that sound alike', type: 'rhyme1', subject: 'English' },
+    { emoji: '🅰️', title: 'Vowel Sounds', desc: 'a e i o u', type: 'vowels1', subject: 'English' },
+    { emoji: '♟️', title: 'Chess', desc: 'Learn the pieces', type: 'chess', subject: 'Fun' },
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
   ]},
-  2: { name: 'Class 2', title: 'Reading & Writing', games: [
-    { emoji: '📖', title: 'Reading Practice', desc: 'Read simple sentences', type: 'reading2' },
-    { emoji: '➕', title: 'Easy Addition', desc: 'Add up to 20', type: 'addition2' },
-    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess' }
+  2: { name: 'Class 2', title: 'Addition, Subtraction & Reading', games: [
+    { emoji: '➕', title: 'Add to 100', desc: 'Two-digit addition', type: 'add2', subject: 'Maths' },
+    { emoji: '➖', title: 'Subtraction', desc: 'Take away', type: 'sub2', subject: 'Maths' },
+    { emoji: '⏭️', title: 'Skip Counting', desc: '2s, 5s and 10s', type: 'skip2', subject: 'Maths' },
+    { emoji: '🐝', title: 'Spelling Bee', desc: '3–4 letter words', type: 'spell2', subject: 'English' },
+    { emoji: '📖', title: 'Reading', desc: 'Read short sentences', type: 'read2', subject: 'English' },
+    { emoji: '🔁', title: 'Opposites', desc: 'Big / small, hot / cold', type: 'opp2', subject: 'English' },
+    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
   ]},
-  3: { name: 'Class 3', title: 'Intermediate Mastery', games: [
-    { emoji: '✖️', title: 'Times Tables', desc: '2-5 multiplication', type: 'tables3' },
-    { emoji: '➗', title: 'Division Games', desc: 'Basic division', type: 'division3' },
-    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess' }
+  3: { name: 'Class 3', title: 'Tables, Division & Grammar', games: [
+    { emoji: '✖️', title: 'Times Tables', desc: 'Multiplication 2–10', type: 'tables3', subject: 'Maths' },
+    { emoji: '➗', title: 'Division', desc: 'Share equally', type: 'division3', subject: 'Maths' },
+    { emoji: '🧮', title: 'Add & Subtract', desc: '3-digit numbers', type: 'addsub3', subject: 'Maths' },
+    { emoji: '⏳', title: 'Tenses', desc: 'Past & present', type: 'tense3', subject: 'English' },
+    { emoji: '📚', title: 'Vocabulary', desc: 'New words', type: 'vocab3', subject: 'English' },
+    { emoji: '📖', title: 'Reading', desc: 'Sentences & meaning', type: 'read3', subject: 'English' },
+    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
   ]},
-  4: { name: 'Class 4', title: 'Advanced Learning', games: [
-    { emoji: '🧮', title: 'Math Challenge', desc: 'Multi-step problems', type: 'math4' },
-    { emoji: '🎓', title: 'Grammar Master', desc: 'Advanced grammar', type: 'grammar4' },
-    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess' }
+  4: { name: 'Class 4', title: 'Multiplication, Fractions & Writing', games: [
+    { emoji: '✖️', title: 'Multiply', desc: '2-digit multiplication', type: 'mult4', subject: 'Maths' },
+    { emoji: '🔢', title: 'Factors', desc: 'Divisibility', type: 'factor4', subject: 'Maths' },
+    { emoji: '🍕', title: 'Fractions', desc: 'Parts of a whole', type: 'frac4', subject: 'Maths' },
+    { emoji: '✍️', title: 'Grammar', desc: 'Make sentences', type: 'gram4', subject: 'English' },
+    { emoji: '🔆', title: 'Synonyms', desc: 'Same-meaning words', type: 'syn4', subject: 'English' },
+    { emoji: '📰', title: 'Comprehension', desc: 'Speak & describe', type: 'comp4', subject: 'English' },
+    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
   ]},
-  5: { name: 'Class 5', title: 'Expert Excellence', games: [
-    { emoji: '🧬', title: 'Advanced Math', desc: 'Algebra basics', type: 'algebra5' },
-    { emoji: '🌍', title: 'General Knowledge', desc: 'GK questions', type: 'gk5' },
-    { emoji: '♟️', title: 'Chess (Pro)', desc: 'Play vs computer', type: 'chess' }
+  5: { name: 'Class 5', title: 'Algebra, Geometry & Composition', games: [
+    { emoji: '🧬', title: 'Pre-Algebra', desc: 'Find the value of x', type: 'algebra5', subject: 'Maths' },
+    { emoji: '🔺', title: 'Geometry', desc: 'Name the shapes', type: 'geo5', subject: 'Maths' },
+    { emoji: '🧮', title: 'Big Numbers', desc: 'Add & multiply', type: 'big5', subject: 'Maths' },
+    { emoji: '🎓', title: 'Grammar', desc: 'Advanced grammar', type: 'gram5', subject: 'English' },
+    { emoji: '🔆', title: 'Antonyms', desc: 'Opposite words', type: 'anto5', subject: 'English' },
+    { emoji: '🌍', title: 'General Knowledge', desc: 'Fun facts', type: 'gk5', subject: 'English' },
+    { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
   ]}
 };
 
 export const FALLBACK_QUESTIONS = {
-  speaking1: ['Say: "Apple"', 'Say: "Ball"', 'Say: "Cat"', 'Say: "Dog"', 'Say: "Elephant"'],
-  count1: ['Count to 5', 'Count to 10', 'Count to 15'],
-  colors1: ['Say a red color', 'Say a blue color', 'Say a yellow color', 'Say a green color'],
-  reading2: ['Read: "The cat sat on mat"', 'Read: "I like to play"', 'Read: "She has a book"'],
-  addition2: ['What is 5 + 3?', 'What is 7 + 2?', 'What is 6 + 4?', 'What is 8 + 3?'],
-  tables3: ['What is 2 × 3?', 'What is 3 × 4?', 'What is 4 × 5?', 'What is 5 × 6?'],
-  division3: ['What is 10 ÷ 2?', 'What is 15 ÷ 3?', 'What is 20 ÷ 4?'],
-  math4: ['Solve: 25 + 37', 'Solve: 50 - 23', 'Solve: 6 × 8', 'Solve: 56 ÷ 7'],
-  grammar4: ['Correct sentence', 'Use tense properly', 'Fix punctuation'],
-  algebra5: ['Solve: x + 5 = 12', 'Solve: 2x = 10', 'Solve: 3x + 2 = 11'],
-  gk5: ['Capital of France?', 'Largest planet?', 'When was internet invented?']
+  // Class 1
+  count1: ['Count to 10', 'Count to 20', 'Count backwards from 10', 'Count in 2s to 10'],
+  add1: ['What is 2 + 3?', 'What is 4 + 1?', 'What is 5 + 4?', 'What is 6 + 3?', 'What is 7 + 2?'],
+  shapes1: ['Name a circle', 'Name a square', 'Name a triangle', 'Name a rectangle'],
+  speaking1: ['Say: "Apple"', 'Say: "Ball"', 'Say: "Cat"', 'Say: "Dog"', 'Say: "Sun"'],
+  rhyme1: ['Find a rhyme for "Cat"', 'Find a rhyme for "Sun"', 'Find a rhyme for "Ball"'],
+  vowels1: ['Say a word with A', 'Say a word with E', 'Say a word with O'],
+  // Class 2
+  add2: ['What is 12 + 7?', 'What is 25 + 4?', 'What is 30 + 15?', 'What is 21 + 18?'],
+  sub2: ['What is 18 - 6?', 'What is 25 - 10?', 'What is 40 - 15?', 'What is 30 - 12?'],
+  skip2: ['Count in 2s to 10', 'Count in 5s to 25', 'Count in 10s to 50'],
+  spell2: ['Spell: "Book"', 'Spell: "Tree"', 'Spell: "Milk"', 'Spell: "Fish"'],
+  read2: ['Read: "The sun is hot"', 'Read: "I see a bird"', 'Read: "We like to play"'],
+  opp2: ['Opposite of "Big"', 'Opposite of "Hot"', 'Opposite of "Up"', 'Opposite of "Day"'],
+  // Class 3
+  tables3: ['What is 2 × 3?', 'What is 4 × 5?', 'What is 6 × 7?', 'What is 8 × 4?', 'What is 9 × 3?'],
+  division3: ['What is 10 ÷ 2?', 'What is 20 ÷ 4?', 'What is 18 ÷ 3?', 'What is 24 ÷ 6?'],
+  addsub3: ['What is 120 + 45?', 'What is 250 - 30?', 'What is 134 + 22?'],
+  tense3: ['Past tense of "go"', 'Past tense of "eat"', 'Past tense of "run"'],
+  vocab3: ['Say: "Beautiful"', 'Say: "Elephant"', 'Say: "Mountain"', 'Say: "Garden"'],
+  read3: ['Read: "Birds fly in the sky"', 'Read: "The river is deep"'],
+  // Class 4
+  mult4: ['What is 12 × 3?', 'What is 8 × 7?', 'What is 11 × 6?', 'What is 9 × 9?'],
+  factor4: ['What is 24 ÷ 6?', 'What is 36 ÷ 4?', 'What is 45 ÷ 9?'],
+  frac4: ['What is 6 ÷ 2?', 'What is 8 ÷ 4?', 'What is 12 ÷ 3?'],
+  gram4: ['Make a sentence with "run"', 'Make a sentence with "happy"', 'Use "because" in a sentence'],
+  syn4: ['Say a word like "Happy"', 'Say a word like "Big"', 'Say a word like "Fast"'],
+  comp4: ['Tell me about your favourite animal', 'Describe your school', 'Say two things you like'],
+  // Class 5
+  algebra5: ['Solve: x + 5 = 12', 'Solve: 2x = 10', 'Solve: 3x + 2 = 11', 'Solve: x - 4 = 6'],
+  geo5: ['Name a triangle', 'Name a rectangle', 'Name a circle', 'Name a square'],
+  big5: ['What is 125 + 75?', 'What is 12 × 12?', 'What is 200 - 64?'],
+  gram5: ['Make a sentence with "although"', 'Use a verb in a sentence', 'Make a question sentence'],
+  anto5: ['Opposite of "Strong"', 'Opposite of "Ancient"', 'Opposite of "Brave"'],
+  gk5: ['Capital of India?', 'Largest planet?', 'How many days in a week?']
 };
 
 export const STORIES = [

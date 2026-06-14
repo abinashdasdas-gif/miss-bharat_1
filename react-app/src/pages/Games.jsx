@@ -48,15 +48,34 @@ export default function Games({ classes, questions }) {
         ))}
       </div>
 
-      <div className="grid" key={cls}>
-        {data.games.map((g, i) => (
-          <TiltCard key={cls + '-' + i} className="tile" delay={i * 0.05} onClick={() => openGame(g)}>
-            <div className="emoji">{g.emoji}</div>
-            <div className="t">{g.title}</div>
-            <div className="d">{g.desc}</div>
-          </TiltCard>
-        ))}
-      </div>
+      {SUBJECTS.map(sub => {
+        const games = data.games.filter(g => (g.subject || 'Fun') === sub.key);
+        if (!games.length) return null;
+        return (
+          <section key={cls + sub.key} style={{ marginBottom: 36 }}>
+            <div className="subject-head" style={{ '--c': sub.color }}>
+              <span className="subject-icon">{sub.icon}</span>
+              <span>{sub.label}</span>
+              <span className="subject-line" />
+            </div>
+            <div className="grid">
+              {games.map((g, i) => (
+                <TiltCard key={cls + '-' + g.type} className="tile" delay={i * 0.04} onClick={() => openGame(g)}>
+                  <div className="emoji">{g.emoji}</div>
+                  <div className="t">{g.title}</div>
+                  <div className="d">{g.desc}</div>
+                </TiltCard>
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
+
+const SUBJECTS = [
+  { key: 'Maths', label: 'Maths', icon: '📘', color: '#60A5FA' },
+  { key: 'English', label: 'English', icon: '📕', color: '#F472B6' },
+  { key: 'Fun', label: 'Brain Games', icon: '🎲', color: '#34D399' }
+];

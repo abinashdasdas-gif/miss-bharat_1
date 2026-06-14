@@ -35,6 +35,12 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:22px}
 
+/* Duolingo-style subject section header */
+.subject-head{display:flex;align-items:center;gap:12px;margin:0 0 18px;font-family:'Baloo 2','Fredoka',sans-serif;font-weight:800;font-size:1.5rem;color:var(--c)}
+.subject-icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;font-size:24px;
+  background:color-mix(in srgb,var(--c) 22%,transparent);border:1px solid color-mix(in srgb,var(--c) 45%,transparent)}
+.subject-line{flex:1;height:3px;border-radius:3px;background:color-mix(in srgb,var(--c) 30%,transparent)}
+
 /* anti-gravity glass card */
 .tilt-card{position:relative;cursor:pointer;border-radius:20px;padding:26px;overflow:hidden;
   background:rgba(255,255,255,.07);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
