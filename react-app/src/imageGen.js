@@ -1,6 +1,6 @@
-// AI image generation via Google Gemini. Key from .env.local (local dev) or
-// localStorage (per-user). Never committed to the repo.
-const cache = new Map(); // prompt -> data URL (per session)
+// AI image generation via Hugging Face Inference API (free token).
+// Token from .env.local (local dev) or localStorage (per-user). Never committed.
+const cache = new Map(); // prompt -> object URL (per session)
 
 export const ART_STYLES = {
   'Disney-painted': 'Disney Pixar style 3D painted illustration, soft cinematic lighting, glossy, highly detailed',
@@ -9,35 +9,27 @@ export const ART_STYLES = {
   'Flat cartoon': 'flat vector cartoon illustration, bold clean shapes, bright flat colors'
 };
 
-export function gKey() { return (localStorage.getItem('gemini_key') || import.meta.env.VITE_GEMINI_KEY || '').trim(); }
-export function gModel() { return (localStorage.getItem('gemini_img_model') || import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash-image').trim(); }
+export function gKey() { return (localStorage.getItem('hf_token') || import.meta.env.VITE_HF_TOKEN || '').trim(); }
+export function gModel() { return (localStorage.getItem('hf_img_model') || import.meta.env.VITE_HF_MODEL || 'black-forest-labs/FLUX.1-schnell').trim(); }
 
 export function buildPrompt(styleKey, story, pageText) {
   const style = ART_STYLES[styleKey] || ART_STYLES['Storybook'];
-  return `A wide landscape children's storybook illustration. ${style}. ${story.art}. Scene: ${pageText}. Cute, friendly, wholesome, for young children. No text, no words, no letters in the image.`;
+  return `A wide landscape children's storybook illustration. ${style}. ${story.art}. Scene: ${pageText}. Cute, friendly, wholesome, for young children. No text, no words, no letters.`;
 }
 
 export async function genImage(prompt) {
   if (cache.has(prompt)) return cache.get(prompt);
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${gModel()}:generateContent?key=${encodeURIComponent(gKey())}`;
-  const res = await fetch(url, {
+  const res = await fetch(`https://api-inference.huggingface.co/models/${gModel()}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
-    })
+    headers: { Authorization: 'Bearer ' + gKey(), 'Content-Type': 'application/json', Accept: 'image/png' },
+    body: JSON.stringify({ inputs: prompt, options: { wait_for_model: true } })
   });
   if (!res.ok) {
     const t = await res.text().catch(() => '');
-    throw new Error(`Gemini ${res.status}. ${t.slice(0, 160)}`);
+    throw new Error(`HF ${res.status}. ${t.slice(0, 160)}`);
   }
-  const data = await res.json();
-  const parts = (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
-  const part = parts.find(p => p.inlineData || p.inline_data);
-  const inl = part && (part.inlineData || part.inline_data);
-  if (!inl || !inl.data) throw new Error('No image returned by the model.');
-  const dataUrl = `data:${inl.mimeType || inl.mime_type || 'image/png'};base64,${inl.data}`;
-  cache.set(prompt, dataUrl);
-  return dataUrl;
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  cache.set(prompt, url);
+  return url;
 }
