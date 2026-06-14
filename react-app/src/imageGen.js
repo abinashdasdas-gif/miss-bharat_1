@@ -9,8 +9,9 @@ export const ART_STYLES = {
   'Storybook': 'classic warm storybook painting, cozy, richly detailed, golden lighting'
 };
 
-export function gKey() { return (localStorage.getItem('gemini_key') || '').trim(); }
-export function gModel() { return (localStorage.getItem('gemini_img_model') || 'gemini-2.0-flash-preview-image-generation').trim(); }
+// localStorage (per-user, set in the app) wins; falls back to .env.local for local dev.
+export function gKey() { return (localStorage.getItem('gemini_key') || import.meta.env.VITE_GEMINI_KEY || '').trim(); }
+export function gModel() { return (localStorage.getItem('gemini_img_model') || import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.0-flash-preview-image-generation').trim(); }
 export function saveG(key, model) {
   localStorage.setItem('gemini_key', (key || '').trim());
   localStorage.setItem('gemini_img_model', (model || 'gemini-2.0-flash-preview-image-generation').trim());
