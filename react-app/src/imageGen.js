@@ -1,5 +1,7 @@
-// AI image generation via Hugging Face Inference API (free token).
+// AI image generation via Hugging Face Inference Providers (official SDK, auto-routing).
 // Token from .env.local (local dev) or localStorage (per-user). Never committed.
+import { InferenceClient } from '@huggingface/inference';
+
 const cache = new Map(); // prompt -> object URL (per session)
 
 export const ART_STYLES = {
@@ -19,16 +21,8 @@ export function buildPrompt(styleKey, story, pageText) {
 
 export async function genImage(prompt) {
   if (cache.has(prompt)) return cache.get(prompt);
-  const res = await fetch(`https://api-inference.huggingface.co/models/${gModel()}`, {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + gKey(), 'Content-Type': 'application/json', Accept: 'image/png' },
-    body: JSON.stringify({ inputs: prompt, options: { wait_for_model: true } })
-  });
-  if (!res.ok) {
-    const t = await res.text().catch(() => '');
-    throw new Error(`HF ${res.status}. ${t.slice(0, 160)}`);
-  }
-  const blob = await res.blob();
+  const client = new InferenceClient(gKey());
+  const blob = await client.textToImage({ model: gModel(), inputs: prompt, provider: 'auto' });
   const url = URL.createObjectURL(blob);
   cache.set(prompt, url);
   return url;
