@@ -22,6 +22,7 @@ export default function App() {
 
   return (
     <>
+      <div className="app-orbs"><span /><span /><span /></div>
       <Header page={page} setPage={setPage} />
       <AnimatePresence mode="wait">
         <motion.main key={page}

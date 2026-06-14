@@ -1,15 +1,10 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Chess from '../components/Chess.jsx';
 import TicTacToe from '../components/TicTacToe.jsx';
 import VoiceGame from '../components/VoiceGame.jsx';
+import TiltCard from '../components/TiltCard.jsx';
 import { speak } from '../voice.js';
-
-const container = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
-const item = {
-  hidden: { opacity: 0, y: 20, scale: 0.96 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] } }
-};
 
 export default function Games({ classes, questions }) {
   const ids = Object.keys(classes);
@@ -53,19 +48,15 @@ export default function Games({ classes, questions }) {
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div className="grid" variants={container} initial="hidden" animate="show" key={cls}>
-          {data.games.map((g, i) => (
-            <motion.div key={i} className="tile" variants={item}
-              whileHover={{ y: -10, scale: 1.05 }} whileTap={{ scale: 0.98 }}
-              onClick={() => openGame(g)}>
-              <div className="emoji">{g.emoji}</div>
-              <div className="t">{g.title}</div>
-              <div className="d">{g.desc}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      <div className="grid" key={cls}>
+        {data.games.map((g, i) => (
+          <TiltCard key={cls + '-' + i} className="tile" delay={i * 0.05} onClick={() => openGame(g)}>
+            <div className="emoji">{g.emoji}</div>
+            <div className="t">{g.title}</div>
+            <div className="d">{g.desc}</div>
+          </TiltCard>
+        ))}
+      </div>
     </div>
   );
 }
