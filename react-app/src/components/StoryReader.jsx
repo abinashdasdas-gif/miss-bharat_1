@@ -46,16 +46,24 @@ export default function StoryReader({ story, storyIndex, onBack }) {
 
       <div className="book" style={{ marginTop: 16 }}>
         <div className="book-illus">
-          {/* SVG scene is the always-present base / fallback */}
-          <div style={{ position: 'absolute', inset: 0 }}
-            dangerouslySetInnerHTML={{ __html: scene || `<div style="font-size:120px;text-align:center">${story.emoji}</div>` }} />
+          {/* Show SVG scene only when there's no painted art (no key, or generation failed) */}
+          {(!hasKey || imgState === 'error') && (
+            <div style={{ position: 'absolute', inset: 0 }}
+              dangerouslySetInnerHTML={{ __html: scene || `<div style="font-size:120px;text-align:center">${story.emoji}</div>` }} />
+          )}
+          {/* Clean loader while the painted image generates (no SVG flash) */}
+          {hasKey && imgState === 'loading' && !imgUrl && (
+            <div className="book-painting">
+              <div className="paint-spinner" />
+              <div className="paint-text">🎨 Painting “{style}”…</div>
+            </div>
+          )}
           <AnimatePresence>
             {imgUrl && (
               <motion.img key={imgUrl} className="book-img" src={imgUrl} alt={story.title}
                 initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} />
             )}
           </AnimatePresence>
-          {imgState === 'loading' && <div className="book-loading-badge">🎨 Painting “{style}”…</div>}
         </div>
 
         <div className="book-text-wrap">
