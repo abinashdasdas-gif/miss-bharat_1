@@ -131,6 +131,97 @@ export const STORIES = [
       'Filled with joy, the peacock opened his feathers wide and began to dance! Round and round he twirled in the gentle rain.',
       'When the rain stopped, a bright rainbow filled the sky. All the animals clapped — for the peacock’s happy, joyful dance!'
     ]
+  },
+  {
+    title: 'The Tortoise and the Hare', emoji: '🐢', seed: 101,
+    art: 'the SAME two characters in every image: one slow gentle green tortoise with a friendly smile, and one fast brown hare with long ears. Setting: a sunny countryside path with trees',
+    blurb: 'Slow and steady wins the race.',
+    moral: 'Slow and steady wins the race.',
+    pages: [
+      'A speedy hare loved to boast, "I am the fastest animal of all!" A slow little tortoise just smiled.',
+      'One day the tortoise said, "Let us have a race!" All the animals gathered around to watch and cheer.',
+      'The hare zoomed far ahead. "I have plenty of time," he thought, and lay down for a little nap.',
+      'The tortoise kept walking — slow and steady, step by step — never stopping for even a moment.',
+      'When the hare woke up, the tortoise had already crossed the finish line! Everyone cheered for the steady little tortoise.'
+    ]
+  },
+  {
+    title: 'The Ant and the Grasshopper', emoji: '🐜', seed: 102,
+    art: 'the SAME two characters in every image: one hard-working brown ant carrying food, and one cheerful green grasshopper with a tiny fiddle. Setting: a green meadow with flowers',
+    blurb: 'Work hard today to enjoy tomorrow.',
+    moral: 'Work hard today to enjoy tomorrow.',
+    pages: [
+      'All through the warm summer, a busy ant carried grains of food to store away for the winter.',
+      'A cheerful grasshopper played his fiddle all day. "Why work so hard? Come and play!" he laughed.',
+      '"I am saving food for the cold winter," said the ant. But the grasshopper just hopped away singing.',
+      'Soon icy winter came. Snow covered the ground, and there was no food to be found anywhere.',
+      'The hungry grasshopper visited the ant, who kindly shared her food. "Next time," he smiled, "I will plan ahead too!"'
+    ]
+  },
+  {
+    title: 'The Cap Seller and the Monkeys', emoji: '🧢', seed: 103,
+    art: 'the SAME characters in every image: one friendly cap seller man in simple Indian clothes with a basket of colorful caps, and several playful brown monkeys in a big tree. Setting: a sunny Indian village near a forest',
+    blurb: 'A calm mind finds a clever way.',
+    moral: 'A calm mind finds a clever way.',
+    pages: [
+      'A cap seller walked from village to village, carrying a basket full of colorful caps on his head.',
+      'Feeling tired, he sat down under a big shady tree and soon fell fast asleep.',
+      'While he slept, naughty monkeys took all the caps and climbed up the tree, giggling happily!',
+      'The cap seller woke up and saw the monkeys wearing his caps. Then he thought of a clever idea.',
+      'He threw his own cap on the ground. The copycat monkeys threw theirs down too — and he happily gathered them all!'
+    ]
+  },
+  {
+    title: 'The Honest Woodcutter', emoji: '🪓', seed: 104,
+    art: 'the SAME characters in every image: one kind poor woodcutter in simple clothes, and a gentle glowing blue river fairy. Setting: a green forest beside a clear blue river',
+    blurb: 'Honesty is always rewarded.',
+    moral: 'Honesty is always rewarded.',
+    pages: [
+      'A poor but honest woodcutter was cutting wood near a river when his old axe slipped from his hands.',
+      'Splash! The axe fell deep into the river. The sad woodcutter sat down by the water.',
+      'A kind river fairy appeared, holding a shining golden axe. "Is this yours?" she gently asked.',
+      '"No," said the woodcutter honestly. "Mine is only made of plain iron." The fairy smiled at his honesty.',
+      'Pleased, the fairy gave him the golden axe, a silver axe, AND his own iron axe — a reward for telling the truth.'
+    ]
+  },
+  {
+    title: 'The Fox and the Grapes', emoji: '🦊', seed: 105,
+    art: 'the SAME character in every image: one clever orange fox with a bushy tail. Setting: a sunny garden with a high vine full of purple grapes',
+    blurb: 'It is easy to dislike what we cannot have.',
+    moral: 'It is easy to dislike what we cannot have.',
+    pages: [
+      'One hot day, a hungry fox walked through a garden and saw juicy purple grapes high up on a vine.',
+      '"Those grapes look so sweet!" said the fox, licking his lips. "I simply must have them."',
+      'He jumped up high to reach them — but missed! He tried again and again, with all his might.',
+      'No matter how high he jumped, the grapes stayed just out of reach. The tired fox sat down, panting.',
+      '"Those grapes are probably sour anyway," he grumbled, and walked away — though really, he just could not reach them.'
+    ]
+  },
+  {
+    title: 'The Goose and the Golden Egg', emoji: '🥚', seed: 106,
+    art: 'the SAME characters in every image: one kind farmer and one plump white goose that lays shiny golden eggs. Setting: a cozy little farm with a house and a barn',
+    blurb: 'Greed often leads to loss.',
+    moral: 'Patience is better than greed.',
+    pages: [
+      'A farmer had a very special goose. Every single morning, it laid one shiny golden egg!',
+      'The farmer sold the golden eggs one by one, and slowly grew happy and well-off.',
+      'But he became greedy and impatient. "Why wait for just one egg a day? I want a whole pile now!"',
+      'Sure there must be gold hidden inside, he rushed and grabbed the goose roughly.',
+      'Frightened, the goose flapped away and flew far off. With no more golden eggs, the farmer wished he had simply been patient.'
+    ]
+  },
+  {
+    title: 'The Monkey and the Crocodile', emoji: '🐊', seed: 107,
+    art: 'the SAME two characters in every image: one cheerful brown monkey in a fruit tree, and one friendly green crocodile in the river. Setting: a sunny riverbank with a tall berry tree',
+    blurb: 'Presence of mind keeps you safe.',
+    moral: 'Quick thinking keeps you safe.',
+    pages: [
+      'A clever monkey lived in a berry tree by a river. Each day he happily shared sweet berries with his crocodile friend.',
+      'The crocodile carried some berries home, and soon the two became the very best of friends.',
+      'One day the crocodile offered the monkey a ride across the river on his strong back.',
+      'Halfway across, the monkey felt unsure. Thinking quickly, he said, "Oh no! I left my best berries back in the tree!"',
+      'The crocodile turned back, and the clever monkey hopped safely up his tree. "Always think first," he laughed, "and stay safe!"'
+    ]
   }
 ];
 
