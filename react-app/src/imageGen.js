@@ -10,7 +10,7 @@ export const ART_STYLES = {
 };
 
 export function gKey() { return (localStorage.getItem('gemini_key') || import.meta.env.VITE_GEMINI_KEY || '').trim(); }
-export function gModel() { return (localStorage.getItem('gemini_img_model') || import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.0-flash-preview-image-generation').trim(); }
+export function gModel() { return (localStorage.getItem('gemini_img_model') || import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash-image').trim(); }
 
 export function buildPrompt(styleKey, story, pageText) {
   const style = ART_STYLES[styleKey] || ART_STYLES['Storybook'];
