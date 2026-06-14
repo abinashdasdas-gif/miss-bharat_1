@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { speak } from '../voice.js';
 import { STORY_SCENES } from '../scenes.js';
-import { ART_STYLES, gKey, buildPrompt, genImage } from '../imageGen.js';
+import { gKey, buildPrompt, genImage } from '../imageGen.js';
+
+const STYLE = 'Disney-painted'; // single fixed art style
 
 export default function StoryReader({ story, storyIndex, onBack }) {
   const [i, setI] = useState(0);
-  const [style, setStyle] = useState('Disney-painted');
   const [imgUrl, setImgUrl] = useState(null);
   const [imgState, setImgState] = useState('idle'); // idle | loading | error
   const last = i === story.pages.length - 1;
@@ -23,25 +24,16 @@ export default function StoryReader({ story, storyIndex, onBack }) {
     setImgUrl(null);
     if (!hasKey) { setImgState('idle'); return; }
     setImgState('loading');
-    genImage(buildPrompt(style, story, story.pages[i]), story.seed)
+    genImage(buildPrompt(STYLE, story, story.pages[i]), story.seed)
       .then(url => { if (!cancelled) { setImgUrl(url); setImgState('idle'); } })
       .catch(() => { if (!cancelled) setImgState('error'); });
     return () => { cancelled = true; };
-  }, [i, style, story, hasKey]); // eslint-disable-line
+  }, [i, story, hasKey]); // eslint-disable-line
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
         <button className="class-chip" onClick={() => { speechSynthesis.cancel(); onBack(); }}>← Library</button>
-        {hasKey && (
-          <>
-            <label style={{ color: '#CBD5E1', fontSize: '.9rem' }}>🎨 Art:</label>
-            <select value={style} onChange={e => setStyle(e.target.value)}
-              style={{ padding: '8px 12px', borderRadius: 10, background: 'rgba(15,23,42,.8)', color: '#E2E8F0', border: '1px solid rgba(99,102,241,.4)' }}>
-              {Object.keys(ART_STYLES).map(k => <option key={k}>{k}</option>)}
-            </select>
-          </>
-        )}
       </div>
 
       <div className="book" style={{ marginTop: 16 }}>
@@ -55,7 +47,7 @@ export default function StoryReader({ story, storyIndex, onBack }) {
           {hasKey && imgState === 'loading' && !imgUrl && (
             <div className="book-painting">
               <div className="paint-spinner" />
-              <div className="paint-text">🎨 Painting “{style}”…</div>
+              <div className="paint-text">🎨 Painting the picture…</div>
             </div>
           )}
           <AnimatePresence>
