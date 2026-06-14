@@ -23,6 +23,7 @@ export default function App() {
   return (
     <>
       <div className="app-orbs"><span /><span /><span /></div>
+      <div className="stars" />
       <Header page={page} setPage={setPage} />
       <AnimatePresence mode="wait">
         <motion.main key={page}
