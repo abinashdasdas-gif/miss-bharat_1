@@ -113,7 +113,7 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 
 .hero-shapes{position:absolute;inset:0;z-index:1;transform-style:preserve-3d;will-change:transform}
 .shape{position:absolute;will-change:transform}
-.shape-cube{border-radius:26%;
+.shape-cube{border-radius:26%;display:flex;align-items:center;justify-content:center;line-height:1;
   box-shadow:inset 0 8px 18px rgba(255,255,255,.4), inset 0 -12px 24px rgba(0,0,0,.4), 0 34px 60px rgba(0,0,0,.55);
   will-change:transform}
 .hero-mascot{position:absolute;top:62%;left:48%;font-size:64px;filter:drop-shadow(0 16px 24px rgba(0,0,0,.5))}

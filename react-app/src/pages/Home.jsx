@@ -1,16 +1,15 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-// floating 3D-style shapes scattered around the edges (Spline-inspired)
+// floating subject badges: star, earth, science, math, english, kids, art, music
 const SHAPES = [
-  { g: 'linear-gradient(145deg,#F472B6,#EC4899)', s: 120, top: '12%', left: '24%', depth: 1.6, rot: -14, dur: 7 },
-  { g: 'linear-gradient(145deg,#FBBF24,#F59E0B)', s: 64,  top: '30%', left: '16%', depth: 1.2, rot: 12, dur: 6 },
-  { g: 'linear-gradient(145deg,#818CF8,#4F46E5)', s: 150, top: '58%', left: '10%', depth: 2.4, rot: 8, dur: 9 },
-  { g: 'linear-gradient(145deg,#34D399,#10B981)', s: 96,  top: '74%', left: '30%', depth: 1.8, rot: -8, dur: 8 },
-  { g: 'linear-gradient(145deg,#FBBF24,#F59E0B)', s: 104, top: '16%', left: '72%', depth: 1.7, rot: 16, dur: 6.5 },
-  { g: 'linear-gradient(145deg,#C084FC,#9333EA)', s: 72,  top: '40%', left: '80%', depth: 1.3, rot: 14, dur: 7.5 },
-  { g: 'linear-gradient(145deg,#60A5FA,#2563EB)', s: 140, top: '60%', left: '82%', depth: 2.6, rot: -12, dur: 9.5 },
-  { g: 'linear-gradient(145deg,#F472B6,#DB2777)', s: 60,  top: '78%', left: '64%', depth: 1.1, rot: 20, dur: 6.8 },
-  { g: 'linear-gradient(145deg,#34D399,#059669)', s: 58,  top: '10%', left: '52%', depth: 1.0, rot: -18, dur: 7.2 }
+  { e: '⭐', g: 'linear-gradient(145deg,#FBBF24,#F59E0B)', s: 108, top: '12%', left: '24%', depth: 1.6, rot: -12, dur: 7 },
+  { e: '🌍', g: 'linear-gradient(145deg,#34D399,#0EA5E9)', s: 150, top: '58%', left: '10%', depth: 2.4, rot: 8, dur: 9 },
+  { e: '🔬', g: 'linear-gradient(145deg,#C084FC,#9333EA)', s: 92,  top: '26%', left: '74%', depth: 1.8, rot: 14, dur: 6.5 },
+  { e: '➕', g: 'linear-gradient(145deg,#60A5FA,#4F46E5)', s: 138, top: '60%', left: '80%', depth: 2.6, rot: -10, dur: 9.5 },
+  { e: '🔤', g: 'linear-gradient(145deg,#F472B6,#EC4899)', s: 118, top: '14%', left: '52%', depth: 1.2, rot: -16, dur: 7.5 },
+  { e: '🧒', g: 'linear-gradient(145deg,#22D3EE,#0EA5E9)', s: 78,  top: '40%', left: '84%', depth: 1.3, rot: 12, dur: 6.8 },
+  { e: '🎨', g: 'linear-gradient(145deg,#F87171,#DB2777)', s: 72,  top: '78%', left: '62%', depth: 1.1, rot: 18, dur: 7.2 },
+  { e: '🎵', g: 'linear-gradient(145deg,#A78BFA,#6366F1)', s: 64,  top: '30%', left: '14%', depth: 1.0, rot: -14, dur: 6.2 }
 ];
 
 function Shape({ cfg, mx, my }) {
@@ -19,10 +18,11 @@ function Shape({ cfg, mx, my }) {
   return (
     <motion.div className="shape" style={{ x, y, top: cfg.top, left: cfg.left }}>
       <motion.div className="shape-cube"
-        style={{ width: cfg.s, height: cfg.s, background: cfg.g, rotate: cfg.rot }}
+        style={{ width: cfg.s, height: cfg.s, background: cfg.g, rotate: cfg.rot, fontSize: cfg.s * 0.48 }}
         animate={{ y: [0, -22, 0], rotate: [cfg.rot, cfg.rot + 8, cfg.rot] }}
-        transition={{ duration: cfg.dur, repeat: Infinity, ease: 'easeInOut' }}
-      />
+        transition={{ duration: cfg.dur, repeat: Infinity, ease: 'easeInOut' }}>
+        <span style={{ filter: 'drop-shadow(0 3px 4px rgba(0,0,0,.35))' }}>{cfg.e}</span>
+      </motion.div>
     </motion.div>
   );
 }
@@ -61,7 +61,7 @@ export default function Home({ setPage }) {
         </motion.h1>
         <motion.p className="hero-sub"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}>
-          Miss Bharat is an interactive world of games, voice fun and stories for Classes 1–5.
+Maths ➕ English 🔤 Science 🔬 Stories 📖 — a fun world of learning for Classes 1–5.
         </motion.p>
         <motion.button className="hero-cta"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
