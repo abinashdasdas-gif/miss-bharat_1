@@ -23,7 +23,7 @@ export default function StoryReader({ story, storyIndex, onBack }) {
     setImgUrl(null);
     if (!hasKey) { setImgState('idle'); return; }
     setImgState('loading');
-    genImage(buildPrompt(style, story, story.pages[i]))
+    genImage(buildPrompt(style, story, story.pages[i]), story.seed)
       .then(url => { if (!cancelled) { setImgUrl(url); setImgState('idle'); } })
       .catch(() => { if (!cancelled) setImgState('error'); });
     return () => { cancelled = true; };

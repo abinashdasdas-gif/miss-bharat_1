@@ -47,7 +47,7 @@ export const FALLBACK_QUESTIONS = {
 export const STORIES = [
   {
     title: 'The Thirsty Crow', emoji: '🐦', seed: 21,
-    art: 'a cute friendly black crow and a brown clay water pot in a sunny green garden of an Indian village',
+    art: 'the SAME characters in every image: one glossy black crow with a small orange beak, bright friendly eyes and neat feathers, and one round brown clay water pot. Setting: a warm sunny green garden in an Indian village',
     blurb: 'A clever crow finds a smart way to drink water.',
     moral: 'Where there is a will, there is a way.',
     pages: [
@@ -60,7 +60,7 @@ export const STORIES = [
   },
   {
     title: 'The Lion and the Mouse', emoji: '🦁', seed: 44,
-    art: 'a friendly big cartoon lion with a fluffy mane and a tiny cute grey mouse, in a lush green sunlit jungle',
+    art: 'the SAME characters in every image: one big gentle golden-brown lion with a fluffy rounded orange mane and kind warm eyes, and one tiny round grey mouse with big ears and a long thin tail. Setting: a lush sunlit green jungle',
     blurb: 'A tiny mouse proves even the smallest friend can help.',
     moral: 'No act of kindness is ever wasted.',
     pages: [
@@ -73,7 +73,7 @@ export const STORIES = [
   },
   {
     title: 'The Peacock and the Rain', emoji: '🦚', seed: 77,
-    art: 'a beautiful colorful peacock with bright blue and green feathers in a green forest',
+    art: 'the SAME character in every image: one elegant peacock with a deep blue body, a small crown of feathers, and a bright blue-and-green fan tail with eye spots. Setting: a green forest clearing',
     blurb: 'A proud peacock learns to dance with joy.',
     moral: 'True beauty shines when we share our joy.',
     pages: [
