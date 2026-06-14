@@ -1,24 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { speak } from '../voice.js';
+import { speak, stopSpeaking } from '../voice.js';
 import { STORY_SCENES } from '../scenes.js';
 
 export default function StoryReader({ story, storyIndex, onBack }) {
   const [i, setI] = useState(0);
   const [imgOk, setImgOk] = useState(true);
+  const audioRef = useRef(null);
   const last = i === story.pages.length - 1;
   const text = last ? story.pages[i] + '  ✨ Moral: ' + story.moral : story.pages[i];
   const scene = (STORY_SCENES[storyIndex] || [])[i];
-  // pre-generated painted image saved in public/stories (free, instant, offline)
   const imgSrc = `${import.meta.env.BASE_URL}stories/s${storyIndex}-p${i}.jpg`;
+  const audioSrc = `${import.meta.env.BASE_URL}audio/s${storyIndex}-p${i}.wav`;
 
-  const read = () => speak(text);
-  useEffect(() => { setImgOk(true); read(); return () => speechSynthesis.cancel(); }, [i]); // eslint-disable-line
+  const stopAll = () => { stopSpeaking(); if (audioRef.current) { try { audioRef.current.pause(); } catch (e) {} audioRef.current = null; } };
+
+  // Best voice: play the saved studio narration if it exists; otherwise fall back to browser TTS.
+  const read = () => {
+    stopAll();
+    let fellBack = false;
+    const fallback = () => { if (!fellBack) { fellBack = true; speak(text); } };
+    const a = new Audio(audioSrc);
+    audioRef.current = a;
+    a.onerror = fallback;
+    a.play().catch(fallback);
+  };
+
+  useEffect(() => { setImgOk(true); read(); return () => stopAll(); }, [i]); // eslint-disable-line
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-        <button className="class-chip" onClick={() => { speechSynthesis.cancel(); onBack(); }}>← Library</button>
+        <button className="class-chip" onClick={() => { stopAll(); onBack(); }}>← Library</button>
       </div>
 
       <div className="book" style={{ marginTop: 16 }}>
