@@ -4,7 +4,6 @@ import Chess from '../components/Chess.jsx';
 import TicTacToe from '../components/TicTacToe.jsx';
 import VoiceGame from '../components/VoiceGame.jsx';
 import TiltCard from '../components/TiltCard.jsx';
-import { speak } from '../voice.js';
 
 export default function Games({ classes, questions }) {
   const ids = Object.keys(classes);
@@ -27,8 +26,8 @@ export default function Games({ classes, questions }) {
             : active.kind === 'tictactoe' ? '⭕ Tic-Tac-Toe'
             : `${active.game.emoji} ${active.game.title}`}
         </h1>
-        {active.kind === 'chess' && <Chess speak={speak} />}
-        {active.kind === 'tictactoe' && <TicTacToe speak={speak} />}
+        {active.kind === 'chess' && <Chess />}
+        {active.kind === 'tictactoe' && <TicTacToe />}
         {active.kind === 'voice' && <VoiceGame type={active.game.type} title={active.game.title} questions={questions} />}
       </div>
     );

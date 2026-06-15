@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { speak } from '../voice.js';
+import { say } from '../say.js';
 import { generateQuestion, deriveExpected, matchesExpected } from '../voiceLogic.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -50,11 +50,13 @@ export default function VoiceGame({ type, title, questions }) {
     const said = (alts[0] || '').trim();
     if (matchesExpected(alts, expected)) {
       setScore(s => s + 1);
-      const r = ['Excellent! 🌟', 'Great job! 👏', 'Perfect! ⭐', 'Well done! 🎉', 'Super! 🚀'][Math.floor(Math.random() * 5)];
-      setGood(true); setFeedback(r); speak(`${r} You said ${said}.`);
+      const praises = ['Excellent!', 'Great job!', 'Perfect!', 'Well done!', 'Super!'];
+      const emojis = ['🌟', '👏', '⭐', '🎉', '🚀'];
+      const k = Math.floor(Math.random() * praises.length);
+      setGood(true); setFeedback(`${praises[k]} ${emojis[k]}`); say(praises[k]); // Kokoro clip
     } else {
       setGood(false); setFeedback(`🙂 Almost! I heard “${said}”. Tap the mic and try again!`);
-      speak(`Almost! I heard ${said}. Try again, you can do it!`);
+      say('Almost! Try again, you can do it!'); // Kokoro clip
     }
   };
 

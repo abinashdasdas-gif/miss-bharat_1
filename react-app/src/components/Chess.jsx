@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { moveSound, winSound } from '../sound.js';
+import { say } from '../say.js';
 
 const GLYPH = { K: '♚', Q: '♛', R: '♜', B: '♝', N: '♞', P: '♟' };
 const PIECE_NAMES = { K: 'King', Q: 'Queen', R: 'Rook', B: 'Bishop', N: 'Knight', P: 'Pawn' };
@@ -59,15 +60,13 @@ function legalMoves(board, r, c) {
   return moves;
 }
 
-export default function Chess({ speak }) {
+export default function Chess() {
   const [board, setBoard] = useState(START);
   const [sel, setSel] = useState(null);
   const [legal, setLegal] = useState([]);
   const [turn, setTurn] = useState('w');
   const [over, setOver] = useState(false);
   const [status, setStatus] = useState('Your turn — tap a piece to learn how it moves!');
-
-  const say = useCallback((t) => { if (speak) speak(t); }, [speak]);
 
   const applyMove = (b, fr, fc, tr, tc) => {
     const nb = b.map(row => row.slice());
@@ -96,7 +95,7 @@ export default function Chess({ speak }) {
     const { nb, piece, captured } = applyMove(b, mv[0], mv[1], mv[2], mv[3]);
     setBoard(nb);
     moveSound(!!captured);
-    say(`Computer moved the ${PIECE_NAMES[piece[1]]}.${captured ? ' And captured your ' + PIECE_NAMES[captured[1]] + '!' : ''}`);
+    say(captured ? 'Great capture!' : `Computer moved the ${PIECE_NAMES[piece[1]]}.`);
     if (captured && captured[1] === 'K') { setStatus('💻 Computer wins! Try again.'); setOver(true); say('The computer wins. Try again, you can do it!'); return; }
     setTurn('w'); setStatus('Your turn — tap a piece');
   };
@@ -108,7 +107,7 @@ export default function Chess({ speak }) {
       const { nb, piece, captured } = applyMove(board, sel[0], sel[1], r, c);
       setBoard(nb); setSel(null); setLegal([]);
       moveSound(!!captured);
-      say(`You moved the ${PIECE_NAMES[piece[1]]}.${captured ? ' Great capture!' : ''}`);
+      say(captured ? 'Great capture!' : `You moved the ${PIECE_NAMES[piece[1]]}.`);
       if (captured && captured[1] === 'K') { setStatus('🎉 You win! Checkmate!'); setOver(true); winSound(); say('You win the game! Wonderful!'); return; }
       setTurn('b'); setStatus('Computer thinking...');
       setTimeout(() => computerMove(nb), 500);
