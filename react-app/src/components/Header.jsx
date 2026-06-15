@@ -7,7 +7,8 @@ const TABS = [
   { id: 'games', icon: '🎮' },
   { id: 'stories', icon: '📖' },
   { id: 'quiet', icon: '🌿' },
-  { id: 'dashboard', icon: '👨‍👩‍👧' }
+  { id: 'dashboard', icon: '👨‍👩‍👧' },
+  { id: 'video', icon: '🎬' }
 ];
 
 export default function Header({ page, setPage }) {
