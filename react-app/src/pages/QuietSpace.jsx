@@ -21,8 +21,9 @@ function readAloud(text) {
   speechSynthesis.speak(u);
 }
 
-// Simple, concrete questions — single sentence, one idea each.
-const TASKS = [
+// Built-in fallback tasks. The real list is loaded via AJAX from public/quiet.json,
+// so content can be edited without touching code.
+const FALLBACK_TASKS = [
   { q: 'Which animal says "moo"?', options: [
       { text: 'Cow', ok: true }, { text: 'Cat', ok: false }, { text: 'Dog', ok: false } ] },
   { q: 'Which one do we use to see?', options: [
@@ -40,9 +41,18 @@ export default function QuietSpace() {
   const [faded, setFaded] = useState({});           // option indices the child already tried
   const [solved, setSolved] = useState(false);      // current task answered correctly
   const [showStar, setShowStar] = useState(false);  // gentle success badge
+  const [tasks, setTasks] = useState(FALLBACK_TASKS);
   const ringRef = useRef(null);
 
-  const task = TASKS[idx];
+  // AJAX: load tasks from public/quiet.json (works in dev and in the deployed build)
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}quiet.json`, { cache: 'no-store' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => { if (d && Array.isArray(d.tasks) && d.tasks.length) setTasks(d.tasks); })
+      .catch(() => { /* keep fallback */ });
+  }, []);
+
+  const task = tasks[idx] || tasks[0];
 
   // Start the smooth visual timer when a task begins. It only depletes a ring — never shows
   // changing numbers, which can cause time-pressure anxiety.
@@ -80,7 +90,7 @@ export default function QuietSpace() {
   };
 
   const nextTask = () => {
-    if (idx < TASKS.length - 1) {
+    if (idx < tasks.length - 1) {
       setIdx(idx + 1); setFaded({}); setSolved(false); setShowStar(false); setPhase('intro');
     }
   };
@@ -162,10 +172,10 @@ export default function QuietSpace() {
       {/* Fixed, static navigation in the bottom corners — never moves, never hides */}
       <div className="qs-nav">
         <button className="qs-navbtn" onClick={prevTask} disabled={idx === 0}>‹ Back</button>
-        <span className="qs-progress" aria-label={`Task ${idx + 1} of ${TASKS.length}`}>
-          {idx + 1} / {TASKS.length}
+        <span className="qs-progress" aria-label={`Task ${idx + 1} of ${tasks.length}`}>
+          {idx + 1} / {tasks.length}
         </span>
-        <button className="qs-navbtn next" onClick={nextTask} disabled={!solved || idx === TASKS.length - 1}>
+        <button className="qs-navbtn next" onClick={nextTask} disabled={!solved || idx === tasks.length - 1}>
           Next ›
         </button>
       </div>

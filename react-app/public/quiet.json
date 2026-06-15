@@ -1,0 +1,14 @@
+{
+  "tasks": [
+    { "q": "Which animal says \"moo\"?", "options": [
+      { "text": "Cow", "ok": true }, { "text": "Cat", "ok": false }, { "text": "Dog", "ok": false } ] },
+    { "q": "Which one do we use to see?", "options": [
+      { "text": "Eyes", "ok": true }, { "text": "Hands", "ok": false }, { "text": "Feet", "ok": false } ] },
+    { "q": "What comes after the number two?", "options": [
+      { "text": "Three", "ok": true }, { "text": "One", "ok": false }, { "text": "Five", "ok": false } ] },
+    { "q": "What colour is the sky on a sunny day?", "options": [
+      { "text": "Blue", "ok": true }, { "text": "Green", "ok": false }, { "text": "Brown", "ok": false } ] },
+    { "q": "Which one is a fruit?", "options": [
+      { "text": "Apple", "ok": true }, { "text": "Chair", "ok": false }, { "text": "Shoe", "ok": false } ] }
+  ]
+}
