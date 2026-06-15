@@ -49,5 +49,8 @@ react-app/dist/
 react-app/.env
 react-app/.env.local
 react-app/.env.*.local
+react-app/scripts/*.onnx
+react-app/scripts/*.bin
+react-app/scripts/stories.json
 !.github/
 !.github/**
