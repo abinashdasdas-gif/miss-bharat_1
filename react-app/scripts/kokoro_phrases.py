@@ -42,6 +42,21 @@ PHRASES = [
 def norm(t):
     return re.sub(r"\s+", " ", t.lower()).strip()
 
+# Also voice The Quiet Space content (questions, option words, feedback) — loaded from quiet.json.
+PHRASES += ["Well done.", "Try again."]
+try:
+    quiet = json.load(open(os.path.join(here, "..", "public", "quiet.json"), encoding="utf-8"))
+    for t in quiet.get("tasks", []):
+        PHRASES.append(t["q"])
+        for o in t.get("options", []):
+            PHRASES.append(o["text"])
+except Exception as e:
+    print("quiet.json not loaded:", e)
+
+# de-duplicate while preserving order (so manifest keys are unique)
+_seen = set()
+PHRASES = [p for p in PHRASES if not (norm(p) in _seen or _seen.add(norm(p)))]
+
 manifest = {}
 for idx, text in enumerate(PHRASES):
     fname = f"p{idx}.wav"

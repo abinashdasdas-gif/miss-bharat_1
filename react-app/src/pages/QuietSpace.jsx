@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+// Use the shared Kokoro voice (same as the stories). Plays a pre-generated clip for each
+// fixed phrase; falls back to the browser voice only if a clip is missing.
+import { say as readAloud } from '../say.js';
 
 /*
   THE QUIET SPACE — a sensory-safe learning module for autistic learners (Grades 1–5).
@@ -9,17 +12,6 @@ import { useState, useRef, useEffect } from 'react';
   - Clear structure: an explicit "First → Then" contract so the child knows what is coming.
   All animations are gentle, slow, and can be switched off entirely (Sensory Friendly mode).
 */
-
-// Calm, neutral narration. Slower rate + neutral pitch reduces auditory stress.
-function readAloud(text) {
-  if (!text || !('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.85;   // unhurried — easier to process
-  u.pitch = 1.0;   // neutral, not excitable
-  u.volume = 1;
-  speechSynthesis.speak(u);
-}
 
 // Built-in fallback tasks. The real list is loaded via AJAX from public/quiet.json,
 // so content can be edited without touching code.
