@@ -42,6 +42,18 @@ PHRASES = [
 def norm(t):
     return re.sub(r"\s+", " ", t.lower()).strip()
 
+# Chess Dance — funny TPR character lines (Total Physical Response teaching)
+PHRASES += [
+  "I am Babba the brave baby step! I walk one step forward, and I eat going diagonal. Stomp! Nom nom!",
+  "Beep! I am Robo Rook! I only zoom in straight lines: up, down, or sideways. Zoom!",
+  "Pip pip! I am Sir Hoppy! I jump in an L shape and leap over everyone. Boing!",
+  "The cracks! I am Bishop Slippy! I only slide diagonally, corner to corner. Swoosh!",
+  "Darling, I am the Queen! I can move any direction, as far as I like. Ta-da!",
+  "Oh my royal back! I am the King. I take one tiny step in any direction. Creak. Step.",
+  "Let's dance the chess pieces! Copy my silly moves.",
+  "Checkmate! You did it! Give yourself a royal twirl!"
+]
+
 # Also voice The Quiet Space content (questions, option words, feedback) — loaded from quiet.json.
 PHRASES += ["Well done.", "Try again."]
 try:

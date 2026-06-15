@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Chess from '../components/Chess.jsx';
+import ChessDance from '../components/ChessDance.jsx';
 import TicTacToe from '../components/TicTacToe.jsx';
 import VoiceGame from '../components/VoiceGame.jsx';
 import TiltCard from '../components/TiltCard.jsx';
@@ -9,10 +10,11 @@ export default function Games({ classes, questions }) {
   const ids = Object.keys(classes);
   const [cls, setCls] = useState(ids[0]);
   const [active, setActive] = useState(null); // { kind, game }
+  const [chessMode, setChessMode] = useState('play'); // 'play' | 'dance'
   const data = classes[cls];
 
   const openGame = (g) => {
-    if (g.type === 'chess') { setActive({ kind: 'chess' }); return; }
+    if (g.type === 'chess') { setChessMode('play'); setActive({ kind: 'chess' }); return; }
     if (g.type === 'tictactoe') { setActive({ kind: 'tictactoe' }); return; }
     setActive({ kind: 'voice', game: g });
   };
@@ -21,14 +23,23 @@ export default function Games({ classes, questions }) {
     return (
       <div className="container">
         <button className="class-chip" onClick={() => setActive(null)}>← Back to Games</button>
-        <h1 className="page-title" style={{ marginTop: 20 }}>
-          {active.kind === 'chess' ? '♟️ Chess vs Computer'
-            : active.kind === 'tictactoe' ? '⭕ Tic-Tac-Toe'
-            : `${active.game.emoji} ${active.game.title}`}
-        </h1>
-        {active.kind === 'chess' && <Chess />}
-        {active.kind === 'tictactoe' && <TicTacToe />}
-        {active.kind === 'voice' && <VoiceGame type={active.game.type} title={active.game.title} questions={questions} />}
+        {active.kind === 'chess' && (
+          <>
+            <h1 className="page-title" style={{ marginTop: 20 }}>♟️ Chess</h1>
+            <div className="chess-modes">
+              <button className={'class-chip' + (chessMode === 'play' ? ' on' : '')} onClick={() => setChessMode('play')}>♟️ Play</button>
+              <button className={'class-chip' + (chessMode === 'dance' ? ' on' : '')} onClick={() => setChessMode('dance')}>🕺 Chess Dance</button>
+            </div>
+            {chessMode === 'play' ? <Chess /> : <ChessDance onPlay={() => setChessMode('play')} />}
+          </>
+        )}
+        {active.kind === 'tictactoe' && (
+          <><h1 className="page-title" style={{ marginTop: 20 }}>⭕ Tic-Tac-Toe</h1><TicTacToe /></>
+        )}
+        {active.kind === 'voice' && (
+          <><h1 className="page-title" style={{ marginTop: 20 }}>{active.game.emoji} {active.game.title}</h1>
+            <VoiceGame type={active.game.type} title={active.game.title} questions={questions} /></>
+        )}
       </div>
     );
   }
