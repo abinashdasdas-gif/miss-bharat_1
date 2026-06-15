@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from './components/Header.jsx';
-import Home from './pages/Home.jsx';
 import Games from './pages/Games.jsx';
 import Stories from './pages/Stories.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import QuietSpace from './pages/QuietSpace.jsx';
-import VideoHero from './pages/VideoHero.jsx';
+import Landing from './pages/Landing.jsx';
 import { FALLBACK_CLASSES, FALLBACK_QUESTIONS } from './data.js';
 
 export default function App() {
@@ -27,9 +26,9 @@ export default function App() {
       <div className="app-orbs"><span /><span /><span /></div>
       <div className="stars" />
       <Header page={page} setPage={setPage} />
-      {page === 'video' ? (
-        // rendered outside the animated <main> so the fixed background video stays pinned
-        <VideoHero />
+      {page === 'home' ? (
+        // Landing has a fixed background video — render outside the animated <main> so it stays pinned
+        <Landing setPage={setPage} />
       ) : (
         <AnimatePresence mode="wait">
           <motion.main key={page}
@@ -37,7 +36,6 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }}>
-            {page === 'home' && <Home setPage={setPage} />}
             {page === 'games' && <Games classes={classes} questions={questions} />}
             {page === 'stories' && <Stories />}
             {page === 'quiet' && <QuietSpace />}
