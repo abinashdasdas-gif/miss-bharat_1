@@ -42,7 +42,9 @@ export default function ChessDance({ onPlay }) {
   const last = i === PIECES.length - 1;
   const p = PIECES[i];
 
-  useEffect(() => { say(p.line); return () => {}; }, [i]); // eslint-disable-line
+  useEffect(() => { say(PIECES[0].line); }, []); // first card (best-effort autoplay)
+  // navigation is gesture-bound, so the voice always plays on a tap
+  const go = (n) => { setI(n); say(PIECES[n].line); };
 
   return (
     <div className="dance">
@@ -67,10 +69,10 @@ export default function ChessDance({ onPlay }) {
       <div className="dance-motion">{p.motion}</div>
 
       <div className="dance-nav">
-        <button className="page-btn" disabled={i === 0} onClick={() => setI(i - 1)}>‹ Back</button>
+        <button className="page-btn" disabled={i === 0} onClick={() => go(i - 1)}>‹ Back</button>
         <button className="page-btn" onClick={() => say(p.line)}>🔊 Again</button>
         <span className="dance-count">{i + 1} / {PIECES.length}</span>
-        <button className="page-btn next" onClick={() => (last ? onPlay() : setI(i + 1))}>
+        <button className="page-btn next" onClick={() => (last ? onPlay() : go(i + 1))}>
           {last ? 'Play Chess ♟️' : 'Next ›'}
         </button>
       </div>
