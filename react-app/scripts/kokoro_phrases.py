@@ -54,6 +54,16 @@ PHRASES += [
   "Checkmate! You did it! Give yourself a royal twirl!"
 ]
 
+# Funny capture battle-cries (shouted by the capturing piece)
+PHRASES += [
+  "Snack time! Open wide!",            # Pawn
+  "Demolition mode activated!",        # Rook
+  "Pardon me, old chap! Incoming!",    # Knight
+  "Surprise, darling!",                # Bishop
+  "You've been Queened, darling! Bye bye!", # Queen
+  "Move along now, whippersnapper!"    # King
+]
+
 # Also voice The Quiet Space content (questions, option words, feedback) — loaded from quiet.json.
 PHRASES += ["Well done.", "Try again."]
 try:

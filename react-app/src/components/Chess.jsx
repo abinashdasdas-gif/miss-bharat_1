@@ -5,6 +5,15 @@ import { say } from '../say.js';
 
 const GLYPH = { K: '♚', Q: '♛', R: '♜', B: '♝', N: '♞', P: '♟' };
 const PIECE_NAMES = { K: 'King', Q: 'Queen', R: 'Rook', B: 'Bishop', N: 'Knight', P: 'Pawn' };
+// funny battle-cry shouted by the capturing piece (matches Kokoro phrase-bank clips)
+const CAPTURE_LINES = {
+  P: 'Snack time! Open wide!',
+  R: 'Demolition mode activated!',
+  N: 'Pardon me, old chap! Incoming!',
+  B: 'Surprise, darling!',
+  Q: "You've been Queened, darling! Bye bye!",
+  K: 'Move along now, whippersnapper!'
+};
 const PIECE_INFO = {
   P: 'Pawn. It walks one step forward, and captures sideways.',
   N: 'Knight! It jumps in an L-shape and can hop over other pieces.',
@@ -95,7 +104,7 @@ export default function Chess() {
     const { nb, piece, captured } = applyMove(b, mv[0], mv[1], mv[2], mv[3]);
     setBoard(nb);
     moveSound(!!captured);
-    say(captured ? 'Great capture!' : `Computer moved the ${PIECE_NAMES[piece[1]]}.`);
+    say(captured ? CAPTURE_LINES[piece[1]] : `Computer moved the ${PIECE_NAMES[piece[1]]}.`);
     if (captured && captured[1] === 'K') { setStatus('💻 Computer wins! Try again.'); setOver(true); say('The computer wins. Try again, you can do it!'); return; }
     setTurn('w'); setStatus('Your turn — tap a piece');
   };
@@ -107,7 +116,7 @@ export default function Chess() {
       const { nb, piece, captured } = applyMove(board, sel[0], sel[1], r, c);
       setBoard(nb); setSel(null); setLegal([]);
       moveSound(!!captured);
-      say(captured ? 'Great capture!' : `You moved the ${PIECE_NAMES[piece[1]]}.`);
+      say(captured ? CAPTURE_LINES[piece[1]] : `You moved the ${PIECE_NAMES[piece[1]]}.`);
       if (captured && captured[1] === 'K') { setStatus('🎉 You win! Checkmate!'); setOver(true); winSound(); say('You win the game! Wonderful!'); return; }
       setTurn('b'); setStatus('Computer thinking...');
       setTimeout(() => computerMove(nb), 500);
