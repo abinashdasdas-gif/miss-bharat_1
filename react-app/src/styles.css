@@ -243,7 +243,8 @@ body{font-family:'Poppins',sans-serif;color:#E2E8F0;overflow-x:hidden}
 
 /* CHESS — wood board + 3D glossy pieces (brown/cream vs black) */
 .chess-board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:min(90vw,440px);aspect-ratio:1;margin:0 auto;border:5px solid #5B3A1E;border-radius:8px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.5)}
-.chess-cell{aspect-ratio:1;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:min(9.5vw,42px);cursor:pointer;user-select:none}
+.chess-cell{aspect-ratio:1;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center;font-size:min(9.5vw,42px);cursor:pointer;user-select:none;position:relative}
+.faint-ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:5}
 .chess-cell.light{background:#E8C49A}
 .chess-cell.dark{background:#9C6B43}
 .chess-cell.sel{background:#F2D06B !important}

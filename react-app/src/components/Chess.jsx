@@ -76,6 +76,7 @@ export default function Chess() {
   const [turn, setTurn] = useState('w');
   const [over, setOver] = useState(false);
   const [status, setStatus] = useState('Your turn — tap a piece to learn how it moves!');
+  const [faint, setFaint] = useState(null); // captured piece doing its dramatic exit { r, c, type, color }
 
   const applyMove = (b, fr, fc, tr, tc) => {
     const nb = b.map(row => row.slice());
@@ -103,6 +104,7 @@ export default function Chess() {
     const mv = best[Math.floor(Math.random() * best.length)];
     const { nb, piece, captured } = applyMove(b, mv[0], mv[1], mv[2], mv[3]);
     setBoard(nb);
+    if (captured) setFaint({ r: mv[2], c: mv[3], type: captured[1], color: captured[0] });
     moveSound(!!captured);
     say(captured ? CAPTURE_LINES[piece[1]] : `Computer moved the ${PIECE_NAMES[piece[1]]}.`);
     if (captured && captured[1] === 'K') { setStatus('💻 Computer wins! Try again.'); setOver(true); say('The computer wins. Try again, you can do it!'); return; }
@@ -115,6 +117,7 @@ export default function Chess() {
     if (sel && legal.some(m => m[0] === r && m[1] === c)) {
       const { nb, piece, captured } = applyMove(board, sel[0], sel[1], r, c);
       setBoard(nb); setSel(null); setLegal([]);
+      if (captured) setFaint({ r, c, type: captured[1], color: captured[0] });
       moveSound(!!captured);
       say(captured ? CAPTURE_LINES[piece[1]] : `You moved the ${PIECE_NAMES[piece[1]]}.`);
       if (captured && captured[1] === 'K') { setStatus('🎉 You win! Checkmate!'); setOver(true); winSound(); say('You win the game! Wonderful!'); return; }
@@ -129,7 +132,7 @@ export default function Chess() {
   };
 
   const restart = () => {
-    setBoard(START()); setSel(null); setLegal([]); setTurn('w'); setOver(false);
+    setBoard(START()); setSel(null); setLegal([]); setTurn('w'); setOver(false); setFaint(null);
     setStatus('Your turn — tap a piece!');
     say("Let's play chess! Tap any of your pieces and I will tell you how it moves.");
   };
@@ -153,6 +156,16 @@ export default function Chess() {
                   whileHover={{ y: -4, scale: 1.08 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 22 }}>
                   {GLYPH[p[1]]}
+                </motion.span>
+              )}
+              {/* captured piece's dramatic faint: spin, shrink, tumble away */}
+              {faint && faint.r === r && faint.c === c && (
+                <motion.span className={'cp cp-' + (faint.color === 'w' ? 'white' : 'black') + ' faint-ghost'}
+                  initial={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+                  animate={{ opacity: 0, scale: 0.35, rotate: 540, y: 70 }}
+                  transition={{ duration: 0.85, ease: 'easeIn' }}
+                  onAnimationComplete={() => setFaint(null)}>
+                  {GLYPH[faint.type]}
                 </motion.span>
               )}
             </div>
