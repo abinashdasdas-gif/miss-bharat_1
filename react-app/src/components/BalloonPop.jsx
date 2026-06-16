@@ -15,16 +15,16 @@ export default function BalloonPop() {
   useEffect(() => {
     const t = setInterval(() => {
       setBalloons(bs => {
-        if (bs.length > 7) return bs; // keep it calm, not overwhelming
+        if (bs.length >= 5) return bs; // keep it light & performant
         return [...bs, {
           id: nextId++,
           left: 6 + Math.random() * 82,
-          dur: 5.5 + Math.random() * 3,
+          dur: 6 + Math.random() * 3,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          size: 58 + Math.random() * 34
+          size: 58 + Math.random() * 30
         }];
       });
-    }, 950);
+    }, 1100);
     return () => clearInterval(t);
   }, []);
 
@@ -44,11 +44,11 @@ export default function BalloonPop() {
         <AnimatePresence>
           {balloons.map(b => (
             <motion.button key={b.id} className="balloon" aria-label="balloon"
-              style={{ left: b.left + '%', width: b.size, height: b.size * 1.2, background: b.color }}
-              initial={{ top: '100%', opacity: 0 }}
-              animate={{ top: '-28%', opacity: 1 }}
+              style={{ left: b.left + '%', top: '100%', width: b.size, height: b.size * 1.2, background: b.color }}
+              initial={{ y: 0, opacity: 0 }}
+              animate={{ y: -620, opacity: 1 }}   /* GPU transform, not layout 'top' */
               exit={{ scale: 1.6, opacity: 0 }}
-              transition={{ top: { duration: b.dur, ease: 'linear' }, opacity: { duration: 0.3 } }}
+              transition={{ y: { duration: b.dur, ease: 'linear' }, opacity: { duration: 0.3 } }}
               onAnimationComplete={() => remove(b.id)}
               onClick={() => pop(b.id)}
               whileTap={{ scale: 0.75 }}>
