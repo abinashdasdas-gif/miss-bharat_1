@@ -1,5 +1,5 @@
-// Web Audio: gentle move/win sounds + a soft background music loop. No files.
-let ctx = null, musicOn = false, timer = null;
+// Web Audio for move/win sound effects + a real looping background music track.
+let ctx = null, musicOn = false;
 function ac() {
   if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
   if (ctx.state === 'suspended') ctx.resume();
@@ -24,17 +24,20 @@ export function winSound() {
   [523, 659, 784, 1047].forEach((f, i) => tone(f, t + i * 0.12, 0.22, 0.22, 'triangle'));
 }
 
-const MELODY = [523, 659, 784, 659, 587, 784, 880, 784, 523, 659, 784, 1047, 880, 784, 659, 587];
-function loop() {
-  if (!musicOn) return;
-  const c = ac(), step = 0.42, t0 = c.currentTime + 0.06;
-  MELODY.forEach((f, i) => tone(f, t0 + i * step, step * 0.9, 0.08, 'triangle'));
-  [0, 4, 8, 12].forEach(i => tone(MELODY[i] / 2, t0 + i * step, step * 3.6, 0.05, 'sine'));
-  timer = setTimeout(loop, MELODY.length * step * 1000);
+// Background music = a real track (loops softly). Replaces the old synth melody.
+let bg = null;
+function bgAudio() {
+  if (!bg) {
+    bg = new Audio(`${import.meta.env.BASE_URL}audio/bg-music.mp3`);
+    bg.loop = true;
+    bg.volume = 0.35; // gentle, sits under narration
+  }
+  return bg;
 }
 export function toggleMusic() {
-  if (musicOn) { musicOn = false; if (timer) clearTimeout(timer); }
-  else { ac(); musicOn = true; loop(); }
+  const a = bgAudio();
+  if (musicOn) { a.pause(); musicOn = false; }
+  else { a.play().catch(() => {}); musicOn = true; }
   return musicOn;
 }
-export function stopMusic() { musicOn = false; if (timer) clearTimeout(timer); }
+export function stopMusic() { if (bg) bg.pause(); musicOn = false; }
