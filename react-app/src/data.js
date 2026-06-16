@@ -10,7 +10,9 @@ export const FALLBACK_CLASSES = {
     { emoji: '🎵', title: 'Rhyming Words', desc: 'Words that sound alike', type: 'rhyme1', subject: 'English' },
     { emoji: '🅰️', title: 'Vowel Sounds', desc: 'a e i o u', type: 'vowels1', subject: 'English' },
     { emoji: '♟️', title: 'Chess', desc: 'Learn the pieces', type: 'chess', subject: 'Fun' },
-    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' },
+    { emoji: '🎈', title: 'Balloon Pop', desc: 'Pop the balloons!', type: 'balloon', subject: 'Fun' },
+    { emoji: '🧩', title: 'Jigsaw Puzzle', desc: 'Solve the picture', type: 'jigsaw', subject: 'Fun' }
   ]},
   2: { name: 'Class 2', title: 'Addition, Subtraction & Reading', games: [
     { emoji: '➕', title: 'Add to 100', desc: 'Two-digit addition', type: 'add2', subject: 'Maths' },
@@ -20,7 +22,9 @@ export const FALLBACK_CLASSES = {
     { emoji: '📖', title: 'Reading', desc: 'Read short sentences', type: 'read2', subject: 'English' },
     { emoji: '🔁', title: 'Opposites', desc: 'Big / small, hot / cold', type: 'opp2', subject: 'English' },
     { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
-    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' },
+    { emoji: '🎈', title: 'Balloon Pop', desc: 'Pop the balloons!', type: 'balloon', subject: 'Fun' },
+    { emoji: '🧩', title: 'Jigsaw Puzzle', desc: 'Solve the picture', type: 'jigsaw', subject: 'Fun' }
   ]},
   3: { name: 'Class 3', title: 'Tables, Division & Grammar', games: [
     { emoji: '✖️', title: 'Times Tables', desc: 'Multiplication 2–10', type: 'tables3', subject: 'Maths' },
@@ -30,7 +34,9 @@ export const FALLBACK_CLASSES = {
     { emoji: '📚', title: 'Vocabulary', desc: 'New words', type: 'vocab3', subject: 'English' },
     { emoji: '📖', title: 'Reading', desc: 'Sentences & meaning', type: 'read3', subject: 'English' },
     { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
-    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' },
+    { emoji: '🎈', title: 'Balloon Pop', desc: 'Pop the balloons!', type: 'balloon', subject: 'Fun' },
+    { emoji: '🧩', title: 'Jigsaw Puzzle', desc: 'Solve the picture', type: 'jigsaw', subject: 'Fun' }
   ]},
   4: { name: 'Class 4', title: 'Multiplication, Fractions & Writing', games: [
     { emoji: '✖️', title: 'Multiply', desc: '2-digit multiplication', type: 'mult4', subject: 'Maths' },
@@ -40,7 +46,9 @@ export const FALLBACK_CLASSES = {
     { emoji: '🔆', title: 'Synonyms', desc: 'Same-meaning words', type: 'syn4', subject: 'English' },
     { emoji: '📰', title: 'Comprehension', desc: 'Speak & describe', type: 'comp4', subject: 'English' },
     { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
-    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' },
+    { emoji: '🎈', title: 'Balloon Pop', desc: 'Pop the balloons!', type: 'balloon', subject: 'Fun' },
+    { emoji: '🧩', title: 'Jigsaw Puzzle', desc: 'Solve the picture', type: 'jigsaw', subject: 'Fun' }
   ]},
   5: { name: 'Class 5', title: 'Algebra, Geometry & Composition', games: [
     { emoji: '🧬', title: 'Pre-Algebra', desc: 'Find the value of x', type: 'algebra5', subject: 'Maths' },
@@ -50,7 +58,9 @@ export const FALLBACK_CLASSES = {
     { emoji: '🔆', title: 'Antonyms', desc: 'Opposite words', type: 'anto5', subject: 'English' },
     { emoji: '🌍', title: 'General Knowledge', desc: 'Fun facts', type: 'gk5', subject: 'English' },
     { emoji: '♟️', title: 'Chess', desc: 'Play vs computer', type: 'chess', subject: 'Fun' },
-    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' }
+    { emoji: '⭕', title: 'Tic-Tac-Toe', desc: 'Beat the computer', type: 'tictactoe', subject: 'Fun' },
+    { emoji: '🎈', title: 'Balloon Pop', desc: 'Pop the balloons!', type: 'balloon', subject: 'Fun' },
+    { emoji: '🧩', title: 'Jigsaw Puzzle', desc: 'Solve the picture', type: 'jigsaw', subject: 'Fun' }
   ]}
 };
 

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import Chess from '../components/Chess.jsx';
 import ChessDance from '../components/ChessDance.jsx';
 import TicTacToe from '../components/TicTacToe.jsx';
+import BalloonPop from '../components/BalloonPop.jsx';
+import Jigsaw from '../components/Jigsaw.jsx';
 import VoiceGame from '../components/VoiceGame.jsx';
 import TiltCard from '../components/TiltCard.jsx';
 
@@ -16,6 +18,8 @@ export default function Games({ classes, questions }) {
   const openGame = (g) => {
     if (g.type === 'chess') { setChessMode('play'); setActive({ kind: 'chess' }); return; }
     if (g.type === 'tictactoe') { setActive({ kind: 'tictactoe' }); return; }
+    if (g.type === 'balloon') { setActive({ kind: 'balloon' }); return; }
+    if (g.type === 'jigsaw') { setActive({ kind: 'jigsaw' }); return; }
     setActive({ kind: 'voice', game: g });
   };
 
@@ -35,6 +39,12 @@ export default function Games({ classes, questions }) {
         )}
         {active.kind === 'tictactoe' && (
           <><h1 className="page-title" style={{ marginTop: 20 }}>⭕ Tic-Tac-Toe</h1><TicTacToe /></>
+        )}
+        {active.kind === 'balloon' && (
+          <><h1 className="page-title" style={{ marginTop: 20 }}>🎈 Balloon Pop</h1><BalloonPop /></>
+        )}
+        {active.kind === 'jigsaw' && (
+          <><h1 className="page-title" style={{ marginTop: 20 }}>🧩 Jigsaw Puzzle</h1><Jigsaw /></>
         )}
         {active.kind === 'voice' && (
           <><h1 className="page-title" style={{ marginTop: 20 }}>{active.game.emoji} {active.game.title}</h1>
