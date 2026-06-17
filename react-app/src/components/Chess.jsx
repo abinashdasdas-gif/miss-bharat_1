@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { moveSound, winSound } from '../sound.js';
 import { say } from '../say.js';
+import DifficultyBar from './DifficultyBar.jsx';
 
 const GLYPH = { K: '♚', Q: '♛', R: '♜', B: '♝', N: '♞', P: '♟' };
 const PIECE_NAMES = { K: 'King', Q: 'Queen', R: 'Rook', B: 'Bishop', N: 'Knight', P: 'Pawn' };
@@ -69,6 +70,53 @@ function legalMoves(board, r, c) {
   return moves;
 }
 
+/* ---- difficulty-aware computer AI (black) ---- */
+const VAL = { P: 1, N: 3, B: 3, R: 5, Q: 9, K: 1000 };
+const rand = a => a[Math.floor(Math.random() * a.length)];
+function applyTo(b, fr, fc, tr, tc) {
+  const nb = b.map(row => row.slice());
+  const p = nb[fr][fc]; nb[tr][tc] = p; nb[fr][fc] = '';
+  if (p === 'wP' && tr === 0) nb[tr][tc] = 'wQ';
+  if (p === 'bP' && tr === 7) nb[tr][tc] = 'bQ';
+  return nb;
+}
+function material(b) { // + favours white, − favours black
+  let s = 0;
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) { const p = b[r][c]; if (p) s += (p[0] === 'w' ? 1 : -1) * VAL[p[1]]; }
+  return s;
+}
+function allMoves(b, color) {
+  const mv = [];
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++)
+    if (b[r][c] && b[r][c][0] === color) legalMoves(b, r, c).forEach(m => mv.push([r, c, m[0], m[1]]));
+  return mv;
+}
+// returns [fr,fc,tr,tc] for black, or null if no moves
+function chooseBlackMove(b, diff) {
+  const moves = allMoves(b, 'b');
+  if (!moves.length) return null;
+  if (diff === 'Easy') {
+    const caps = moves.filter(m => b[m[2]][m[3]]);          // mostly random, sometimes grabs a free piece
+    return (caps.length && Math.random() < 0.35) ? rand(caps) : rand(moves);
+  }
+  if (diff === 'Medium') {
+    let best = [], bs = -1;                                  // greedy: take the most valuable capture
+    moves.forEach(m => { const t = b[m[2]][m[3]]; const sc = t ? VAL[t[1]] : 0; if (sc > bs) { bs = sc; best = [m]; } else if (sc === bs) best.push(m); });
+    return rand(best);
+  }
+  // Hard: 2-ply minimax on material — black minimises white's best reply
+  let best = [], bestVal = Infinity;
+  for (const m of moves) {
+    if (b[m[2]][m[3]] && b[m[2]][m[3]][1] === 'K') return m; // grab the king if exposed
+    const after = applyTo(b, m[0], m[1], m[2], m[3]);
+    const wReplies = allMoves(after, 'w');
+    let worst = wReplies.length ? -Infinity : material(after);
+    for (const w of wReplies) { const v = material(applyTo(after, w[0], w[1], w[2], w[3])); if (v > worst) worst = v; }
+    if (worst < bestVal) { bestVal = worst; best = [m]; } else if (worst === bestVal) best.push(m);
+  }
+  return rand(best);
+}
+
 export default function Chess() {
   const [board, setBoard] = useState(START);
   const [sel, setSel] = useState(null);
@@ -77,6 +125,7 @@ export default function Chess() {
   const [over, setOver] = useState(false);
   const [status, setStatus] = useState('Your turn — tap a piece to learn how it moves!');
   const [faint, setFaint] = useState(null); // captured piece doing its dramatic exit { r, c, type, color }
+  const [diff, setDiff] = useState('Medium');
 
   const applyMove = (b, fr, fc, tr, tc) => {
     const nb = b.map(row => row.slice());
@@ -88,20 +137,8 @@ export default function Chess() {
   };
 
   const computerMove = (b) => {
-    const val = { P: 1, N: 3, B: 3, R: 5, Q: 9, K: 100 };
-    let best = [], bestScore = -1;
-    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
-      if (b[r][c] && b[r][c][0] === 'b') {
-        legalMoves(b, r, c).forEach(m => {
-          const t = b[m[0]][m[1]];
-          const score = t ? val[t[1]] * 10 + Math.random() : Math.random();
-          if (score > bestScore) { bestScore = score; best = [[r, c, m[0], m[1]]]; }
-          else if (score === bestScore) best.push([r, c, m[0], m[1]]);
-        });
-      }
-    }
-    if (!best.length) { setStatus('🎉 Stalemate — well played!'); setOver(true); return; }
-    const mv = best[Math.floor(Math.random() * best.length)];
+    const mv = chooseBlackMove(b, diff);
+    if (!mv) { setStatus('🎉 Stalemate — well played!'); setOver(true); return; }
     const { nb, piece, captured } = applyMove(b, mv[0], mv[1], mv[2], mv[3]);
     setBoard(nb);
     if (captured) setFaint({ r: mv[2], c: mv[3], type: captured[1], color: captured[0] });
@@ -139,6 +176,7 @@ export default function Chess() {
 
   return (
     <div style={{ textAlign: 'center' }}>
+      <DifficultyBar value={diff} onChange={setDiff} />
       <div style={{ color: '#818CF8', fontWeight: 600, minHeight: 28, marginBottom: 14 }}>{status}</div>
       <div className="chess-board">
         {board.map((row, r) => row.map((p, c) => {
