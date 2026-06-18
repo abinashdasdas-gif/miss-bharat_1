@@ -26,6 +26,8 @@ build/
 *
 !.gitignore
 !README.md
+!AI_HANDOFF.md
+!CLAUDE.md
 !server.js
 !package.json
 !index.html
