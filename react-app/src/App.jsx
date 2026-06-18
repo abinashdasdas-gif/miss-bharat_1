@@ -13,12 +13,13 @@ export default function App() {
   const [classes, setClasses] = useState(FALLBACK_CLASSES);
   const [questions, setQuestions] = useState(FALLBACK_QUESTIONS);
 
-  // AJAX: reuse the same server-hosted content the old site uses
+  // AJAX: load the React app's OWN content file (public/content.json — correct CBSE shape).
+  // BASE_URL resolves correctly both in dev ('/') and on the deployed /app/ sub-path ('./').
   useEffect(() => {
-    fetch('../data/content.json', { cache: 'no-store' })
+    fetch(`${import.meta.env.BASE_URL}content.json`, { cache: 'no-store' })
       .then(r => (r.ok ? r.json() : null))
       .then(d => { if (d) { if (d.classes) setClasses(d.classes); if (d.questions) setQuestions(d.questions); } })
-      .catch(() => { /* keep fallback */ });
+      .catch(() => { /* keep built-in fallback from data.js */ });
   }, []);
 
   return (

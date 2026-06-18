@@ -132,6 +132,9 @@ python scripts/kokoro_phrases.py     # -> public/audio/phrases/*.wav + phrases.j
 
 # Painted story images (needs a working Hugging Face token in .env.local: VITE_HF_TOKEN)
 node scripts/gen-art.mjs             # -> public/stories/s*-p*.jpg  (skips existing)
+
+# Games/quiz content (classes + questions) — after editing data.js, regenerate the served file:
+node scripts/dump-content.mjs        # -> public/content.json  (what App.jsx AJAX-loads)
 ```
 **Kokoro local setup:** `pip install kokoro-onnx soundfile numpy`, then download
 `kokoro-v1.0.onnx` + `voices-v1.0.bin` (from thewh1teagle/kokoro-onnx releases) into `scripts/`.
@@ -140,12 +143,9 @@ Those two model files are **git-ignored** (large, ~340 MB).
 ---
 
 ## 7. KNOWN ISSUES / TODO (read before deploying!)
-1. **AJAX content mismatch on deploy.** `App.jsx` fetches `../data/content.json`. In dev that 404s
-   and the app uses the good `FALLBACK_CLASSES` (CBSE + subjects + balloon/jigsaw). But on the
-   deployed `/app/`, `../data/content.json` resolves to the **OLD HTML-site content** (no `subject`
-   field, no new games) and would **override** the React content. **Fix before relying on deploy:**
-   either remove that fetch (use FALLBACK only), or copy the React content into
-   `react-app/public/content.json` and fetch that instead.
+1. ✅ **FIXED — AJAX content mismatch.** `App.jsx` now fetches `${import.meta.env.BASE_URL}content.json`
+   (the React app's OWN `public/content.json`, correct CBSE shape), not the old HTML-site file.
+   Regenerate it after editing `data.js` with: `node scripts/dump-content.mjs`.
 2. **Enable the deploy:** owner must set Pages Source → "GitHub Actions".
 3. **Perf:** landing video (~15 MB) and `bg-music.mp3` (~15 MB) are heavy; consider compressing.
 
