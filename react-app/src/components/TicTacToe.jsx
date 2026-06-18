@@ -2,24 +2,49 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { moveSound, winSound } from '../sound.js';
 import { say } from '../say.js';
+import DifficultyBar from './DifficultyBar.jsx';
 
 const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 const winnerOf = (b) => { for (const [a,c,d] of LINES) if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a]; return null; };
+const emptiesOf = (b) => b.map((v, i) => (v ? null : i)).filter(i => i !== null);
+const rand = a => a[Math.floor(Math.random() * a.length)];
+
+// perfect play for Hard: minimax (computer = ⭕ maximises)
+function minimax(b, isComputer) {
+  const w = winnerOf(b);
+  if (w === '⭕') return 10;
+  if (w === '❌') return -10;
+  const empties = emptiesOf(b);
+  if (!empties.length) return 0;
+  const scores = empties.map(i => { const c = [...b]; c[i] = isComputer ? '⭕' : '❌'; return minimax(c, !isComputer); });
+  return isComputer ? Math.max(...scores) : Math.min(...scores);
+}
+function bestMove(b) {
+  let best = -Infinity, mv = -1;
+  emptiesOf(b).forEach(i => { const c = [...b]; c[i] = '⭕'; const s = minimax(c, false); if (s > best) { best = s; mv = i; } });
+  return mv;
+}
 
 export default function TicTacToe() {
   const [board, setBoard] = useState(Array(9).fill(''));
   const [over, setOver] = useState(false);
   const [status, setStatus] = useState('You are ❌ — tap a square');
+  const [diff, setDiff] = useState('Medium');
 
   useEffect(() => { say("Let's play Tic-Tac-Toe! You are X. Try to get three in a row!"); }, []); // eslint-disable-line
 
   const computerMove = (b) => {
-    const empties = b.map((v, i) => (v ? null : i)).filter(i => i !== null);
+    const empties = emptiesOf(b);
     const tryWin = (mark) => { for (const i of empties) { const c = [...b]; c[i] = mark; if (winnerOf(c) === mark) return i; } return null; };
-    let m = tryWin('⭕'); if (m === null) m = tryWin('❌');
-    if (m === null && b[4] === '') m = 4;
-    if (m === null) { const corners = [0,2,6,8].filter(i => b[i] === ''); if (corners.length) m = corners[Math.floor(Math.random()*corners.length)]; }
-    if (m === null) m = empties[Math.floor(Math.random()*empties.length)];
+    let m;
+    if (diff === 'Easy') {
+      m = rand(empties);                                  // random — easy to beat
+    } else if (diff === 'Medium') {
+      m = tryWin('⭕'); if (m === null) m = tryWin('❌');   // win, then block, else random
+      if (m === null) m = rand(empties);
+    } else {
+      m = bestMove(b);                                    // Hard — unbeatable
+    }
     const nb = [...b]; nb[m] = '⭕'; setBoard(nb);
     moveSound(false);
     say('Computer placed an O.');
@@ -48,6 +73,7 @@ export default function TicTacToe() {
 
   return (
     <div style={{ textAlign: 'center' }}>
+      <DifficultyBar value={diff} onChange={setDiff} />
       <div style={{ color: '#818CF8', fontWeight: 600, minHeight: 28, marginBottom: 14 }}>{status}</div>
       <div className="ttt-board">
         {board.map((v, i) => (
